@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="author" content="Antares" />
+  <meta name="description" content="Blog de Antares — notas sobre arte, animación y cómic." />
+  <title>ANTARES — Blog</title>
+  <link rel="icon" type="image/png" href="website_images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #080808;
+      --dark: #0f0f0f;
+      --panel: #141414;
+      --panel2: #1a1a1a;
+      --border: #252525;
+      --border-dim: #1c1c1c;
+      --plum-mid: #7a2260;
+      --plum-light: #a0338a;
+      --lavender: #9b8fe0;
+      --lavender-dim:#5a5090;
+      --lavender-bg: rgba(155,143,224,0.06);
+      --accent: #c47ae8;
+      --text: #e2e2e2;
+      --text-dim: #666;
+      --text-mid: #999;
+      --mono: 'Share Tech Mono', monospace;
+      --display: 'VT323', monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--display);
+      background: var(--black);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 3px,
+        rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px
+      );
+      pointer-events: none;
+      z-index: 9000;
+    }
+    #site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 800;
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 52px;
+    }
+    .nav-logo {
+      font-family: var(--display);
+      font-size: 26px;
+      letter-spacing: 4px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--display);
+      font-size: 19px;
+      letter-spacing: 2px;
+      color: var(--text-mid);
+      text-decoration: none;
+      border: 1px solid transparent;
+      border-radius: 20px;
+      padding: 3px 18px;
+      transition: all 0.2s;
+      display: block;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--lavender);
+      border-color: var(--lavender-dim);
+      background: var(--lavender-bg);
+    }
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--text-mid); }
+
+    section { padding: 80px 0; }
+    .section-inner { max-width: 900px; margin: 0 auto; padding: 0 48px; }
+    .section-heading {
+      font-size: 28px;
+      letter-spacing: 4px;
+      color: var(--text);
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .section-heading .star { color: var(--text-dim); font-size: 20px; margin: 0 10px; }
+
+    /* ── Blog list ── */
+    .post-list { display: flex; flex-direction: column; gap: 2px; }
+    .post-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 20px;
+      padding: 18px 20px;
+      border: 1px solid var(--border-dim);
+      background: var(--panel);
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+      cursor: pointer;
+    }
+    .post-row:hover { border-color: var(--lavender-dim); background: var(--panel2); }
+    .post-row-title { font-size: 22px; color: var(--text); }
+    .post-row-date { font-family: var(--mono); font-size: 12px; color: var(--text-dim); white-space: nowrap; }
+    .post-row-excerpt { font-family: var(--mono); font-size: 13px; color: var(--text-mid); margin-top: 4px; }
+    .post-row-inner { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+
+    .empty-state {
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--text-dim);
+      text-align: center;
+      padding: 40px 20px;
+      border: 1px dashed var(--border);
+    }
+
+    /* ── Single post view ── */
+    .back-link {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: var(--lavender);
+      text-decoration: none;
+      margin-bottom: 32px;
+    }
+    .back-link:hover { color: var(--accent); }
+    .post-title {
+      font-size: 44px;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .post-date { font-family: var(--mono); font-size: 12px; color: var(--text-dim); margin-bottom: 40px; letter-spacing: 1px; }
+    .post-body { font-size: 21px; line-height: 1.75; color: var(--text-mid); }
+    .post-body h1, .post-body h2, .post-body h3 {
+      font-family: var(--display);
+      color: var(--text);
+      letter-spacing: 1px;
+      margin: 36px 0 16px;
+    }
+    .post-body h1 { font-size: 32px; }
+    .post-body h2 { font-size: 27px; }
+    .post-body h3 { font-size: 23px; }
+    .post-body p { margin-bottom: 20px; }
+    .post-body a { color: var(--lavender); }
+    .post-body a:hover { color: var(--accent); }
+    .post-body ul, .post-body ol { margin: 0 0 20px 28px; }
+    .post-body li { margin-bottom: 8px; }
+    .post-body img { max-width: 100%; border: 1px solid var(--border); margin: 20px 0; }
+    .post-body blockquote {
+      border-left: 3px solid var(--lavender-dim);
+      padding-left: 20px;
+      color: var(--text-dim);
+      font-style: italic;
+      margin: 20px 0;
+    }
+    .post-body code {
+      font-family: var(--mono);
+      background: var(--panel2);
+      padding: 2px 6px;
+      font-size: 0.85em;
+      color: var(--lavender);
+    }
+    .post-body pre {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      padding: 16px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+    }
+    .post-body pre code { background: none; padding: 0; }
+
+    footer {
+      background: var(--black);
+      border-top: 1px solid var(--border-dim);
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-copy { font-family: var(--mono); font-size: 11px; color: var(--text-dim); letter-spacing: 1px; }
+    .footer-nav { display: flex; gap: 18px; }
+    .footer-nav a { font-family: var(--mono); font-size: 11px; letter-spacing: 1px; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+    .footer-nav a:hover { color: var(--text); }
+
+    @media (max-width: 900px) {
+      .section-inner { padding: 0 28px; }
+      #site-nav { padding: 0 24px; }
+      .nav-hamburger { display: flex; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 52px; left: 0; right: 0;
+        background: rgba(8,8,8,0.97);
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        padding: 16px 24px;
+        gap: 4px;
+      }
+      .nav-links.open { display: flex; }
+      .post-title { font-size: 34px; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="site-nav" aria-label="Navegación principal">
+  <a class="nav-logo" href="index.html">ANT.</a>
+  <button class="nav-hamburger" aria-label="Abrir menú" aria-expanded="false" onclick="toggleMenu(this)">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html#home">Home</a></li>
+    <li><a href="index.html#about">Info</a></li>
+    <li><a href="index.html#works">Works</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="blog-list-view">
+  <div class="section-inner">
+    <h2 class="section-heading">
+      <span class="star" aria-hidden="true">✶</span>
+      Blog
+      <span class="star" aria-hidden="true">✶</span>
+    </h2>
+    <div class="post-list" id="postList">
+      <p class="empty-state">Cargando entradas...</p>
+    </div>
+  </div>
+</section>
+
+<section id="blog-post-view" style="display:none;">
+  <div class="section-inner">
+    <a class="back-link" href="#" onclick="showList(); return false;">‹ Volver al blog</a>
+    <h1 class="post-title" id="postTitle"></h1>
+    <p class="post-date" id="postDate"></p>
+    <div class="post-body" id="postBody"></div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-copy">© Antares 2026 — Todos los derechos reservados</span>
+  <nav class="footer-nav" aria-label="Secciones del sitio">
+    <a href="index.html#home">Home</a>
+    <a href="index.html#about">Info</a>
+    <a href="index.html#works">Works</a>
+    <a href="blog.html">Blog</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+</footer>
+
+<script>
+  function toggleMenu(btn) {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    document.getElementById('navLinks').classList.toggle('open', !open);
+  }
+
+  /* ── Blog engine ──────────────────────────────────────────────
+     How to add a post:
+     1. Write a Markdown file in /posts/, e.g. posts/my-post.md
+        Start it with a small header block:
+          # My Post Title
+          2026-07-19
+
+        Then write the post in Markdown underneath.
+     2. Add its filename to posts/index.json (just the filename, newest first).
+     That's it — no rebuild step, no server, this page does the rest. */
+
+  let posts = [];
+
+  function parsePost(raw, filename) {
+    const lines = raw.split('\n');
+    let title = filename;
+    let date = '';
+    let bodyStartIdx = 0;
+
+    // First line starting with "# " is the title
+    const titleIdx = lines.findIndex(l => l.trim().startsWith('# '));
+    if (titleIdx !== -1) {
+      title = lines[titleIdx].replace(/^#\s*/, '').trim();
+      bodyStartIdx = titleIdx + 1;
+      // Next non-empty line, if it looks like a date, is the date
+      for (let i = bodyStartIdx; i < lines.length; i++) {
+        if (lines[i].trim() === '') continue;
+        if (/^\d{4}-\d{2}-\d{2}/.test(lines[i].trim())) {
+          date = lines[i].trim();
+          bodyStartIdx = i + 1;
+        }
+        break;
+      }
+    }
+    const body = lines.slice(bodyStartIdx).join('\n').trim();
+    const excerptSource = body.replace(/[#*`>_\-\[\]()]/g, '').trim();
+    const excerpt = excerptSource.slice(0, 140) + (excerptSource.length > 140 ? '…' : '');
+    return { title, date, body, excerpt, filename };
+  }
+
+  function renderList() {
+    const container = document.getElementById('postList');
+    if (posts.length === 0) {
+      container.innerHTML = '<p class="empty-state">Todavía no hay entradas. Vuelve pronto.</p>';
+      return;
+    }
+    container.innerHTML = posts.map((p, i) => `
+      <a class="post-row" href="#" onclick="showPost(${i}); return false;">
+        <div class="post-row-inner">
+          <span class="post-row-title">${p.title}</span>
+          <span class="post-row-excerpt">${p.excerpt}</span>
+        </div>
+        <span class="post-row-date">${p.date}</span>
+      </a>
+    `).join('');
+  }
+
+  function showList() {
+    document.getElementById('blog-list-view').style.display = '';
+    document.getElementById('blog-post-view').style.display = 'none';
+    history.replaceState(null, '', 'blog.html');
+  }
+
+  function showPost(idx) {
+    const p = posts[idx];
+    document.getElementById('postTitle').textContent = p.title;
+    document.getElementById('postDate').textContent = p.date;
+    document.getElementById('postBody').innerHTML = marked.parse(p.body);
+    document.getElementById('blog-list-view').style.display = 'none';
+    document.getElementById('blog-post-view').style.display = '';
+    window.scrollTo(0, 0);
+    history.replaceState(null, '', `blog.html?post=${encodeURIComponent(p.filename)}`);
+  }
+
+  async function loadPosts() {
+    try {
+      const idxRes = await fetch('posts/index.json');
+      const filenames = await idxRes.json();
+      const loaded = await Promise.all(filenames.map(async fn => {
+        const res = await fetch(`posts/${fn}`);
+        const raw = await res.text();
+        return parsePost(raw, fn);
+      }));
+      posts = loaded;
+      renderList();
+
+      // Deep-link support: blog.html?post=filename.md
+      const params = new URLSearchParams(window.location.search);
+      const wanted = params.get('post');
+      if (wanted) {
+        const i = posts.findIndex(p => p.filename === wanted);
+        if (i !== -1) showPost(i);
+      }
+    } catch (err) {
+      console.error('No se pudieron cargar las entradas:', err);
+      document.getElementById('postList').innerHTML =
+        '<p class="empty-state">No se pudieron cargar las entradas del blog.</p>';
+    }
+  }
+
+  loadPosts();
+</script>
+</body>
+</html>
