@@ -1,0 +1,50 @@
+[
+  {
+    "title": "Cathedral",
+    "filename": "07042026_Cathedral.png",
+    "meta": "07 · 04 · 2026 · ilustración digital · .png",
+    "desc": "Ilustración digital de una catedral mecánica. Exploración de arquitectura gótica industrial con influencias de steampunk y biomecánica.",
+    "tags": ["Ilustración", "Digital", "Krita"],
+    "thumb": null
+  },
+  {
+    "title": "Concurso COMIC — Ammutindra",
+    "filename": "050102026_Concurso_COMIC.pdf",
+    "meta": "05 · 01 · 2026 · cómic · 8 páginas · .pdf",
+    "desc": "Cómic de horror cósmico presentado al concurso Mutantes Paseantes. Narra la historia de unos investigadores que secuestran accidentalmente a una entidad divina juvenil, cuyo padre éldritch llega a recuperarla.",
+    "tags": ["Cómic", "Horror Cósmico", "Tinta", "Narrativa"],
+    "thumb": null
+  },
+  {
+    "title": "Ilustraciones — Colección",
+    "filename": "01022024_Ilustraciones.psd",
+    "meta": "01 · 02 · 2024 · ilustración · .psd",
+    "desc": "Colección de ilustraciones digitales explorando diferentes estilos, paletas y enfoques narrativos. Retratos, concept art y escenas de fantasía.",
+    "tags": ["Ilustración", "Photoshop", "Concept Art"],
+    "thumb": null
+  },
+  {
+    "title": "Ammutindra — Comic Completo",
+    "filename": "20260430_Ammutindra.pdf",
+    "meta": "30 · 04 · 2026 · cómic · .pdf",
+    "desc": "Versión final del cómic Ammutindra. Horror cósmico con influencias sumerias, indias y egipcias en el diseño de personajes.",
+    "tags": ["Cómic", "Horror Cósmico", "Publicación"],
+    "thumb": null
+  },
+  {
+    "title": "3D Concept — Environment",
+    "filename": "20260301_3D_Concept.blend",
+    "meta": "01 · 03 · 2026 · 3D · .blend",
+    "desc": "Concepto de entorno 3D modelado en Maya y texturizado en Substance Painter. Exploración de iluminación con Arnold renderer.",
+    "tags": ["3D", "Maya", "Substance Painter", "Arnold"],
+    "thumb": null
+  },
+  {
+    "title": "Sanctum Machina — Concept Art",
+    "filename": "20251201_SanctumMachina.psd",
+    "meta": "01 · 12 · 2025 · concept art · .psd",
+    "desc": "Concept art del universo original Sanctum Machina — steampunk gótico con ángeles cibernéticos, arquitectura barroca y mitología construida a mano.",
+    "tags": ["Concept Art", "Worldbuilding", "Photoshop"],
+    "thumb": null
+  }
+]
