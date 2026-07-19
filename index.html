@@ -642,6 +642,7 @@
     <li><a href="#home">Home</a></li>
     <li><a href="#about">Info</a></li>
     <li><a href="#works">Works</a></li>
+    <li><a href="blog.html">Blog</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
@@ -677,8 +678,10 @@
     </h2>
     <div class="about-grid">
       <div class="about-portrait-wrap">
-        <!-- Replace with: <img class="about-portrait" src="portrait.jpg" alt="Antares" /> -->
-        <div class="portrait-placeholder" role="img" aria-label="Retrato de Antares">[ portrait ]</div>
+        <!-- Drop a real file at website_images/portrait.jpg and this swaps in automatically. -->
+        <img class="about-portrait" id="portraitImg" src="website_images/portrait.jpg" alt="Retrato de Antares"
+             onerror="this.style.display='none'; document.getElementById('portraitPh').style.display='flex';" />
+        <div class="portrait-placeholder" id="portraitPh" role="img" aria-label="Retrato de Antares" style="display:none;">[ portrait ]</div>
         <div class="portrait-corner tl"></div>
         <div class="portrait-corner tr"></div>
         <div class="portrait-corner bl"></div>
@@ -729,41 +732,7 @@
     <button class="carousel-btn prev" id="prevBtn" onclick="slide(-1)" aria-label="Proyecto anterior" disabled>‹</button>
     <div class="carousel-track" id="carouselTrack" role="list">
 
-      <article class="project-card" onclick="openProject(0)" role="listitem" tabindex="0"
-               onkeydown="if(event.key==='Enter')openProject(0)" aria-label="Cathedral">
-        <div class="project-thumb-ph" role="img" aria-label="Miniatura Cathedral">07042026_Cathedral.png</div>
-        <p class="project-filename">07042026_Cathedral.png</p>
-      </article>
-
-      <article class="project-card" onclick="openProject(1)" role="listitem" tabindex="0"
-               onkeydown="if(event.key==='Enter')openProject(1)" aria-label="Concurso COMIC">
-        <div class="project-thumb-ph" role="img" aria-label="Miniatura Cómic">050102026_Concurso_COMIC.pdf</div>
-        <p class="project-filename">050102026_Concurso_COMIC.pdf</p>
-      </article>
-
-      <article class="project-card" onclick="openProject(2)" role="listitem" tabindex="0"
-               onkeydown="if(event.key==='Enter')openProject(2)" aria-label="Ilustraciones">
-        <div class="project-thumb-ph" role="img" aria-label="Miniatura Ilustraciones">01022024_Ilustraciones.psd</div>
-        <p class="project-filename">01022024_Ilustraciones.psd</p>
-      </article>
-
-      <article class="project-card" onclick="openProject(3)" role="listitem" tabindex="0"
-               onkeydown="if(event.key==='Enter')openProject(3)" aria-label="Ammutindra">
-        <div class="project-thumb-ph" role="img" aria-label="Miniatura Ammutindra">20260430_Ammutindra.pdf</div>
-        <p class="project-filename">20260430_Ammutindra.pdf</p>
-      </article>
-
-      <article class="project-card" onclick="openProject(4)" role="listitem" tabindex="0"
-               onkeydown="if(event.key==='Enter')openProject(4)" aria-label="3D Concept">
-        <div class="project-thumb-ph" role="img" aria-label="Miniatura 3D">20260301_3D_Concept.blend</div>
-        <p class="project-filename">20260301_3D_Concept.blend</p>
-      </article>
-
-      <article class="project-card" onclick="openProject(5)" role="listitem" tabindex="0"
-               onkeydown="if(event.key==='Enter')openProject(5)" aria-label="Sanctum Machina">
-        <div class="project-thumb-ph" role="img" aria-label="Miniatura Sanctum Machina">20251201_SanctumMachina.psd</div>
-        <p class="project-filename">20251201_SanctumMachina.psd</p>
-      </article>
+      <!-- Cards are rendered from projects.json by renderProjects(). -->
 
     </div>
     <button class="carousel-btn next" id="nextBtn" onclick="slide(1)" aria-label="Proyecto siguiente">›</button>
@@ -796,11 +765,12 @@
         <h3>¿Tienes<br>una idea?</h3>
         <p>Escríbeme y cuéntame en qué puedo ayudarte. Estoy disponible para proyectos de ilustración, cómic, animación y diseño de personajes.</p>
         <nav class="contact-socials" aria-label="Redes sociales">
-          <a class="social-link" href="#" aria-label="GitHub">GITHUB</a>
-          <a class="social-link" href="#" aria-label="LinkedIn">LINKEDIN</a>
-          <a class="social-link" href="#" aria-label="Twitter">TWITTER</a>
-          <a class="social-link" href="#" aria-label="ArtStation">ARTSTATION</a>
-          <a class="social-link" href="#" aria-label="Behance">BEHANCE</a>
+          <a class="social-link" href="https://github.com/Scorpiidev" target="_blank" rel="noopener" aria-label="GitHub">GITHUB</a>
+          <a class="social-link" href="https://www.linkedin.com/in/antares/" target="_blank" rel="noopener" aria-label="LinkedIn">LINKEDIN</a>
+          <a class="social-link" href="https://www.youtube.com/@antares2927" target="_blank" rel="noopener" aria-label="YouTube">YOUTUBE</a>
+          <a class="social-link" href="https://instagram.com/alpha_sc0rpii" target="_blank" rel="noopener" aria-label="Instagram">INSTAGRAM</a>
+          <a class="social-link" href="https://x.com/Cyberdistopia" target="_blank" rel="noopener" aria-label="Twitter / X">TWITTER / X</a>
+          <a class="social-link" href="https://antares.gumroad.com/" target="_blank" rel="noopener" aria-label="Gumroad">GUMROAD</a>
         </nav>
       </div>
       <div class="contact-form" role="form" aria-label="Formulario de contacto">
@@ -826,16 +796,18 @@
 <footer>
   <span class="footer-copy">© Antares 2026 — Todos los derechos reservados</span>
   <div class="footer-socials" role="list" aria-label="Redes sociales">
-    <a class="footer-social" href="#" role="listitem">GitHub</a>
-    <a class="footer-social" href="#" role="listitem">LinkedIn</a>
-    <a class="footer-social" href="#" role="listitem">Twitter</a>
-    <a class="footer-social" href="#" role="listitem">ArtStation</a>
-    <a class="footer-social" href="#" role="listitem">Behance</a>
+    <a class="footer-social" href="https://github.com/Scorpiidev" target="_blank" rel="noopener" role="listitem">GitHub</a>
+    <a class="footer-social" href="https://www.linkedin.com/in/antares/" target="_blank" rel="noopener" role="listitem">LinkedIn</a>
+    <a class="footer-social" href="https://www.youtube.com/@antares2927" target="_blank" rel="noopener" role="listitem">YouTube</a>
+    <a class="footer-social" href="https://instagram.com/alpha_sc0rpii" target="_blank" rel="noopener" role="listitem">Instagram</a>
+    <a class="footer-social" href="https://x.com/Cyberdistopia" target="_blank" rel="noopener" role="listitem">Twitter/X</a>
+    <a class="footer-social" href="https://antares.gumroad.com/" target="_blank" rel="noopener" role="listitem">Gumroad</a>
   </div>
   <nav class="footer-nav" aria-label="Secciones del sitio">
     <a href="#home">Home</a>
     <a href="#about">Info</a>
     <a href="#works">Works</a>
+    <a href="blog.html">Blog</a>
     <a href="#contact">Contact</a>
   </nav>
 </footer>
@@ -937,49 +909,38 @@
   }
 
   window.addEventListener('resize', initCarousel);
-  // run after fonts/layout settle
-  window.addEventListener('load', initCarousel);
-  initCarousel();
 
-  /* ── Project data ─────────────────────────────────────────── */
-  const projects = [
-    {
-      title: 'Cathedral',
-      meta:  '07 · 04 · 2026  ·  ilustración digital  ·  .png',
-      desc:  'Ilustración digital de una catedral mecánica. Exploración de arquitectura gótica industrial con influencias de steampunk y biomecánica.',
-      tags:  ['Ilustración', 'Digital', 'Krita']
-    },
-    {
-      title: 'Concurso COMIC — Ammutindra',
-      meta:  '05 · 01 · 2026  ·  cómic  ·  8 páginas  ·  .pdf',
-      desc:  'Cómic de horror cósmico presentado al concurso Mutantes Paseantes. Narra la historia de unos investigadores que secuestran accidentalmente a una entidad divina juvenil, cuyo padre éldritch llega a recuperarla.',
-      tags:  ['Cómic', 'Horror Cósmico', 'Tinta', 'Narrativa']
-    },
-    {
-      title: 'Ilustraciones — Colección',
-      meta:  '01 · 02 · 2024  ·  ilustración  ·  .psd',
-      desc:  'Colección de ilustraciones digitales explorando diferentes estilos, paletas y enfoques narrativos. Retratos, concept art y escenas de fantasía.',
-      tags:  ['Ilustración', 'Photoshop', 'Concept Art']
-    },
-    {
-      title: 'Ammutindra — Comic Completo',
-      meta:  '30 · 04 · 2026  ·  cómic  ·  .pdf',
-      desc:  'Versión final del cómic Ammutindra. Horror cósmico con influencias sumerias, indias y egipcias en el diseño de personajes.',
-      tags:  ['Cómic', 'Horror Cósmico', 'Publicación']
-    },
-    {
-      title: '3D Concept — Environment',
-      meta:  '01 · 03 · 2026  ·  3D  ·  .blend',
-      desc:  'Concepto de entorno 3D modelado en Maya y texturizado en Substance Painter. Exploración de iluminación con Arnold renderer.',
-      tags:  ['3D', 'Maya', 'Substance Painter', 'Arnold']
-    },
-    {
-      title: 'Sanctum Machina — Concept Art',
-      meta:  '01 · 12 · 2025  ·  concept art  ·  .psd',
-      desc:  'Concept art del universo original Sanctum Machina — steampunk gótico con ángeles cibernéticos, arquitectura barroca y mitología construida a mano.',
-      tags:  ['Concept Art', 'Worldbuilding', 'Photoshop']
-    }
-  ];
+  /* ── Project data (loaded from projects.json — edit that file, not this script) ── */
+  let projects = [];
+
+  function renderProjects() {
+    const track = document.getElementById('carouselTrack');
+    track.innerHTML = projects.map((p, i) => {
+      const thumbHtml = p.thumb
+        ? `<img class="project-thumb" src="${p.thumb}" alt="Miniatura ${p.title}"
+             onerror="this.outerHTML='&lt;div class=&quot;project-thumb-ph&quot;&gt;${p.filename}&lt;/div&gt;';" />`
+        : `<div class="project-thumb-ph" role="img" aria-label="Miniatura ${p.title}">${p.filename}</div>`;
+      return `
+      <article class="project-card" onclick="openProject(${i})" role="listitem" tabindex="0"
+               onkeydown="if(event.key==='Enter')openProject(${i})" aria-label="${p.title}">
+        ${thumbHtml}
+        <p class="project-filename">${p.filename}</p>
+      </article>`;
+    }).join('');
+  }
+
+  fetch('projects.json')
+    .then(r => r.json())
+    .then(data => {
+      projects = data;
+      renderProjects();
+      initCarousel();
+    })
+    .catch(err => {
+      console.error('No se pudo cargar projects.json:', err);
+      document.getElementById('carouselTrack').innerHTML =
+        '<p style="font-family: var(--mono); color: var(--text-dim); padding: 20px;">No se pudieron cargar los proyectos.</p>';
+    });
 
   function openProject(idx) {
     const p = projects[idx];
@@ -1003,7 +964,11 @@
     if (e.key === 'Escape') closeProject();
   });
 
-  /* ── Contact ─────────────────────────────────────────────── */
+  /* ── Contact ─────────────────────────────────────────────────
+     No backend — this opens the visitor's own email client with
+     a pre-filled message addressed to Antares. Free, no server. */
+  const CONTACT_EMAIL = '';
+
   function handleSubmit() {
     const name  = document.getElementById('c-name').value.trim();
     const email = document.getElementById('c-email').value.trim();
@@ -1012,10 +977,9 @@
       alert('Por favor rellena todos los campos antes de enviar.');
       return;
     }
-    alert(`Mensaje recibido, ${name}. ¡Gracias por escribir!`);
-    document.getElementById('c-name').value  = '';
-    document.getElementById('c-email').value = '';
-    document.getElementById('c-msg').value   = '';
+    const subject = encodeURIComponent(`Contacto desde el portfolio — ${name}`);
+    const body = encodeURIComponent(`${msg}\n\n— ${name} (${email})`);
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
   }
 </script>
 </body>
