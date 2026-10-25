@@ -554,6 +554,7 @@ kbd {
 .porthole--petri > img { border: 3px solid rgba(255, 255, 255, .25); box-shadow: 0 0 0 6px rgba(168, 153, 255, .12), inset 0 0 20px rgba(0, 0, 0, .6); }
 
 .cutout img { border: 1px solid rgba(255, 228, 174, .2); }
+.cutout--torn img { border: 0; }
 .cutout--strip img { border-color: rgba(185, 227, 107, .3); }
 .specimen-jar img { border-radius: 4px; border: 1px solid var(--line-2); }
 
