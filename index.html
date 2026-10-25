@@ -117,9 +117,27 @@ scripts:
       <figcaption>Miku, in blossom</figcaption>
     </figure>
 
-    <figure class="piece cutout" data-id="astronaut" style="--x:37%;--y:43%;--w:12%;--r:-5deg">
-      <img src="{{ '/assets/img/pd/astronaut-dither.png' | relative_url }}" alt="Dithered portrait of astronaut a NASA astronaut with her helmet" draggable="false" loading="lazy">
-      <figcaption class="note note--s">a NASA astronaut · first woman to pilot the shuttle, 1995</figcaption>
+    <figure class="piece ascii" data-id="skull" style="--x:35.5%;--y:42%;--w:15%;--r:-4deg">
+      <pre class="ascii__art" data-scramble data-glyphs=".,:-=+%#@" aria-label="An ASCII-art skull" role="img">                  ....
+             :::,,,,,,::--=.
+          ::,..........,,,:--=
+        .:,..............,,,:-=.
+       -:,...............,,,,::=+
+      .:,................,,,,,:-=+
+      -:................,,,,,:::-+
+      -,.....####.......###,,:::-+
+      -:,..@@@*@@@#...@@**@@@::-=+
+      =-:,,@@@@@@@@.,@@@@@@@@:-=++
+        .-:,@@@@@@,,,,@@@@@@:-=.
+         -:,,,,,,,,,,,,,:::::-=
+        +-:,,,,,,,,@@,:::::::-=+
+        +=-:::::::#@@#:::::--=++
+         .==-::::::::::::--=++.
+            =--::::::::---=+
+            .=#@#@#@#@#@#@++
+            ++=---------==++
+             .+++++++++++++</pre>
+      <figcaption class="note note--s">memento mori, in 7-bit</figcaption>
     </figure>
 
     <div class="piece piece--synth" data-id="synth" style="--x:51%;--y:43%;--w:17%;--r:1deg">
@@ -132,10 +150,6 @@ scripts:
       </div>
     </div>
 
-    <figure class="piece cutout" data-id="hopper" style="--x:70%;--y:41%;--w:10.5%;--r:3deg">
-      <img src="{{ '/assets/img/pd/hopper-dither.png' | relative_url }}" alt="Dithered portrait of Rear Admiral a Navy officer" draggable="false" loading="lazy">
-      <figcaption class="note note--s note--narrow">Mark II · Mark II · the first “bug”, 1947</figcaption>
-    </figure>
 
     <figure class="piece porthole porthole--portrait" data-id="curator" style="--x:4%;--y:53%;--w:14%;--r:0deg">
       <a href="{{ '/curator/' | relative_url }}" draggable="false" data-cursor="meet"><img src="{{ '/assets/works/self-portrait.jpg' | relative_url }}" alt="Self-portrait of the curator" draggable="false" loading="lazy"></a>
@@ -152,6 +166,11 @@ scripts:
       <figcaption class="note note--sw">greek coins · found at Pompeii</figcaption>
     </figure>
 
+    <figure class="piece starcard" data-id="scorpius" style="--x:70%;--y:41%;--w:11%;--r:3deg">
+      {% include scorpius-card.svg %}
+      <figcaption class="starcard__name">Scorpivs</figcaption>
+      <span class="note note--s note--narrow">fig. α · the scorpion, low over Spain in summer</span>
+    </figure>
     <figure class="piece porthole porthole--petri" data-id="cell" style="--x:37%;--y:67%;--w:10%;--r:0deg">
       <img src="{{ '/assets/img/pd/cell-saline.jpg' | relative_url }}" alt="A single cell floating in saline, seen through a digital hologram" draggable="false" loading="lazy">
       <figcaption class="note note--s">one cell, floating in saline · 0.107 µm/px</figcaption>
