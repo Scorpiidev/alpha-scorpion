@@ -493,6 +493,7 @@ kbd {
   max-width: 1440px; margin: 0 auto;
   aspect-ratio: 16 / 11;
   isolation: isolate;
+  container-type: inline-size;
   background:
     linear-gradient(rgba(198, 111, 128, .07) 1px, transparent 1px) 0 0 / 4% 5.82%,
     linear-gradient(90deg, rgba(198, 111, 128, .07) 1px, transparent 1px) 0 0 / 4% 5.82%,
@@ -631,6 +632,41 @@ kbd {
 .swatches li::before { content: ""; display: block; aspect-ratio: 1 / .9; background: var(--c); }
 .swatches b { font-family: var(--f-mono); font-weight: 400; font-size: 7.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); line-height: 1.2; }
 .swatches small { font-family: var(--f-mono); font-size: 7.5px; color: #8a7a6a; }
+
+/* dot-matrix printout with an ASCII skull */
+.ascii {
+  background-color: #f3ead5;
+  background-image:
+    radial-gradient(circle at 7px 7px, #110812 2.6px, transparent 3.2px),
+    radial-gradient(circle at calc(100% - 7px) 7px, #110812 2.6px, transparent 3.2px),
+    repeating-linear-gradient(180deg, rgba(185, 227, 107, .16) 0 14px, transparent 14px 28px);
+  background-size: 100% 14px, 100% 14px, auto;
+  background-repeat: repeat-y, repeat-y, repeat;
+  padding: 10px 18px;
+  border-left: 1px dashed rgba(68, 9, 46, .25); border-right: 1px dashed rgba(68, 9, 46, .25);
+}
+.ascii__art {
+  margin: 0; color: #2a0f1f;
+  font-family: var(--f-mono); font-weight: 700; font-size: 7px; font-size: calc((15cqw - 36px) / 23);
+  line-height: 1.1; letter-spacing: 0; white-space: pre; overflow: hidden;
+}
+
+/* constellation card, like an old astronomy plate */
+.starcard {
+  background: radial-gradient(circle at 50% 38%, #5a1440, #2a0520 72%);
+  border: 6px solid var(--paper-2);
+  padding: 6px 6px 30px;
+}
+.starcard__sky { width: 100%; height: auto; aspect-ratio: 1; overflow: visible; }
+.starcard__ring { fill: none; stroke: rgba(255, 228, 174, .35); stroke-width: 4; }
+.starcard__ring--in { stroke-dasharray: 6 16; }
+.starcard__lines line { stroke: rgba(255, 228, 174, .55); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 2 16; }
+.starcard__star { fill: var(--butter); }
+.starcard__alpha { fill: var(--carnation-hi); filter: drop-shadow(0 0 24px var(--carnation)); animation: pulse 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.starcard__name {
+  position: absolute; left: 0; right: 0; bottom: 3px; text-align: center;
+  font-family: var(--f-display); font-size: 21px; letter-spacing: .1em; color: var(--butter);
+}
 
 /* barcode & museum tag */
 .piece--barcode { background: #f6f0e2; padding: 8px 10px 6px; }
@@ -1152,6 +1188,7 @@ kbd {
   .note::before, .note::after { display: none; }
   .porthole { justify-self: center; width: 80% !important; }
   .term__screen { height: 240px; }
+  .ascii__art { font-size: calc((50cqw - 56px) / 23); }
 }
 @media (max-width: 640px) {
   :root { --hud-h: 54px; }

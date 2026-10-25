@@ -182,15 +182,16 @@
     if (reduce) { if (text != null) el.textContent = text; return; }
     if (text == null && el._scr) return;
     const final = text != null ? text : el.textContent;
+    const glyphs = el.dataset.glyphs || GLYPHS;
     cancelAnimationFrame(el._raf);
     let frame = 0;
-    const total = Math.max(10, final.length * 1.6);
+    const total = Math.min(48, Math.max(10, final.length * 1.6));
     el._scr = true;
     const step = () => {
       let out = '';
       for (let i = 0; i < final.length; i++) {
         const c = final[i];
-        out += (c === ' ' || i < (frame / total) * final.length) ? c : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+        out += (c === ' ' || c === '\n' || i < (frame / total) * final.length) ? c : glyphs[(Math.random() * glyphs.length) | 0];
       }
       el.textContent = out;
       if (++frame <= total) el._raf = requestAnimationFrame(step);
