@@ -100,17 +100,10 @@
   try { ODD = JSON.parse($('#oddity-data').textContent); } catch (e) { ODD = []; }
   const found = new Set(store.get('antares.oddities', []).filter(id => ODD.some(o => o.id === id)));
   const odCount = $$('[data-odd-count]');
-  const redBtns = $$('[data-redgiant]');
   const renderOdd = () => {
     odCount.forEach(el => { el.textContent = found.size; });
     $$('.slot').forEach(s => s.classList.toggle('is-found', found.has(s.dataset.slot)));
     $$('[data-oddity]').forEach(b => b.classList.toggle('is-found', found.has(b.dataset.oddity)));
-    const on = root.classList.contains('red-giant');
-    redBtns.forEach(b => {
-      b.setAttribute('aria-pressed', String(on));
-      const st = b.querySelector('span:not([class])');
-      if (st) st.textContent = on ? 'on' : 'off';
-    });
   };
   A.discover = id => {
     const o = ODD.find(x => x.id === id);
@@ -139,17 +132,8 @@
   });
   $('[data-collection-forget]')?.addEventListener('click', () => {
     found.clear(); store.del('antares.oddities');
-    root.classList.remove('red-giant'); store.set('antares.redgiant', false);
     renderOdd();
   });
-  redBtns.forEach(b => b.addEventListener('click', () => {
-    const on = root.classList.toggle('red-giant');
-    store.set('antares.redgiant', on);
-    renderOdd();
-    A.toast(on
-      ? { label: 'red giant mode · on', title: 'Antares, swollen', text: 'The cabinet near the end of its star: everything warms, swells and slows down. The heart beats like a dying giant.', ms: 6500 }
-      : { label: 'red giant mode · off', tiny: true, ms: 2200 });
-  }));
   renderOdd();
 
   /* ── HUD: clock and the altitude of Antares, seen from Spain ─ */
@@ -450,7 +434,7 @@
       W = innerWidth; H = innerHeight;
       sky.width = W * dpr; sky.height = H * dpr;
       g.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.round(W * H / 5200);
+      const n = Math.round(W * H / 6500);
       stars = Array.from({ length: n }, () => ({
         x: Math.random() * W, y: Math.random() * H, r: Math.random() ** 3 * 1.6 + .3,
         tw: .4 + Math.random() * 2.6, ph: Math.random() * 6.3, tint: TINTS[(Math.random() * TINTS.length) | 0],
@@ -459,6 +443,7 @@
     };
     const draw = now => {
       if (!running) return;
+      if (!reduce && now - last < 33) { requestAnimationFrame(draw); return; } // ~30fps is plenty for twinkling
       const dt = Math.min(64, now - last); last = now;
       const t = now / 1000;
       g.clearRect(0, 0, W, H);
@@ -504,7 +489,7 @@
     const stack = $('.chrome-heart__stack', h);
     const light = $('[data-chrome-light]', h);
     const grad = $('[data-chrome-gradient]', h);
-    let tx = 0, ty = 0, cx = 0, cy = 0, lastMove = 0, visible = true;
+    let tx = 0, ty = 0, cx = 0, cy = 0, lastMove = 0, visible = true, lit = false;
     const fine = matchMedia('(pointer: fine)').matches;
     if (fine) addEventListener('pointermove', e => {
       const r = h.getBoundingClientRect();
@@ -521,8 +506,12 @@
       cx += (gx - cx) * k; cy += (gy - cy) * k;
       stack.style.setProperty('--ry', (cx * 28).toFixed(2) + 'deg');
       stack.style.setProperty('--rx', (-cy * 22).toFixed(2) + 'deg');
-      if (light) { light.setAttribute('x', (300 + cx * 320).toFixed(0)); light.setAttribute('y', (220 + cy * 260).toFixed(0)); }
-      if (grad) grad.setAttribute('gradientTransform', `rotate(${(cx * 18 - cy * 10).toFixed(1)} .5 .5)`);
+      // re-lighting the SVG filter is the expensive part: only do it while the pointer is moving
+      if (now - lastMove < 1500 || !lit) {
+        lit = true;
+        if (light) { light.setAttribute('x', (300 + cx * 320).toFixed(0)); light.setAttribute('y', (220 + cy * 260).toFixed(0)); }
+        if (grad) grad.setAttribute('gradientTransform', `rotate(${(cx * 18 - cy * 10).toFixed(1)} .5 .5)`);
+      }
       if (!reduce) requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);

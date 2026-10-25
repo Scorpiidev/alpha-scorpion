@@ -1,0 +1,4 @@
+{%- comment -%} URL of a light preview for a work: assets/works/thumbs/<name>.webp if it exists, else the original. {%- endcomment -%}
+{%- assign tb = include.file | split: '.' | first | prepend: '/assets/works/thumbs/' | append: '.webp' -%}
+{%- assign hit = site.static_files | where: 'path', tb | first -%}
+{%- if hit -%}{{ tb | relative_url }}{%- else -%}{{ '/assets/works/' | append: include.file | relative_url }}{%- endif -%}
