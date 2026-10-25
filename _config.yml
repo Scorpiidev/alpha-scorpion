@@ -23,7 +23,7 @@ baseurl: "/alpha-scorpion"
 # Get a free access key at https://web3forms.com (type your email, they
 # mail you the key). Paste it between the quotes. The key does NOT reveal
 # your email address, so it is safe to have here.
-web3forms_access_key: ""
+web3forms_access_key: "e9e57026-4b1a-4e1e-a4ab-ef92538a4dfb"
 
 # ── Blog (the Field Log) ────────────────────────────────────
 permalink: /log/:year/:month/:day/:title/
