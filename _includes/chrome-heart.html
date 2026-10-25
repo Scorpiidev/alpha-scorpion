@@ -1,0 +1,44 @@
+{%- comment -%}
+  The logo as a chrome object: an extruded stack of layers that tilts towards the
+  pointer, with a specular highlight that follows it. include.id must be unique per page.
+{%- endcomment -%}
+{%- assign hid = include.id | default: 'h' -%}
+<div class="chrome-heart" data-chrome-heart>
+  <div class="chrome-heart__stack">
+    {%- for i in (1..14) %}
+    <svg class="chrome-heart__layer" style="--i:{{ i }}" viewBox="0 0 600 600" aria-hidden="true"><use href="#heart-frame-shape"/></svg>
+    {%- endfor %}
+    <svg class="chrome-heart__face" viewBox="0 0 600 600" aria-hidden="true">
+      <defs>
+        <linearGradient id="chrome-{{ hid }}" x1="0" y1="0" x2="0" y2="1" data-chrome-gradient>
+          <stop offset="0" style="stop-color:var(--chrome-1)"/>
+          <stop offset=".22" style="stop-color:var(--chrome-2)"/>
+          <stop offset=".40" style="stop-color:var(--chrome-3)"/>
+          <stop offset=".49" style="stop-color:var(--chrome-4)"/>
+          <stop offset=".53" style="stop-color:var(--chrome-5)"/>
+          <stop offset=".66" style="stop-color:var(--chrome-6)"/>
+          <stop offset=".84" style="stop-color:var(--chrome-2)"/>
+          <stop offset="1" style="stop-color:var(--chrome-7)"/>
+        </linearGradient>
+        <linearGradient id="chromestar-{{ hid }}" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" style="stop-color:#ffffff"/>
+          <stop offset=".45" style="stop-color:var(--chrome-3)"/>
+          <stop offset=".55" style="stop-color:var(--chrome-4)"/>
+          <stop offset="1" style="stop-color:var(--chrome-6)"/>
+        </linearGradient>
+        <filter id="bevel-{{ hid }}" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="7" result="blur"/>
+          <feSpecularLighting in="blur" surfaceScale="7" specularConstant="1.15" specularExponent="26" lighting-color="#ffffff" result="spec">
+            <fePointLight x="160" y="40" z="320" data-chrome-light/>
+          </feSpecularLighting>
+          <feComposite in="spec" in2="SourceAlpha" operator="in" result="shine"/>
+          <feComposite in="SourceGraphic" in2="shine" operator="arithmetic" k1="0" k2="1" k3="1" k4="0"/>
+        </filter>
+      </defs>
+      <use href="#heart-frame-shape" fill="url(#chrome-{{ hid }})" filter="url(#bevel-{{ hid }})"/>
+      <g class="chrome-heart__star">
+        <use href="#heart-star-shape" fill="url(#chromestar-{{ hid }})" filter="url(#bevel-{{ hid }})"/>
+      </g>
+    </svg>
+  </div>
+</div>

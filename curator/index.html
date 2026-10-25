@@ -1,7 +1,7 @@
 ---
 title: The Curator
 room: curator
-description: About Antares (Antares), a multidisciplinary artist in Spain working across animation, illustration and comics.
+description: About Antares, a multidisciplinary artist in Spain working across animation, illustration and comics.
 ---
 <header class="page-head">
   <p class="label" data-reveal>room iii · the curator</p>
@@ -10,15 +10,15 @@ description: About Antares (Antares), a multidisciplinary artist in Spain workin
 
 <div class="curator">
   <figure class="curator__portrait" data-reveal>
-    <div class="porthole-frame">
-      <img src="{{ '/assets/works/self-portrait.jpg' | relative_url }}" alt="Self-portrait of Antares: dark curly hair, warm light, a sideways look" decoding="async">
+    <div class="porthole-frame porthole-frame--sigil">
+      <div class="porthole-frame__sigil">{% include chrome-heart.html id="curator" %}</div>
       <svg class="porthole-frame__rings" viewBox="0 0 400 400" aria-hidden="true">
         <circle cx="200" cy="200" r="197"/><circle cx="200" cy="200" r="186" class="dash"/>
         <path d="M200 0v22M200 378v22M0 200h22M378 200h22"/>
       </svg>
     </div>
     <figcaption>
-      <span class="callout callout--a">fig. 1 · self-portrait</span>
+      <span class="callout callout--a">fig. 1 · the curator's sigil</span>
       <span class="callout callout--b">specimen type · homo artifex</span>
       <span class="callout callout--c">status · awake, drawing</span>
     </figcaption>
@@ -28,7 +28,7 @@ description: About Antares (Antares), a multidisciplinary artist in Spain workin
     <p class="label" data-reveal>specimen label</p>
     <dl class="specimen-label" data-reveal>
       <div><dt>designation</dt><dd>Antares</dd></div>
-      <div><dt>common name</dt><dd>Antares</dd></div>
+      <div><dt>named after</dt><dd>α Scorpii, the heart of the scorpion</dd></div>
       <div><dt>habitat</dt><dd>Spain</dd></div>
       <div><dt>field of study</dt><dd>CFGS · 3D Animation, Games &amp; Interactive Environments</dd></div>
       <div><dt>disciplines</dt><dd>animation · illustration · comics · character design</dd></div>
@@ -73,15 +73,15 @@ description: About Antares (Antares), a multidisciplinary artist in Spain workin
       <ul class="vials"><li>Maya</li><li>ZBrush</li><li>Substance Painter</li></ul>
     </div>
     <div class="drawer" data-reveal>
-      <p class="drawer__label">render &amp; composite</p>
-      <ul class="vials"><li>Arnold</li><li>RenderMan</li><li>Nuke</li></ul>
+      <p class="drawer__label">render, comp &amp; edit</p>
+      <ul class="vials"><li>Arnold</li><li>RenderMan</li><li>Nuke</li><li>DaVinci Resolve</li></ul>
     </div>
   </div>
 
   <div class="compiling" data-reveal>
     <p class="label">currently compiling</p>
-    <div class="compiling__row"><span>Python</span><span class="compiling__bar" style="--speed:7s"></span><span class="compiling__state">learning</span></div>
-    <div class="compiling__row"><span>C++</span><span class="compiling__bar" style="--speed:11s"></span><span class="compiling__state">learning</span></div>
+    <div class="compiling__row"><span>Python</span><span class="compiling__bar" style="--speed:9s"></span><span class="compiling__state">tinkering</span></div>
+    <div class="compiling__row"><span>C++</span><span class="compiling__bar compiling__bar--siege" style="--speed:8s"></span><span class="compiling__state compiling__state--siege">psychological warfare</span></div>
   </div>
 
   <button class="oddity oddity--orion" type="button" data-oddity="orion" aria-label="Three small stars in a row, like a belt">
@@ -100,6 +100,5 @@ description: About Antares (Antares), a multidisciplinary artist in Spain workin
   </ul>
   <div class="open-to__actions">
     <a class="btn" href="{{ '/transmit/' | relative_url }}">send a transmission {% include star4.svg %}</a>
-    <a class="btn btn--ghost" href="https://www.linkedin.com/in/antares/" rel="noopener" target="_blank">linkedin ↗</a>
   </div>
 </section>

@@ -21,19 +21,20 @@
   note: >-
     Not in any catalogue. Possibly a smudge on the lens.
     Possibly something looking back.
-- id: moth
-  name: The first bug
+- id: flipbook
+  name: The flipbook
   hint: the field log, near the bottom
   note: >-
-    9 September 1947. Engineers at Harvard found a moth stuck in Relay 70 of
-    the Mark II computer and taped it into the logbook: "First actual case
-    of bug being found." The page is in the Smithsonian now. So is the moth.
-- id: obol
-  name: Pocket change, Pompeii
-  hint: the vault of the hall of specimens
+    Twelve drawings to a second, give or take. Anything comes alive if
+    you draw it enough times, which is the whole secret of animation
+    and most of the secret of everything else.
+- id: cog
+  name: A cog with a halo
+  hint: the vault, behind the index cards
   note: >-
-    Coins that went into somebody's pocket in 79 CE and came out under
-    the ash. Pocket change that outlived the pocket.
+    Fallen out of Sanctum Machina: a world of gothic steampunk, cybernetic
+    angels and baroque machinery, with a mythology still being built by hand.
+    Some pieces of it are still in the vault.
 - id: orion
   name: Orion, absent
   hint: the curator's room

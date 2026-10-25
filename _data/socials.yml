@@ -2,15 +2,17 @@
 - name: Instagram
   handle: "@alpha_sc0rpii"
   url: https://instagram.com/alpha_sc0rpii
-- name: LinkedIn
-  handle: antares
-  url: https://www.linkedin.com/in/antares/
+# LinkedIn and Gumroad are hidden because their links contain your real name.
+# To show one again, remove the # at the start of its three lines.
+# - name: LinkedIn
+#   handle: (your linkedin)
+#   url: https://www.linkedin.com/in/...
 - name: YouTube
   handle: "@antares2927"
   url: https://www.youtube.com/@antares2927
-- name: Gumroad
-  handle: antares
-  url: https://antares.gumroad.com/
+# - name: Gumroad
+#   handle: (your gumroad)
+#   url: https://....gumroad.com/
 - name: X
   handle: "@Cyberdistopia"
   url: https://x.com/Cyberdistopia

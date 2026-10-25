@@ -24,8 +24,8 @@ scripts:
     </h1>
     <p class="motto" data-reveal>Per Tenebras, Forma <span>through darkness, form</span></p>
     <p class="threshold__intro" data-reveal>
-      I'm <strong>Antares</strong>, also known as Antares: animator, illustrator and
-      comic artist in training, and a collector of strange things. This is my portfolio, and also
+      I'm <strong>Antares</strong>: animator, illustrator and comic artist in training,
+      and a collector of strange things. This is my portfolio, and also
       a small museum of oddities. Drag things around. Open drawers. Touch everything.
     </p>
     <div class="threshold__actions" data-reveal>
@@ -46,7 +46,7 @@ scripts:
       </g>
     </svg>
     <button class="orrery__heart" type="button" data-oddity-manual="heart" data-cursor="touch" aria-label="The heart of the scorpion. It responds to touch.">
-      {% include heart.svg %}
+      {% include chrome-heart.html id="hero" %}
     </button>
     <p class="callout callout--a" aria-hidden="true">fig. 1 · cor scorpii</p>
     <p class="callout callout--b" aria-hidden="true">red supergiant · M1.5 Iab</p>
@@ -74,25 +74,25 @@ scripts:
     <div class="desk__ruler desk__ruler--x" aria-hidden="true"></div>
     <div class="desk__ruler desk__ruler--y" aria-hidden="true"></div>
 
-    <figure class="piece print" data-id="biljel" style="--x:3%;--y:5%;--w:19%;--r:-3deg">
+    <figure class="piece print" data-id="biljel" style="--x:2%;--y:3%;--w:20.5%;--r:-3deg">
       <span class="tape tape--tl" aria-hidden="true"></span><span class="tape tape--tr tape--carnation" aria-hidden="true"></span>
       <a href="{{ w_biljel }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/biljel.jpg' | relative_url }}" alt="Biljel: a figure at prayer, haloed by a rose window" draggable="false" loading="lazy" decoding="async" data-decode></a>
       <figcaption>Biljel · digital painting</figcaption>
     </figure>
 
-    <figure class="piece porthole" data-id="xdf" style="--x:24%;--y:3%;--w:17%;--r:0deg">
+    <figure class="piece porthole" data-id="xdf" style="--x:24%;--y:2%;--w:16%;--r:0deg">
       <img src="{{ '/assets/img/pd/hubble-xdf.jpg' | relative_url }}" alt="The Hubble eXtreme Deep Field: thousands of distant galaxies" draggable="false" loading="lazy">
       <span class="porthole__cross" aria-hidden="true"></span>
       <figcaption class="note note--sw">XDF · a speck of sky holding ~5,500 galaxies</figcaption>
     </figure>
 
-    <figure class="piece print print--dark" data-id="glass" style="--x:43%;--y:6%;--w:16%;--r:3deg">
+    <figure class="piece print print--dark" data-id="glass" style="--x:42.5%;--y:4%;--w:16.5%;--r:3deg">
       <span class="tape tape--tc tape--glitch" aria-hidden="true"></span>
       <a href="{{ w_glass }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/glass-body-study.jpg' | relative_url }}" alt="Glass Body Study: a transparent figure folded around a column of light" draggable="false" loading="lazy" decoding="async" data-decode></a>
       <figcaption>fig. b · transparency study</figcaption>
     </figure>
 
-    <div class="piece piece--term" data-id="term" style="--x:62%;--y:3%;--w:24%;--r:-1deg">
+    <div class="piece piece--term" data-id="term" style="--x:61%;--y:2.5%;--w:31.5%;--r:-1deg">
       <div class="term">
         <div class="term__bar" data-handle><span>tty/α · transmission terminal</span><span aria-hidden="true">[_][×]</span></div>
         <div class="term__screen">
@@ -105,19 +105,19 @@ scripts:
       </div>
     </div>
 
-    <figure class="piece print print--doc" data-id="comic" style="--x:81%;--y:31%;--w:16%;--r:4deg">
+    <figure class="piece print print--doc" data-id="comic" style="--x:84.5%;--y:34%;--w:14%;--r:4deg">
       <span class="clip" aria-hidden="true"></span>
       <a href="{{ w_comic }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/ammutindra-page-05.jpg' | relative_url }}" alt="Ammutindra, page 05: a comic page of purple flowers falling across panels" draggable="false" loading="lazy" decoding="async" data-decode></a>
       <figcaption>Ammutindra, p. 05</figcaption>
     </figure>
 
-    <figure class="piece polaroid" data-id="miku" style="--x:23%;--y:31%;--w:12%;--r:-2deg">
+    <figure class="piece polaroid" data-id="miku" style="--x:23.5%;--y:27%;--w:13%;--r:-2deg">
       <span class="tape tape--tc tape--moss" aria-hidden="true"></span>
       <a href="{{ w_miku }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/miku.jpg' | relative_url }}" alt="Miku: teal hair, a pink kimono and blossoms" draggable="false" loading="lazy" decoding="async" data-decode></a>
       <figcaption>Miku, in blossom</figcaption>
     </figure>
 
-    <figure class="piece ascii" data-id="skull" style="--x:35.5%;--y:42%;--w:15%;--r:-4deg">
+    <figure class="piece ascii" data-id="skull" style="--x:37.5%;--y:40.5%;--w:16%;--r:-4deg">
       <pre class="ascii__art" data-scramble data-glyphs=".,:-=+%#@" aria-label="An ASCII-art skull" role="img">                  ....
              :::,,,,,,::--=.
           ::,..........,,,:--=
@@ -140,7 +140,7 @@ scripts:
       <figcaption class="note note--s">memento mori, in 7-bit</figcaption>
     </figure>
 
-    <div class="piece piece--synth" data-id="synth" style="--x:51%;--y:43%;--w:17%;--r:1deg">
+    <div class="piece piece--synth" data-id="synth" style="--x:55%;--y:36.5%;--w:17.5%;--r:1deg">
       <div class="synth">
         <div class="synth__bar" data-handle><span>specimen synthesizer mk-ii</span><i class="synth__led" aria-hidden="true"></i></div>
         <div class="synth__window"><canvas width="420" height="420" data-synth aria-label="A procedurally grown specimen" role="img"></canvas></div>
@@ -151,45 +151,45 @@ scripts:
     </div>
 
 
-    <figure class="piece porthole porthole--portrait" data-id="curator" style="--x:4%;--y:53%;--w:14%;--r:0deg">
-      <a href="{{ '/curator/' | relative_url }}" draggable="false" data-cursor="meet"><img src="{{ '/assets/works/self-portrait.jpg' | relative_url }}" alt="Self-portrait of the curator" draggable="false" loading="lazy"></a>
+    <figure class="piece porthole porthole--sigil" data-id="curator" style="--x:3%;--y:47%;--w:14%;--r:0deg">
+      <a href="{{ '/curator/' | relative_url }}" draggable="false" data-cursor="meet" aria-label="Meet the curator"><span class="porthole__sigil">{% include heart.svg %}</span></a>
       <figcaption class="note note--ne">the curator →</figcaption>
     </figure>
 
-    <figure class="piece cutout cutout--strip" data-id="rocket" style="--x:89.5%;--y:3%;--w:5.5%;--r:0deg">
+    <figure class="piece cutout cutout--strip" data-id="rocket" style="--x:94%;--y:4%;--w:4.5%;--r:0deg">
       <img src="{{ '/assets/img/pd/rocket-dither.png' | relative_url }}" alt="Dithered photo of a rocket on the launch pad at night" draggable="false" loading="lazy">
       <figcaption class="note note--s">DSCOVR · 2015</figcaption>
     </figure>
 
-    <figure class="piece specimen-jar" data-id="coins" style="--x:69%;--y:63%;--w:17%;--r:-3deg">
+    <figure class="piece specimen-jar" data-id="coins" style="--x:55%;--y:71.5%;--w:17.5%;--r:-3deg">
       <img src="{{ '/assets/img/pd/pompeii-coins.jpg' | relative_url }}" alt="Rows of ancient Greek coins found at Pompeii" draggable="false" loading="lazy">
-      <figcaption class="note note--sw">greek coins · found at Pompeii</figcaption>
+      <figcaption class="note note--s">greek coins · found at Pompeii</figcaption>
     </figure>
 
-    <figure class="piece starcard" data-id="scorpius" style="--x:70%;--y:41%;--w:11%;--r:3deg">
+    <figure class="piece starcard" data-id="scorpius" style="--x:74%;--y:37%;--w:11%;--r:3deg">
       {% include scorpius-card.svg %}
       <figcaption class="starcard__name">Scorpivs</figcaption>
       <span class="note note--s note--narrow">fig. α · the scorpion, low over Spain in summer</span>
     </figure>
-    <figure class="piece porthole porthole--petri" data-id="cell" style="--x:37%;--y:67%;--w:10%;--r:0deg">
+    <figure class="piece porthole porthole--petri" data-id="cell" style="--x:20.5%;--y:63%;--w:9.5%;--r:0deg">
       <img src="{{ '/assets/img/pd/cell-saline.jpg' | relative_url }}" alt="A single cell floating in saline, seen through a digital hologram" draggable="false" loading="lazy">
       <figcaption class="note note--s">one cell, floating in saline · 0.107 µm/px</figcaption>
     </figure>
 
-    <figure class="piece print print--small" data-id="clock" style="--x:86%;--y:70%;--w:12%;--r:6deg">
+    <figure class="piece print print--small" data-id="clock" style="--x:75.5%;--y:66%;--w:12%;--r:6deg">
       <img src="{{ '/assets/img/pd/clock-unstable.jpg' | relative_url }}" alt="A wall clock blurred by motion" draggable="false" loading="lazy">
       <figcaption>chronometer, unstable</figcaption>
     </figure>
 
-    <figure class="piece cutout cutout--torn" data-id="polyhedron" style="--x:51%;--y:78%;--w:9%;--r:0deg">
+    <figure class="piece cutout cutout--torn" data-id="polyhedron" style="--x:42%;--y:62%;--w:10%;--r:0deg">
       <img src="{{ '/assets/img/pd/polyhedron.png' | relative_url }}" alt="Engraved star polyhedron inside a circle" draggable="false" loading="lazy">
     </figure>
 
-    <figure class="piece cutout cutout--torn" data-id="stringstar" style="--x:91%;--y:22%;--w:6.5%;--r:5deg">
+    <figure class="piece cutout cutout--torn" data-id="stringstar" style="--x:93%;--y:27%;--w:6%;--r:5deg">
       <img src="{{ '/assets/img/pd/string-star.png' | relative_url }}" alt="An eight-pointed star woven from fine curved lines" draggable="false" loading="lazy">
     </figure>
 
-    <div class="piece piece--swatches" data-id="swatches" style="--x:4%;--y:78%;--w:27%;--r:-1deg">
+    <div class="piece piece--swatches" data-id="swatches" style="--x:3%;--y:83%;--w:27%;--r:-1deg">
       <ul class="swatches" aria-label="The Antares palette">
         <li style="--c:#ad5a7c"><b>Faded Carnation</b><small>#ad5a7c</small></li>
         <li style="--c:#ffe4ae"><b>Seraphic Buttercream</b><small>#ffe4ae</small></li>
@@ -198,25 +198,25 @@ scripts:
       </ul>
     </div>
 
-    <figure class="piece cutout cutout--torn" data-id="woodcut" style="--x:26%;--y:86%;--w:8.5%;--r:-6deg">
+    <figure class="piece cutout cutout--torn" data-id="woodcut" style="--x:31%;--y:75%;--w:9%;--r:-6deg">
       <img src="{{ '/assets/img/pd/woodcut-f.png' | relative_url }}" alt="Old woodcut initial F: a crowned figure with a sword and a small creature" draggable="false" loading="lazy">
     </figure>
 
-    <div class="piece piece--barcode" data-id="barcode" style="--x:47%;--y:88%;--w:15%;--r:2deg" aria-hidden="true">
+    <div class="piece piece--barcode" data-id="barcode" style="--x:33.5%;--y:88%;--w:15%;--r:2deg" aria-hidden="true">
       <span class="barcode"></span>
       <span class="barcode__text">ANT·α·SCO 16h29m24s −26°25′55″</span>
     </div>
 
-    <div class="piece piece--tag" data-id="tag" style="--x:80%;--y:87%;--w:13%;--r:-4deg" aria-hidden="true">
+    <div class="piece piece--tag" data-id="tag" style="--x:78%;--y:85%;--w:13%;--r:-4deg" aria-hidden="true">
       <span class="museum-tag"><b>Per Tenebras, Forma</b><small>exhibit α · do not feed</small></span>
     </div>
 
-    <span class="piece sticker sticker--butter" data-id="s1" style="--x:21.5%;--y:2%;--w:2.4%;--r:12deg" aria-hidden="true">{% include star4.svg %}</span>
-    <span class="piece sticker sticker--glitch" data-id="s2" style="--x:60%;--y:39%;--w:1.8%;--r:0deg" aria-hidden="true">{% include star4.svg %}</span>
-    <span class="piece sticker sticker--carnation" data-id="s3" style="--x:97%;--y:31%;--w:2.2%;--r:-10deg" aria-hidden="true">{% include star4.svg %}</span>
-    <span class="piece sticker sticker--phosphor" data-id="s4" style="--x:33%;--y:90%;--w:1.6%;--r:20deg" aria-hidden="true">{% include star4.svg %}</span>
-    <span class="piece sticker sticker--heart sticker--v2" data-id="s5" style="--x:33%;--y:28.5%;--w:3.4%;--r:-8deg" aria-hidden="true">{% include heart.svg %}</span>
-    <span class="piece sticker sticker--heart sticker--v3" data-id="s6" style="--x:78.5%;--y:60%;--w:3%;--r:10deg" aria-hidden="true">{% include heart.svg %}</span>
+    <span class="piece sticker sticker--butter" data-id="s1" style="--x:21.3%;--y:1.5%;--w:2.4%;--r:12deg" aria-hidden="true">{% include star4.svg %}</span>
+    <span class="piece sticker sticker--glitch" data-id="s2" style="--x:53.5%;--y:33%;--w:1.8%;--r:0deg" aria-hidden="true">{% include star4.svg %}</span>
+    <span class="piece sticker sticker--carnation" data-id="s3" style="--x:97%;--y:29%;--w:2.2%;--r:-10deg" aria-hidden="true">{% include star4.svg %}</span>
+    <span class="piece sticker sticker--phosphor" data-id="s4" style="--x:31.5%;--y:93%;--w:1.6%;--r:20deg" aria-hidden="true">{% include star4.svg %}</span>
+    <span class="piece sticker sticker--heart sticker--v2" data-id="s5" style="--x:35.5%;--y:24%;--w:3.4%;--r:-8deg" aria-hidden="true">{% include heart.svg %}</span>
+    <span class="piece sticker sticker--heart sticker--v3" data-id="s6" style="--x:82%;--y:66%;--w:3%;--r:10deg" aria-hidden="true">{% include heart.svg %}</span>
   </div>
 </section>
 
