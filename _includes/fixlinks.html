@@ -1,0 +1,9 @@
+{%- comment -%}
+  Lets posts use links like /transmit/ or images like /assets/posts/x.jpg
+  and still work when the site lives under a baseurl (/alpha-scorpion).
+{%- endcomment -%}
+{%- assign b = site.baseurl -%}
+{%- if b == "" or b == nil -%}{{ include.html }}{%- else -%}
+{%- assign bb = b | append: b -%}
+{{ include.html | replace: 'href="//', 'href="§§' | replace: 'src="//', 'src="§§' | replace: 'href="/', 'href="§B/' | replace: 'src="/', 'src="§B/' | replace: '§B', b | replace: '§§', '//' | replace: bb, b }}
+{%- endif -%}

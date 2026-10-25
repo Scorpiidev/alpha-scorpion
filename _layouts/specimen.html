@@ -1,0 +1,50 @@
+---
+layout: default
+scripts:
+  - /assets/js/synth.js
+  - /assets/js/specimens.js
+---
+{%- assign catalogue = site.works | sort: 'date' -%}
+{%- for w in catalogue -%}{%- if w.url == page.url -%}{%- assign no = forloop.index -%}{%- endif -%}{%- endfor -%}
+{%- assign hall = site.works | where_exp: 'w', 'w.file' | sort: 'date' | reverse -%}
+{%- for w in hall -%}{%- if w.url == page.url -%}{%- assign pos = forloop.index0 -%}{%- endif -%}{%- endfor -%}
+<article class="specimen-file">
+  <div class="specimen-file__stage" data-reveal>
+    {%- if page.file %}
+    {%- assign src = '/assets/works/' | append: page.file | relative_url %}
+    <a class="inspect" href="{{ src }}" data-loupe data-cursor="magnify" target="_blank" rel="noopener">
+      <img src="{{ src }}" alt="{{ page.alt | default: page.title | escape }}" decoding="async" data-decode>
+      <span class="loupe" aria-hidden="true"></span>
+    </a>
+    <p class="label">hover to magnify · click for full size</p>
+    {%- else %}
+    <div class="undigitized">
+      <canvas width="560" height="560" data-synth-seed="{{ page.title | size }}{{ page.date | date: '%j' }}" aria-hidden="true"></canvas>
+      <p class="label">specimen catalogued · not yet digitized</p>
+      <p class="undigitized__note">This piece is in the vault. The drawing above is a stand-in grown by the synthesizer.</p>
+    </div>
+    {%- endif %}
+  </div>
+
+  <aside class="placard" data-reveal>
+    <a class="backlink" href="{{ '/specimens/' | relative_url }}">← hall of specimens</a>
+    <p class="label">specimen nº {{ no | prepend: '00' | slice: -3, 3 }}{% if page.year %} · {{ page.year }}{% endif %}</p>
+    <h1 class="placard__title" data-scramble>{{ page.title }}</h1>
+    <dl class="datasheet">
+      {%- if page.medium %}<div><dt>medium</dt><dd>{{ page.medium }}</dd></div>{% endif %}
+      {%- if page.tools %}<div><dt>instruments</dt><dd>{{ page.tools | join: ' · ' }}</dd></div>{% endif %}
+      {%- if page.tags.size > 0 %}<div><dt>taxonomy</dt><dd>{{ page.tags | join: ' · ' }}</dd></div>{% endif %}
+      <div><dt>status</dt><dd>{% if page.file %}on display{% else %}in the vault{% endif %}</dd></div>
+    </dl>
+    <div class="prose prose--placard">
+      {% include fixlinks.html html=content %}
+    </div>
+    {%- if pos != nil %}
+    {%- assign prev_i = pos | minus: 1 -%}{%- assign next_i = pos | plus: 1 -%}
+    <nav class="placard__nav" aria-label="Neighbouring specimens">
+      {%- if pos > 0 %}<a href="{{ hall[prev_i].url | relative_url }}">← {{ hall[prev_i].title }}</a>{% else %}<span></span>{% endif %}
+      {%- if next_i < hall.size %}<a href="{{ hall[next_i].url | relative_url }}">{{ hall[next_i].title }} →</a>{% endif %}
+    </nav>
+    {%- endif %}
+  </aside>
+</article>

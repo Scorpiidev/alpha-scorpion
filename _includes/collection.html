@@ -1,0 +1,26 @@
+<div class="collection" id="collection" role="dialog" aria-modal="true" aria-labelledby="collection-title" hidden>
+  <div class="collection__panel">
+    <header class="collection__head">
+      <p class="label">cabinet of oddities · your drawer</p>
+      <h2 id="collection-title">Your collection</h2>
+      <p class="collection__count"><b data-odd-count>0</b> of {{ site.data.oddities | size }} oddities found. They're hidden all over the cabinet. Click on things.</p>
+      <button class="collection__close" type="button" data-collection-close aria-label="Close the drawer">×</button>
+    </header>
+    <ol class="collection__list">
+      {%- for o in site.data.oddities %}
+      <li class="slot" data-slot="{{ o.id }}">
+        <span class="slot__no">nº {{ forloop.index | prepend: '00' | slice: -3, 3 }}</span>
+        <div class="slot__found"><h3>{{ o.name }}</h3><p>{{ o.note }}</p></div>
+        <div class="slot__missing"><h3>? ? ?</h3><p>somewhere: {{ o.hint }}</p></div>
+      </li>
+      {%- endfor %}
+    </ol>
+    <footer class="collection__foot">
+      <p>Your drawer lives only in this browser.</p>
+      <button class="btn btn--ghost btn--small" type="button" data-redgiant hidden>red giant mode: <span>off</span></button>
+      <button class="btn btn--ghost btn--small" type="button" data-collection-forget>empty the drawer</button>
+    </footer>
+  </div>
+</div>
+<div class="toasts" aria-live="polite" aria-atomic="false"></div>
+<script type="application/json" id="oddity-data">{{ site.data.oddities | jsonify }}</script>

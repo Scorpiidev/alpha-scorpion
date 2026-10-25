@@ -1,0 +1,136 @@
+---
+title: Hall of Specimens
+room: specimens
+description: Illustration, comics, 3D and studies by Antares (Antares), catalogued like specimens.
+scripts:
+  - /assets/js/synth.js
+  - /assets/js/specimens.js
+---
+{%- assign catalogue = site.works | sort: 'date' -%}
+{%- assign hall = site.works | where_exp: 'w', 'w.file' | sort: 'date' | reverse -%}
+{%- assign vault = site.works | where_exp: 'w', 'w.file == nil' | sort: 'date' | reverse -%}
+{%- assign used = hall | map: 'file' -%}
+{%- assign drops = site.static_files | where_exp: 'f', "f.path contains '/assets/works/'" -%}
+{%- assign taxa = hall | map: 'tags' | join: '|' | split: '|' | uniq | sort -%}
+{%- capture loose -%}
+{%- for f in drops -%}
+  {%- assign ext = f.extname | downcase -%}
+  {%- if ext == '.jpg' or ext == '.jpeg' or ext == '.png' or ext == '.gif' or ext == '.webp' or ext == '.avif' -%}
+  {%- unless used contains f.name -%}{{ f.path }}|{%- endunless -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- endcapture -%}
+{%- assign loose = loose | split: '|' -%}
+
+<header class="page-head">
+  <p class="label" data-reveal>room ii · the hall of specimens</p>
+  <h1 class="page-head__title" data-scramble>Hall of Specimens</h1>
+  <p class="page-head__intro" data-reveal>
+    Illustration, comics, 3D and studies, pinned and labelled. Hover to see what the archive sees,
+    click to inspect a piece up close.
+  </p>
+  <p class="label page-head__count" data-reveal>{{ hall.size | plus: loose.size }} on display · {{ vault.size }} in the vault</p>
+</header>
+
+<div class="taxa" role="group" aria-label="Filter specimens by taxonomy" data-reveal>
+  <span class="label">taxonomy</span>
+  <button type="button" class="taxon" data-taxon="*" aria-pressed="true">all</button>
+  {%- for t in taxa %}
+  <button type="button" class="taxon" data-taxon="{{ t | slugify }}" aria-pressed="false">{{ t }}</button>
+  {%- endfor %}
+  {%- if loose.size > 0 %}
+  <button type="button" class="taxon" data-taxon="uncatalogued" aria-pressed="false">uncatalogued</button>
+  {%- endif %}
+</div>
+
+<ol class="hall" data-hall>
+  {%- for w in hall %}
+  {%- for c in catalogue %}{% if c.url == w.url %}{% assign no = forloop.index %}{% endif %}{% endfor %}
+  {%- assign src = '/assets/works/' | append: w.file | relative_url %}
+  {%- capture meta %}{{ w.medium }}{% if w.year %} · {{ w.year }}{% endif %}{% endcapture %}
+  <li class="specimen" data-taxa="{% for t in w.tags %}{{ t | slugify }} {% endfor %}" style="--r:{{ forloop.index | modulo: 5 | minus: 2 | times: 0.6 }}deg">
+    <a class="specimen__link" href="{{ w.url | relative_url }}" data-chamber data-full="{{ src }}"
+       data-no="specimen nº {{ no | prepend: '00' | slice: -3, 3 }}" data-title="{{ w.title | escape }}" data-meta="{{ meta | strip | escape }}" data-cursor="inspect">
+      <span class="specimen__mount">
+        <span class="tape tape--tc{% cycle '', ' tape--carnation', ' tape--glitch', ' tape--moss' %}" aria-hidden="true"></span>
+        <img src="{{ src }}" alt="{{ w.alt | default: w.title | escape }}" loading="lazy" decoding="async" data-decode>
+        <span class="specimen__corners" aria-hidden="true"></span>
+      </span>
+    </a>
+    <div class="specimen__placard">
+      <p class="label">nº {{ no | prepend: '00' | slice: -3, 3 }}{% if w.year %} · {{ w.year }}{% endif %}</p>
+      <h2 class="specimen__title"><a href="{{ w.url | relative_url }}">{{ w.title }}</a></h2>
+      <p class="specimen__medium">{{ w.medium }}</p>
+    </div>
+    <template class="specimen__desc">{% include fixlinks.html html=w.content %}</template>
+  </li>
+  {%- endfor %}
+
+  {%- for path in loose %}
+  {%- assign name = path | split: '/' | last %}
+  {%- assign label = name | split: '.' | first | replace: '-', ' ' | replace: '_', ' ' %}
+  <li class="specimen specimen--loose" data-taxa="uncatalogued" style="--r:{{ forloop.index | modulo: 3 | minus: 1 }}deg">
+    <a class="specimen__link" href="{{ path | relative_url }}" data-chamber data-full="{{ path | relative_url }}"
+       data-no="uncatalogued" data-title="{{ label | escape }}" data-meta="awaiting a label" data-cursor="inspect">
+      <span class="specimen__mount">
+        <span class="tape tape--tc" aria-hidden="true"></span>
+        <img src="{{ path | relative_url }}" alt="{{ label | escape }}" loading="lazy" decoding="async" data-decode>
+        <span class="specimen__corners" aria-hidden="true"></span>
+      </span>
+    </a>
+    <div class="specimen__placard">
+      <p class="label">uncatalogued</p>
+      <h2 class="specimen__title">{{ label }}</h2>
+      <p class="specimen__medium">awaiting a label</p>
+    </div>
+    <template class="specimen__desc"><p>Freshly arrived. The curator hasn't written its label yet.</p></template>
+  </li>
+  {%- endfor %}
+</ol>
+
+{%- if vault.size > 0 %}
+<section class="vault" id="vault" aria-labelledby="vault-title">
+  <header class="room-head" data-reveal>
+    <span class="room-head__no">⌂</span>
+    <div>
+      <h2 id="vault-title" data-scramble>The Vault</h2>
+      <p class="label">catalogued, not yet digitized · index cards only</p>
+    </div>
+  </header>
+  <ol class="vault__drawer">
+    {%- for w in vault %}
+    {%- for c in catalogue %}{% if c.url == w.url %}{% assign no = forloop.index %}{% endif %}{% endfor %}
+    <li class="indexcard" data-reveal style="--r:{{ forloop.index | modulo: 3 | minus: 1 | times: 0.8 }}deg">
+      <a href="{{ w.url | relative_url }}" data-cursor="read">
+        <span class="indexcard__no">nº {{ no | prepend: '00' | slice: -3, 3 }}</span>
+        <span class="indexcard__title">{{ w.title }}</span>
+        <span class="indexcard__meta">{{ w.medium }}{% if w.year %} · {{ w.year }}{% endif %}</span>
+        <span class="indexcard__desc">{{ w.content | strip_html | truncatewords: 22 }}</span>
+        <span class="indexcard__stamp">in the vault</span>
+      </a>
+    </li>
+    {%- endfor %}
+  </ol>
+  <button class="oddity oddity--obol" type="button" data-oddity="obol" aria-label="An old coin, wedged at the back of the drawer">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18"/><circle cx="20" cy="20" r="13" fill="none"/><path d="M14 24c2-6 4-9 7-9s4 3 4 5-2 3-4 3"/></svg>
+  </button>
+</section>
+{%- endif %}
+
+<div class="chamber" id="chamber" role="dialog" aria-modal="true" aria-labelledby="chamber-title" hidden>
+  <div class="chamber__stage" data-loupe>
+    <img class="chamber__img" alt="">
+    <span class="loupe" aria-hidden="true"></span>
+  </div>
+  <aside class="chamber__placard">
+    <p class="label" data-chamber-no></p>
+    <h2 class="chamber__title" id="chamber-title" data-chamber-title></h2>
+    <p class="label chamber__meta" data-chamber-meta></p>
+    <div class="prose prose--placard" data-chamber-desc></div>
+    <a class="btn btn--small" data-chamber-link href="#">open specimen file →</a>
+    <p class="label chamber__hint">hover to magnify · ← → to browse · esc to leave</p>
+  </aside>
+  <button class="chamber__btn chamber__btn--prev" type="button" data-chamber-prev aria-label="Previous specimen">‹</button>
+  <button class="chamber__btn chamber__btn--next" type="button" data-chamber-next aria-label="Next specimen">›</button>
+  <button class="chamber__close" type="button" data-chamber-close aria-label="Close the inspection chamber">×</button>
+</div>

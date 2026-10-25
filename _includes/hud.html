@@ -1,0 +1,26 @@
+{%- assign here = page.url | replace: 'index.html', '' -%}
+<header class="hud">
+  <a class="hud__home" href="{{ '/' | relative_url }}" aria-label="Antares, back to the cabinet">
+    {% include heart.svg class="hud__heart" %}
+    {% include wordmark.svg class="hud__wordmark" %}
+  </a>
+  <p class="hud__path" aria-hidden="true">~/cabinet{{ here }}<span class="blink">_</span></p>
+  <nav class="hud__nav" aria-label="Rooms">
+    {%- for r in site.data.rooms -%}
+      {%- unless r.url == '/' or r.url == '/colophon/' -%}
+      <a href="{{ r.url | relative_url }}" data-scramble {% if here contains r.url %}aria-current="page"{% endif %}>{{ r.name }}</a>
+      {%- endunless -%}
+    {%- endfor -%}
+  </nav>
+  <div class="hud__readouts" aria-hidden="true">
+    <span data-clock title="Local time in Spain">ES --:--:--</span>
+    <span data-antares title="Altitude of Antares above the horizon, seen from Spain, right now">α SCO ---</span>
+  </div>
+  <button class="hud__odd" type="button" data-collection-open aria-label="Your collection of oddities">
+    {% include star4.svg %}<span><b data-odd-count>0</b>/{{ site.data.oddities | size }}</span>
+  </button>
+  <button class="hud__menu" type="button" data-starmap-open aria-controls="starmap" aria-expanded="false">
+    <span class="hud__menu-label">chart</span>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="7" r="2"/><circle cx="12" cy="4" r="1.5"/><circle cx="19" cy="9" r="2"/><circle cx="14" cy="17" r="1.5"/><circle cx="6" cy="19" r="1.5"/><path d="M5 7 12 4 19 9 14 17 6 19" fill="none"/></svg>
+  </button>
+</header>

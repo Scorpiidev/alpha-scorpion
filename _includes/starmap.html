@@ -1,0 +1,33 @@
+{%- assign here = page.url | replace: 'index.html', '' -%}
+<div class="starmap" id="starmap" role="dialog" aria-modal="true" aria-label="Star chart: the rooms of the cabinet" hidden>
+  <div class="starmap__inner">
+    <div class="starmap__chart">
+      {% include sky.svg %}
+      {%- for r in site.data.rooms %}
+      <a class="starlink starlink--{{ r.side }}" style="--x:{{ r.x }}%;--y:{{ r.y }}%" href="{{ r.url | relative_url }}"
+         {% if here == r.url %}aria-current="page"{% endif %} data-cursor="go">
+        <span class="starlink__dot" aria-hidden="true"></span>
+        <span class="starlink__text"><span class="starlink__name" data-scramble>{{ r.name }}</span><span class="starlink__note">{{ r.star }} · {{ r.note }}</span></span>
+      </a>
+      {%- endfor %}
+      <button class="oddity oddity--uncharted" type="button" data-oddity="uncharted" aria-label="A faint star that is not on the chart"></button>
+    </div>
+    <aside class="starmap__side">
+      <p class="label">chart · scorpius · epoch J2000</p>
+      <h2 class="starmap__title">Where to?</h2>
+      <ol class="starmap__list">
+        {%- for r in site.data.rooms %}
+        <li><a href="{{ r.url | relative_url }}" {% if here == r.url %}aria-current="page"{% endif %}><span>{{ r.name }}</span><small>{{ r.note }}</small></a></li>
+        {%- endfor %}
+      </ol>
+      <dl class="datasheet">
+        <div><dt>object</dt><dd>α Scorpii · Antares</dd></div>
+        <div><dt>ra / dec</dt><dd>16h 29m 24s · −26° 25′ 55″</dd></div>
+        <div><dt>class</dt><dd>M1.5 Iab · red supergiant</dd></div>
+        <div><dt>distance</dt><dd>≈ 550 light-years</dd></div>
+        <div><dt>radius</dt><dd>≈ 680 × the Sun</dd></div>
+      </dl>
+      <button class="btn btn--ghost starmap__close" type="button" data-starmap-close>close chart <kbd>esc</kbd></button>
+    </aside>
+  </div>
+</div>

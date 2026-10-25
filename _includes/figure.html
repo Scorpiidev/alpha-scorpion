@@ -1,0 +1,10 @@
+{%- comment -%}
+  Usage inside a post:
+  {% include figure.html file="my-image.jpg" caption="fig. 1 — a caption" %}
+  The file must be in assets/posts/ (or pass a full path starting with / ).
+{%- endcomment -%}
+{%- if include.file contains '/' -%}{%- assign src = include.file -%}{%- else -%}{%- assign src = '/assets/posts/' | append: include.file -%}{%- endif -%}
+<figure class="pinned">
+  <img src="{{ src }}" alt="{{ include.alt | default: include.caption | strip_html | escape }}" loading="lazy" decoding="async" data-decode>
+  {%- if include.caption %}<figcaption>{{ include.caption }}</figcaption>{% endif %}
+</figure>

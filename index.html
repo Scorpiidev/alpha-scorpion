@@ -1,986 +1,243 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="author" content="Antares" />
-  <meta name="description" content="Portfolio de Antares — artista multidisciplinar especializada en animación, ilustración y cómic." />
-  <title>ANTARES — Portfolio</title>
-  <link rel="icon" type="image/png" href="website_images/favicon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+---
+layout: default
+room: cabinet
+scripts:
+  - /assets/js/synth.js
+  - /assets/js/cabinet.js
+---
+{%- assign hall = site.works | where_exp: 'w', 'w.file' | sort: 'date' | reverse -%}
+{%- assign vault = site.works | where_exp: 'w', 'w.file == nil' -%}
+{%- assign featured = hall | where_exp: 'w', 'w.featured' -%}
+{%- if featured.size < 4 %}{% assign featured = hall %}{% endif -%}
+{%- capture w_biljel %}{{ site.works | where: 'slug', 'biljel' | map: 'url' | first | relative_url }}{% endcapture -%}
+{%- capture w_glass %}{{ site.works | where: 'slug', 'glass-body-study' | map: 'url' | first | relative_url }}{% endcapture -%}
+{%- capture w_comic %}{{ site.works | where: 'slug', 'ammutindra-page-05' | map: 'url' | first | relative_url }}{% endcapture -%}
+{%- capture w_miku %}{{ site.works | where: 'slug', 'miku' | map: 'url' | first | relative_url }}{% endcapture -%}
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --black:       #080808;
-      --dark:        #0f0f0f;
-      --panel:       #141414;
-      --panel2:      #1a1a1a;
-      --border:      #252525;
-      --border-dim:  #1c1c1c;
-      --plum-mid:    #7a2260;
-      --plum-light:  #a0338a;
-      --lavender:    #9b8fe0;
-      --lavender-dim:#5a5090;
-      --lavender-bg: rgba(155,143,224,0.06);
-      --accent:      #c47ae8;
-      --text:        #e2e2e2;
-      --text-dim:    #666;
-      --text-mid:    #999;
-      --mono:        'Share Tech Mono', monospace;
-      --display:     'VT323', monospace;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--display);
-      background: var(--black);
-      color: var(--text);
-      overflow-x: hidden;
-    }
-
-    /* scanlines */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg, transparent, transparent 3px,
-        rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px
-      );
-      pointer-events: none;
-      z-index: 9000;
-    }
-
-    /* ── STICKY NAV ─────────────────────────────────────────── */
-    #site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 800;
-      background: rgba(8,8,8,0.92);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 48px;
-      height: 52px;
-    }
-
-    .nav-logo {
-      font-family: var(--display);
-      font-size: 26px;
-      letter-spacing: 4px;
-      color: var(--text);
-      text-decoration: none;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 6px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: var(--display);
-      font-size: 19px;
-      letter-spacing: 2px;
-      color: var(--text-mid);
-      text-decoration: none;
-      border: 1px solid transparent;
-      border-radius: 20px;
-      padding: 3px 18px;
-      transition: all 0.2s;
-      display: block;
-    }
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: var(--lavender);
-      border-color: var(--lavender-dim);
-      background: var(--lavender-bg);
-    }
-
-    .nav-hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-    }
-    .nav-hamburger span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: var(--text-mid);
-    }
-
-    /* ── SECTION SHARED ─────────────────────────────────────── */
-    section { padding: 100px 0; }
-
-    .section-inner {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0 48px;
-    }
-
-    .section-heading {
-      font-size: 28px;
-      letter-spacing: 4px;
-      color: var(--text);
-      text-align: center;
-      margin-bottom: 72px;
-    }
-    .section-heading .star { color: var(--text-dim); font-size: 20px; margin: 0 10px; }
-
-    .section-divider {
-      border: none;
-      border-top: 1px solid var(--border-dim);
-      max-width: 1160px;
-      margin: 0 auto;
-    }
-
-    /* ── HERO ───────────────────────────────────────────────── */
-    #home {
-      padding: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .hero-name-wrap {
-      flex: 1;
-      padding: 40px 40px 0;
-      overflow: hidden;
-    }
-
-    .hero-name {
-      font-family: var(--display);
-      font-size: clamp(72px, 15vw, 200px);
-      line-height: 0.82;
-      letter-spacing: -3px;
-      color: var(--text);
-      user-select: none;
-      text-shadow: 5px 5px 0 #1a1a1a, -1px -1px 0 #2a2a2a;
-      animation: heroIn 0.8s cubic-bezier(0.16,1,0.3,1) both;
-    }
-
-    @keyframes heroIn {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .hero-bottom {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border-top: 1px solid var(--border);
-      margin-top: 32px;
-    }
-
-    .hero-dir {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--text-dim);
-      line-height: 1.9;
-      padding: 28px 40px;
-      border-right: 1px solid var(--border);
-    }
-    .hero-dir .dir-path { color: var(--lavender); margin-bottom: 6px; }
-    .hero-dir .dir-line { display: flex; gap: 16px; }
-    .hero-dir .dir-perm { color: var(--text-dim); min-width: 88px; }
-    .hero-dir .dir-name { color: var(--text-mid); }
-    .hero-dir .dir-name.hi { color: var(--accent); }
-
-    .hero-tagline {
-      font-size: 21px;
-      line-height: 1.65;
-      color: var(--text);
-      padding: 28px 48px;
-      display: flex;
-      align-items: center;
-      /* VT323 doesn't have a bold variant — kill font-synthesis artifacts */
-      font-synthesis: none;
-    }
-    .hero-tagline strong {
-      font-weight: normal;
-      /* don't use inline strong at all for layout — colour only */
-    }
-
-    /* ── ABOUT ──────────────────────────────────────────────── */
-    #about { background: var(--dark); }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 0 72px;
-      align-items: start;
-    }
-
-    .about-portrait-wrap { position: relative; }
-
-    .portrait-placeholder {
-      width: 100%;
-      aspect-ratio: 3/4;
-      background: var(--panel2);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-dim);
-    }
-
-    .about-portrait {
-      width: 100%;
-      aspect-ratio: 3/4;
-      object-fit: cover;
-      display: block;
-      border: 1px solid var(--border);
-    }
-
-    .portrait-corner {
-      position: absolute;
-      width: 14px; height: 14px;
-      border-color: var(--lavender-dim);
-      border-style: solid;
-    }
-    .portrait-corner.tl { top: -4px; left: -4px; border-width: 2px 0 0 2px; }
-    .portrait-corner.tr { top: -4px; right: -4px; border-width: 2px 2px 0 0; }
-    .portrait-corner.bl { bottom: -4px; left: -4px; border-width: 0 0 2px 2px; }
-    .portrait-corner.br { bottom: -4px; right: -4px; border-width: 0 2px 2px 0; }
-
-    .about-content { display: flex; flex-direction: column; gap: 36px; }
-
-    .about-bio { font-size: 22px; line-height: 1.7; color: var(--text-mid); }
-    .about-bio strong { color: var(--text); font-weight: normal; }
-
-    .skills-label {
-      font-size: 11px;
-      letter-spacing: 3px;
-      color: var(--lavender);
-      font-family: var(--mono);
-      margin-bottom: 14px;
-      text-transform: uppercase;
-    }
-
-    .skills-list {
-      list-style: none;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px 32px;
-    }
-    .skills-list li {
-      font-size: 20px;
-      color: var(--text-mid);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .skills-list li::before { content: '›'; color: var(--lavender-dim); }
-
-    .about-cta { display: flex; gap: 16px; flex-wrap: wrap; }
-
-    .btn-primary {
-      font-family: var(--display);
-      font-size: 20px;
-      letter-spacing: 2px;
-      background: var(--plum-mid);
-      color: var(--text);
-      border: none;
-      padding: 10px 28px;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-      transition: background 0.2s, transform 0.15s;
-    }
-    .btn-primary:hover { background: var(--plum-light); transform: translateY(-2px); }
-
-    .btn-ghost {
-      font-family: var(--display);
-      font-size: 20px;
-      letter-spacing: 2px;
-      background: none;
-      color: var(--lavender);
-      border: 1px solid var(--lavender-dim);
-      padding: 10px 28px;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-      transition: all 0.2s;
-    }
-    .btn-ghost:hover { border-color: var(--lavender); background: var(--lavender-bg); transform: translateY(-2px); }
-
-    /* ── WORKS / CAROUSEL ───────────────────────────────────── */
-    #works { background: var(--black); }
-
-    /*
-      The carousel fix:
-      .carousel-outer clips horizontally via overflow:hidden.
-      .carousel-track is display:flex and gets translateX().
-      Card widths are computed in JS from actual rendered size.
-    */
-    .carousel-outer {
-      position: relative;
-      overflow: hidden;          /* clips cards that slide out */
-      padding: 0 60px;           /* room for absolute arrows */
-    }
-
-    .carousel-track {
-      display: flex;
-      gap: 28px;
-      transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
-      will-change: transform;
-    }
-
-    .project-card {
-      /* width is set by JS on init and resize */
-      flex: 0 0 auto;
-      cursor: pointer;
-      transition: transform 0.2s;
-      outline: none;
-    }
-    .project-card:hover  { transform: translateY(-5px); }
-    .project-card:focus-visible { outline: 2px solid var(--lavender-dim); outline-offset: 3px; }
-
-    .project-thumb-ph {
-      width: 100%;
-      height: 200px;
-      background: var(--panel2);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-dim);
-      padding: 12px;
-      text-align: center;
-      line-height: 1.5;
-    }
-
-    .project-thumb {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      display: block;
-      border: 1px solid var(--border);
-    }
-
-    .project-filename {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-dim);
-      margin-top: 10px;
-      word-break: break-all;
-      line-height: 1.4;
-      transition: color 0.2s;
-    }
-    .project-card:hover .project-filename { color: var(--lavender); }
-
-    .carousel-btn {
-      position: absolute;
-      top: 100px; /* center on 200px thumb */
-      transform: translateY(-50%);
-      z-index: 10;
-      font-family: var(--display);
-      font-size: 44px;
-      line-height: 1;
-      color: var(--lavender);
-      background: rgba(8,8,8,0.8);
-      border: 1px solid var(--border);
-      width: 42px;
-      height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: color 0.2s, background 0.2s;
-      user-select: none;
-    }
-    .carousel-btn:hover { color: var(--accent); background: rgba(30,20,50,0.95); }
-    .carousel-btn.prev  { left: 8px; }
-    .carousel-btn.next  { right: 8px; }
-    .carousel-btn:disabled { opacity: 0.2; cursor: default; }
-
-    /* overlay */
-    .overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      z-index: 2000;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .overlay.open { display: flex; animation: fadeIn 0.2s ease; }
-
-    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-
-    .overlay-box {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      max-width: 680px;
-      width: 100%;
-      padding: 48px;
-      position: relative;
-      animation: slideUp 0.25s ease both;
-    }
-    @keyframes slideUp {
-      from { transform: translateY(16px); opacity: 0; }
-      to   { transform: translateY(0);    opacity: 1; }
-    }
-
-    .overlay-close {
-      position: absolute;
-      top: 14px; right: 18px;
-      font-size: 26px;
-      color: var(--text-dim);
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-family: var(--display);
-      transition: color 0.2s;
-    }
-    .overlay-close:hover { color: var(--text); }
-
-    .overlay-title { font-size: 28px; letter-spacing: 2px; color: var(--accent); margin-bottom: 6px; }
-    .overlay-meta  { font-family: var(--mono); font-size: 11px; color: var(--text-dim); margin-bottom: 20px; letter-spacing: 1px; }
-    .overlay-desc  { font-size: 20px; line-height: 1.7; color: var(--text-mid); }
-    .overlay-tags  { margin-top: 20px; display: flex; gap: 8px; flex-wrap: wrap; }
-    .tag {
-      font-size: 13px;
-      border: 1px solid var(--lavender-dim);
-      color: var(--lavender);
-      padding: 2px 10px;
-      font-family: var(--mono);
-      letter-spacing: 1px;
-    }
-
-    /* ── CONTACT ────────────────────────────────────────────── */
-    #contact { background: var(--dark); }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-
-    .contact-intro h3 {
-      font-size: 52px;
-      line-height: 1;
-      letter-spacing: 2px;
-      color: var(--text);
-      margin-bottom: 20px;
-    }
-    .contact-intro p {
-      font-size: 20px;
-      color: var(--text-dim);
-      line-height: 1.7;
-      margin-bottom: 36px;
-    }
-
-    .contact-socials { display: flex; flex-direction: column; gap: 10px; }
-    .social-link {
-      font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 1.5px;
-      color: var(--text-dim);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: color 0.2s;
-    }
-    .social-link::before { content: '→'; color: var(--lavender-dim); transition: color 0.2s; }
-    .social-link:hover   { color: var(--lavender); }
-    .social-link:hover::before { color: var(--lavender); }
-
-    .contact-form { display: flex; flex-direction: column; gap: 16px; }
-
-    .form-field label {
-      display: block;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: var(--lavender-dim);
-      margin-bottom: 6px;
-      text-transform: uppercase;
-    }
-    .form-field input,
-    .form-field textarea {
-      width: 100%;
-      font-family: var(--mono);
-      font-size: 15px;
-      background: var(--panel2);
-      border: 1px solid var(--border);
-      padding: 14px 16px;
-      color: var(--text);
-      outline: none;
-      resize: none;
-      transition: border-color 0.2s;
-    }
-    .form-field input::placeholder,
-    .form-field textarea::placeholder { color: var(--text-dim); }
-    .form-field input:focus,
-    .form-field textarea:focus { border-color: var(--lavender-dim); }
-    .form-field textarea { height: 160px; }
-
-    .submit-btn {
-      font-family: var(--display);
-      font-size: 22px;
-      letter-spacing: 3px;
-      background: var(--plum-mid);
-      color: var(--text);
-      border: none;
-      padding: 14px 32px;
-      cursor: pointer;
-      width: 100%;
-      transition: background 0.2s, transform 0.15s;
-    }
-    .submit-btn:hover { background: var(--plum-light); transform: translateY(-2px); }
-
-    /* ── FOOTER ─────────────────────────────────────────────── */
-    footer {
-      background: var(--black);
-      border-top: 1px solid var(--border-dim);
-      padding: 20px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .footer-copy {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-dim);
-      letter-spacing: 1px;
-    }
-
-    .footer-socials { display: flex; gap: 22px; flex-wrap: wrap; }
-    .footer-social {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 1px;
-      color: var(--text-dim);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .footer-social:hover { color: var(--lavender); }
-
-    .footer-nav { display: flex; gap: 18px; }
-    .footer-nav a {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 1px;
-      color: var(--text-dim);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .footer-nav a:hover { color: var(--text); }
-
-    /* ── SR-ONLY ─────────────────────────────────────────────── */
-    .sr-only {
-      position: absolute; width: 1px; height: 1px;
-      padding: 0; margin: -1px; overflow: hidden;
-      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
-    }
-
-    /* ── RESPONSIVE ─────────────────────────────────────────── */
-    @media (max-width: 900px) {
-      .section-inner { padding: 0 28px; }
-      #site-nav { padding: 0 24px; }
-      .nav-hamburger { display: flex; }
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 52px; left: 0; right: 0;
-        background: rgba(8,8,8,0.97);
-        border-bottom: 1px solid var(--border);
-        flex-direction: column;
-        padding: 16px 24px;
-        gap: 4px;
-      }
-      .nav-links.open { display: flex; }
-      .hero-bottom { grid-template-columns: 1fr; }
-      .hero-dir    { border-right: none; border-bottom: 1px solid var(--border); }
-      .about-grid  { grid-template-columns: 1fr; gap: 40px; }
-      .about-portrait-wrap { max-width: 260px; }
-      .skills-list { grid-template-columns: 1fr; }
-      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
-      footer { flex-direction: column; align-items: flex-start; }
-    }
-
-    @media (max-width: 600px) {
-      .hero-name     { font-size: clamp(60px, 18vw, 100px); }
-      .hero-name-wrap { padding: 28px 20px 0; }
-      .hero-dir, .hero-tagline { padding: 20px; }
-      section        { padding: 64px 0; }
-      .section-heading { margin-bottom: 48px; }
-      .overlay-box   { padding: 28px 20px; }
-      .carousel-outer { padding: 0 44px; }
-    }
-  </style>
-</head>
-<body>
-
-<!-- NAV -->
-<nav id="site-nav" aria-label="Navegación principal">
-  <a class="nav-logo" href="#home">ANT.</a>
-  <button class="nav-hamburger" aria-label="Abrir menú" aria-expanded="false" onclick="toggleMenu(this)">
-    <span></span><span></span><span></span>
-  </button>
-  <ul class="nav-links" id="navLinks">
-    <li><a href="#home">Home</a></li>
-    <li><a href="#about">Info</a></li>
-    <li><a href="#works">Works</a></li>
-    <li><a href="blog.html">Blog</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
-
-<!-- ═══ HERO ═══ -->
-<section id="home" aria-label="Inicio">
-  <div class="hero-name-wrap">
-    <h1 class="hero-name">ANTARES</h1>
-  </div>
-  <div class="hero-bottom">
-    <div class="hero-dir" role="complementary" aria-label="Directorio de archivos">
-      <div class="dir-path">~/antares/portfolio/</div>
-      <div class="dir-line"><span class="dir-perm">drwxr-xr-x</span><span class="dir-name hi">about/</span></div>
-      <div class="dir-line"><span class="dir-perm">drwxr-xr-x</span><span class="dir-name hi">works/</span></div>
-      <div class="dir-line"><span class="dir-perm">drwxr-xr-x</span><span class="dir-name">comics/</span></div>
-      <div class="dir-line"><span class="dir-perm">drwxr-xr-x</span><span class="dir-name">3d/</span></div>
-      <div class="dir-line"><span class="dir-perm">-rw-r--r--</span><span class="dir-name">contact.txt</span></div>
-      <div class="dir-line"><span class="dir-perm">-rw-r--r--</span><span class="dir-name">README.md</span></div>
+<!-- ═══ I · THE THRESHOLD ═══════════════════════════════════════ -->
+<section class="threshold" aria-labelledby="threshold-title">
+  <div class="threshold__text">
+    <p class="label" data-reveal>catalogue nº 001 · α scorpii · a cabinet of curiosities</p>
+    <h1 class="threshold__title" id="threshold-title">
+      <span class="sr-only">Antares</span>
+      {% include wordmark.svg class="threshold__wordmark" %}
+    </h1>
+    <p class="motto" data-reveal>Per Tenebras, Forma <span>through darkness, form</span></p>
+    <p class="threshold__intro" data-reveal>
+      I'm <strong>Antares</strong>, also known as Antares: animator, illustrator and
+      comic artist in training, and a collector of strange things. This is my portfolio, and also
+      a small museum of oddities. Drag things around. Open drawers. Touch everything.
+    </p>
+    <div class="threshold__actions" data-reveal>
+      <a class="btn" href="{{ '/specimens/' | relative_url }}">enter the hall of specimens {% include star4.svg %}</a>
+      <a class="btn btn--ghost" href="{{ '/curator/' | relative_url }}">meet the curator</a>
     </div>
-    <p class="hero-tagline">My name is Antares, I am a multidisciplinary artist passionate about learning and discovering new techniques or concepts. My philosophy revolves around neverending curiosity and bettering yourself.</p>
   </div>
+
+  <div class="orrery">
+    <div class="orrery__lens"><img src="{{ '/assets/img/pd/hubble-xdf.jpg' | relative_url }}" alt="" decoding="async"></div>
+    <svg class="orrery__rings" viewBox="0 0 400 400" aria-hidden="true">
+      <circle class="ring ring--a" cx="200" cy="200" r="196"/>
+      <circle class="ring ring--b" cx="200" cy="200" r="178"/>
+      <circle class="ring ring--c" cx="200" cy="200" r="150"/>
+      <g class="ring--ticks">
+        <line x1="200" y1="0" x2="200" y2="14"/><line x1="200" y1="386" x2="200" y2="400"/>
+        <line x1="0" y1="200" x2="14" y2="200"/><line x1="386" y1="200" x2="400" y2="200"/>
+      </g>
+    </svg>
+    <button class="orrery__heart" type="button" data-oddity-manual="heart" data-cursor="touch" aria-label="The heart of the scorpion. It responds to touch.">
+      {% include heart.svg %}
+    </button>
+    <p class="callout callout--a" aria-hidden="true">fig. 1 · cor scorpii</p>
+    <p class="callout callout--b" aria-hidden="true">red supergiant · M1.5 Iab</p>
+    <p class="callout callout--c" aria-hidden="true">≈ 550 ly · pulsating variable</p>
+  </div>
+
+  <a class="threshold__down" href="#desk" data-cursor="descend"><span>the desk</span> ↓</a>
 </section>
 
-<hr class="section-divider" />
+<!-- ═══ II · THE DESK ═══════════════════════════════════════════ -->
+<section class="desk-room" id="desk" aria-labelledby="desk-title">
+  <header class="room-head" data-reveal>
+    <span class="room-head__no">II</span>
+    <div>
+      <h2 id="desk-title" data-scramble>The Desk</h2>
+      <p class="label">drag anything · click a piece to open it · the desk remembers how you leave it</p>
+    </div>
+    <div class="room-head__tools">
+      <button class="btn btn--small btn--ghost" type="button" data-desk-shuffle>shuffle</button>
+      <button class="btn btn--small btn--ghost" type="button" data-desk-tidy>tidy up</button>
+    </div>
+  </header>
 
-<!-- ═══ ABOUT ═══ -->
-<section id="about" aria-label="Sobre mí">
-  <div class="section-inner">
-    <h2 class="section-heading">
-      <span class="star" aria-hidden="true">✶</span>
-      Sobre Mí
-      <span class="star" aria-hidden="true">✶</span>
-    </h2>
-    <div class="about-grid">
-      <div class="about-portrait-wrap">
-        <!-- Drop a real file at website_images/portrait.jpg and this swaps in automatically. -->
-        <img class="about-portrait" id="portraitImg" src="website_images/portrait.jpg" alt="Retrato de Antares"
-             onerror="this.style.display='none'; document.getElementById('portraitPh').style.display='flex';" />
-        <div class="portrait-placeholder" id="portraitPh" role="img" aria-label="Retrato de Antares" style="display:none;">[ portrait ]</div>
-        <div class="portrait-corner tl"></div>
-        <div class="portrait-corner tr"></div>
-        <div class="portrait-corner bl"></div>
-        <div class="portrait-corner br"></div>
-      </div>
-      <div class="about-content">
-        <p class="about-bio">
-          Soy una artista que reside en <strong>España</strong>, actualmente estudiando
-          un CFGS de <strong>Animación 3D, Juegos y Entornos Interactivos</strong>.
-          Me apasiona crear historias y darles vida — me encanta poder materializar
-          las ideas de mis clientes.
-        </p>
-        <div>
-          <p class="skills-label">Skills</p>
-          <ul class="skills-list" aria-label="Habilidades técnicas">
-            <li>Adobe Creative Cloud</li>
-            <li>Toon Boom Harmony</li>
-            <li>Moho Pro</li>
-            <li>Maya Autodesk</li>
-            <li>ZBrush</li>
-            <li>Substance Painter</li>
-            <li>Krita</li>
-            <li>After Effects</li>
-          </ul>
-        </div>
-        <div class="about-cta">
-          <a class="btn-primary" href="#contact">Contáctame</a>
-          <a class="btn-ghost"   href="#works">Ver proyectos</a>
+  <div class="desk" data-desk>
+    <div class="desk__ruler desk__ruler--x" aria-hidden="true"></div>
+    <div class="desk__ruler desk__ruler--y" aria-hidden="true"></div>
+
+    <figure class="piece print" data-id="biljel" style="--x:3%;--y:5%;--w:19%;--r:-3deg">
+      <span class="tape tape--tl" aria-hidden="true"></span><span class="tape tape--tr tape--carnation" aria-hidden="true"></span>
+      <a href="{{ w_biljel }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/biljel.jpg' | relative_url }}" alt="Biljel: a figure at prayer, haloed by a rose window" draggable="false" loading="lazy" decoding="async" data-decode></a>
+      <figcaption>Biljel · digital painting</figcaption>
+    </figure>
+
+    <figure class="piece porthole" data-id="xdf" style="--x:24%;--y:3%;--w:17%;--r:0deg">
+      <img src="{{ '/assets/img/pd/hubble-xdf.jpg' | relative_url }}" alt="The Hubble eXtreme Deep Field: thousands of distant galaxies" draggable="false" loading="lazy">
+      <span class="porthole__cross" aria-hidden="true"></span>
+      <figcaption class="note note--sw">XDF · a speck of sky holding ~5,500 galaxies</figcaption>
+    </figure>
+
+    <figure class="piece print print--dark" data-id="glass" style="--x:43%;--y:6%;--w:16%;--r:3deg">
+      <span class="tape tape--tc tape--glitch" aria-hidden="true"></span>
+      <a href="{{ w_glass }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/glass-body-study.jpg' | relative_url }}" alt="Glass Body Study: a transparent figure folded around a column of light" draggable="false" loading="lazy" decoding="async" data-decode></a>
+      <figcaption>fig. b · transparency study</figcaption>
+    </figure>
+
+    <div class="piece piece--term" data-id="term" style="--x:62%;--y:3%;--w:24%;--r:-1deg">
+      <div class="term">
+        <div class="term__bar" data-handle><span>tty/α · transmission terminal</span><span aria-hidden="true">[_][×]</span></div>
+        <div class="term__screen">
+          <div class="term__out" aria-live="polite"></div>
+          <form class="term__line" autocomplete="off">
+            <label for="term-in" class="sr-only">Terminal command</label>
+            <span aria-hidden="true">&gt;</span><input id="term-in" class="term__in" spellcheck="false" autocapitalize="off" placeholder="type help" enterkeyhint="send">
+          </form>
         </div>
       </div>
     </div>
-  </div>
-</section>
 
-<hr class="section-divider" />
+    <figure class="piece print print--doc" data-id="comic" style="--x:81%;--y:31%;--w:16%;--r:4deg">
+      <span class="clip" aria-hidden="true"></span>
+      <a href="{{ w_comic }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/ammutindra-page-05.jpg' | relative_url }}" alt="Ammutindra, page 05: a comic page of purple flowers falling across panels" draggable="false" loading="lazy" decoding="async" data-decode></a>
+      <figcaption>Ammutindra, p. 05</figcaption>
+    </figure>
 
-<!-- ═══ WORKS ═══ -->
-<section id="works" aria-label="Mis proyectos">
-  <div class="section-inner">
-    <h2 class="section-heading">
-      <span class="star" aria-hidden="true">✶</span>
-      Mis Proyectos
-      <span class="star" aria-hidden="true">✶</span>
-    </h2>
-  </div>
+    <figure class="piece polaroid" data-id="miku" style="--x:23%;--y:31%;--w:12%;--r:-2deg">
+      <span class="tape tape--tc tape--moss" aria-hidden="true"></span>
+      <a href="{{ w_miku }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/miku.jpg' | relative_url }}" alt="Miku: teal hair, a pink kimono and blossoms" draggable="false" loading="lazy" decoding="async" data-decode></a>
+      <figcaption>Miku, in blossom</figcaption>
+    </figure>
 
-  <div class="carousel-outer" id="carouselOuter">
-    <button class="carousel-btn prev" id="prevBtn" onclick="slide(-1)" aria-label="Proyecto anterior" disabled>‹</button>
-    <div class="carousel-track" id="carouselTrack" role="list">
+    <figure class="piece cutout" data-id="astronaut" style="--x:37%;--y:43%;--w:12%;--r:-5deg">
+      <img src="{{ '/assets/img/pd/astronaut-dither.png' | relative_url }}" alt="Dithered portrait of astronaut a NASA astronaut with her helmet" draggable="false" loading="lazy">
+      <figcaption class="note note--s">a NASA astronaut · first woman to pilot the shuttle, 1995</figcaption>
+    </figure>
 
-      <!-- Cards are rendered from projects.json by renderProjects(). -->
-
-    </div>
-    <button class="carousel-btn next" id="nextBtn" onclick="slide(1)" aria-label="Proyecto siguiente">›</button>
-  </div>
-
-  <!-- Detail overlay -->
-  <div class="overlay" id="projectOverlay" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
-    <div class="overlay-box">
-      <button class="overlay-close" onclick="closeProject()" aria-label="Cerrar">✕</button>
-      <h3 class="overlay-title" id="overlayTitle"></h3>
-      <p class="overlay-meta"  id="overlayMeta"></p>
-      <p class="overlay-desc"  id="overlayDesc"></p>
-      <div class="overlay-tags" id="overlayTags"></div>
-    </div>
-  </div>
-</section>
-
-<hr class="section-divider" />
-
-<!-- ═══ CONTACT ═══ -->
-<section id="contact" aria-label="Contacto">
-  <div class="section-inner">
-    <h2 class="section-heading">
-      <span class="star" aria-hidden="true">✶</span>
-      Hablemos de tu proyecto
-      <span class="star" aria-hidden="true">✶</span>
-    </h2>
-    <div class="contact-grid">
-      <div class="contact-intro">
-        <h3>¿Tienes<br>una idea?</h3>
-        <p>Escríbeme y cuéntame en qué puedo ayudarte. Estoy disponible para proyectos de ilustración, cómic, animación y diseño de personajes.</p>
-        <nav class="contact-socials" aria-label="Redes sociales">
-          <a class="social-link" href="https://github.com/Scorpiidev" target="_blank" rel="noopener" aria-label="GitHub">GITHUB</a>
-          <a class="social-link" href="https://www.linkedin.com/in/antares/" target="_blank" rel="noopener" aria-label="LinkedIn">LINKEDIN</a>
-          <a class="social-link" href="https://www.youtube.com/@antares2927" target="_blank" rel="noopener" aria-label="YouTube">YOUTUBE</a>
-          <a class="social-link" href="https://instagram.com/alpha_sc0rpii" target="_blank" rel="noopener" aria-label="Instagram">INSTAGRAM</a>
-          <a class="social-link" href="https://x.com/Cyberdistopia" target="_blank" rel="noopener" aria-label="Twitter / X">TWITTER / X</a>
-          <a class="social-link" href="https://antares.gumroad.com/" target="_blank" rel="noopener" aria-label="Gumroad">GUMROAD</a>
-        </nav>
-      </div>
-      <div class="contact-form" role="form" aria-label="Formulario de contacto">
-        <div class="form-field">
-          <label for="c-name">Nombre</label>
-          <input type="text" id="c-name" placeholder="Tu nombre..." autocomplete="name" />
-        </div>
-        <div class="form-field">
-          <label for="c-email">Correo electrónico</label>
-          <input type="email" id="c-email" placeholder="tu@correo.com" autocomplete="email" />
-        </div>
-        <div class="form-field">
-          <label for="c-msg">Mensaje</label>
-          <textarea id="c-msg" placeholder="Cuéntame sobre tu proyecto..."></textarea>
-        </div>
-        <button class="submit-btn" onclick="handleSubmit()">Enviar Mensaje</button>
+    <div class="piece piece--synth" data-id="synth" style="--x:51%;--y:43%;--w:17%;--r:1deg">
+      <div class="synth">
+        <div class="synth__bar" data-handle><span>specimen synthesizer mk-ii</span><i class="synth__led" aria-hidden="true"></i></div>
+        <div class="synth__window"><canvas width="420" height="420" data-synth aria-label="A procedurally grown specimen" role="img"></canvas></div>
+        <p class="synth__name" data-synth-name>Radiolaria antaresii</p>
+        <p class="label" data-synth-no>nº ----</p>
+        <button class="btn btn--small" type="button" data-synth-grow>grow a specimen</button>
       </div>
     </div>
+
+    <figure class="piece cutout" data-id="hopper" style="--x:70%;--y:41%;--w:10.5%;--r:3deg">
+      <img src="{{ '/assets/img/pd/hopper-dither.png' | relative_url }}" alt="Dithered portrait of Rear Admiral a Navy officer" draggable="false" loading="lazy">
+      <figcaption class="note note--s note--narrow">Mark II · Mark II · the first “bug”, 1947</figcaption>
+    </figure>
+
+    <figure class="piece porthole porthole--portrait" data-id="curator" style="--x:4%;--y:53%;--w:14%;--r:0deg">
+      <a href="{{ '/curator/' | relative_url }}" draggable="false" data-cursor="meet"><img src="{{ '/assets/works/self-portrait.jpg' | relative_url }}" alt="Self-portrait of the curator" draggable="false" loading="lazy"></a>
+      <figcaption class="note note--ne">the curator →</figcaption>
+    </figure>
+
+    <figure class="piece cutout cutout--strip" data-id="rocket" style="--x:89.5%;--y:3%;--w:5.5%;--r:0deg">
+      <img src="{{ '/assets/img/pd/rocket-dither.png' | relative_url }}" alt="Dithered photo of a rocket on the launch pad at night" draggable="false" loading="lazy">
+      <figcaption class="note note--s">DSCOVR · 2015</figcaption>
+    </figure>
+
+    <figure class="piece specimen-jar" data-id="coins" style="--x:69%;--y:63%;--w:17%;--r:-3deg">
+      <img src="{{ '/assets/img/pd/pompeii-coins.jpg' | relative_url }}" alt="Rows of ancient Greek coins found at Pompeii" draggable="false" loading="lazy">
+      <figcaption class="note note--sw">greek coins · found at Pompeii</figcaption>
+    </figure>
+
+    <figure class="piece porthole porthole--petri" data-id="cell" style="--x:37%;--y:67%;--w:10%;--r:0deg">
+      <img src="{{ '/assets/img/pd/cell-saline.jpg' | relative_url }}" alt="A single cell floating in saline, seen through a digital hologram" draggable="false" loading="lazy">
+      <figcaption class="note note--s">one cell, floating in saline · 0.107 µm/px</figcaption>
+    </figure>
+
+    <figure class="piece print print--small" data-id="clock" style="--x:86%;--y:70%;--w:12%;--r:6deg">
+      <img src="{{ '/assets/img/pd/clock-unstable.jpg' | relative_url }}" alt="A wall clock blurred by motion" draggable="false" loading="lazy">
+      <figcaption>chronometer, unstable</figcaption>
+    </figure>
+
+    <div class="piece piece--swatches" data-id="swatches" style="--x:4%;--y:78%;--w:27%;--r:-1deg">
+      <ul class="swatches" aria-label="The Antares palette">
+        <li style="--c:#ad5a7c"><b>Faded Carnation</b><small>#ad5a7c</small></li>
+        <li style="--c:#ffe4ae"><b>Seraphic Buttercream</b><small>#ffe4ae</small></li>
+        <li style="--c:#a899ff"><b>Spectral Glitch</b><small>#a899ff</small></li>
+        <li style="--c:#44092e"><b>Sanguine Relic</b><small>#44092e</small></li>
+      </ul>
+    </div>
+
+    <div class="piece piece--barcode" data-id="barcode" style="--x:47%;--y:88%;--w:15%;--r:2deg" aria-hidden="true">
+      <span class="barcode"></span>
+      <span class="barcode__text">ANT·α·SCO 16h29m24s −26°25′55″</span>
+    </div>
+
+    <div class="piece piece--tag" data-id="tag" style="--x:80%;--y:87%;--w:13%;--r:-4deg" aria-hidden="true">
+      <span class="museum-tag"><b>Per Tenebras, Forma</b><small>exhibit α · do not feed</small></span>
+    </div>
+
+    <span class="piece sticker sticker--butter" data-id="s1" style="--x:21.5%;--y:2%;--w:2.4%;--r:12deg" aria-hidden="true">{% include star4.svg %}</span>
+    <span class="piece sticker sticker--glitch" data-id="s2" style="--x:60%;--y:39%;--w:1.8%;--r:0deg" aria-hidden="true">{% include star4.svg %}</span>
+    <span class="piece sticker sticker--carnation" data-id="s3" style="--x:96%;--y:20%;--w:2.2%;--r:-10deg" aria-hidden="true">{% include star4.svg %}</span>
+    <span class="piece sticker sticker--phosphor" data-id="s4" style="--x:33%;--y:90%;--w:1.6%;--r:20deg" aria-hidden="true">{% include star4.svg %}</span>
+    <span class="piece sticker sticker--heart sticker--v2" data-id="s5" style="--x:33%;--y:28.5%;--w:3.4%;--r:-8deg" aria-hidden="true">{% include heart.svg %}</span>
+    <span class="piece sticker sticker--heart sticker--v3" data-id="s6" style="--x:78.5%;--y:60%;--w:3%;--r:10deg" aria-hidden="true">{% include heart.svg %}</span>
   </div>
 </section>
 
-<!-- ═══ FOOTER ═══ -->
-<footer>
-  <span class="footer-copy">© Antares 2026 — Todos los derechos reservados</span>
-  <div class="footer-socials" role="list" aria-label="Redes sociales">
-    <a class="footer-social" href="https://github.com/Scorpiidev" target="_blank" rel="noopener" role="listitem">GitHub</a>
-    <a class="footer-social" href="https://www.linkedin.com/in/antares/" target="_blank" rel="noopener" role="listitem">LinkedIn</a>
-    <a class="footer-social" href="https://www.youtube.com/@antares2927" target="_blank" rel="noopener" role="listitem">YouTube</a>
-    <a class="footer-social" href="https://instagram.com/alpha_sc0rpii" target="_blank" rel="noopener" role="listitem">Instagram</a>
-    <a class="footer-social" href="https://x.com/Cyberdistopia" target="_blank" rel="noopener" role="listitem">Twitter/X</a>
-    <a class="footer-social" href="https://antares.gumroad.com/" target="_blank" rel="noopener" role="listitem">Gumroad</a>
-  </div>
-  <nav class="footer-nav" aria-label="Secciones del sitio">
-    <a href="#home">Home</a>
-    <a href="#about">Info</a>
-    <a href="#works">Works</a>
-    <a href="blog.html">Blog</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</footer>
+<!-- ═══ III · RECENT ACQUISITIONS ══════════════════════════════ -->
+<section class="shelf" aria-labelledby="shelf-title">
+  <header class="room-head" data-reveal>
+    <span class="room-head__no">III</span>
+    <div>
+      <h2 id="shelf-title" data-scramble>Recent acquisitions</h2>
+      <p class="label">{{ hall.size }} on display · {{ vault.size }} in the vault</p>
+    </div>
+    <div class="room-head__tools"><a class="btn btn--small" href="{{ '/specimens/' | relative_url }}">the full hall →</a></div>
+  </header>
+  <ol class="shelf__row">
+    {%- for w in featured limit: 4 %}
+    <li class="shelf__item" data-reveal style="--i:{{ forloop.index0 }}">
+      <a href="{{ w.url | relative_url }}" data-cursor="inspect">
+        <span class="shelf__img"><img src="{{ '/assets/works/' | append: w.file | relative_url }}" alt="{{ w.alt | default: w.title | escape }}" loading="lazy" decoding="async" data-decode></span>
+        <span class="shelf__meta label">{{ w.medium }}{% if w.year %} · {{ w.year }}{% endif %}</span>
+        <span class="shelf__title">{{ w.title }}</span>
+      </a>
+    </li>
+    {%- endfor %}
+  </ol>
+</section>
 
-<script>
-  /* ── Active nav on scroll ─────────────────────────────────── */
-  const sections = document.querySelectorAll('section[id]');
-  const navAs    = document.querySelectorAll('#navLinks a');
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        navAs.forEach(a => a.classList.remove('active'));
-        const m = document.querySelector(`#navLinks a[href="#${e.target.id}"]`);
-        if (m) m.classList.add('active');
-      }
-    });
-  }, { threshold: 0.35 });
-  sections.forEach(s => io.observe(s));
+<!-- ═══ IV · FIELD LOG ═════════════════════════════════════════ -->
+<section class="latest" aria-labelledby="latest-title">
+  <header class="room-head" data-reveal>
+    <span class="room-head__no">IV</span>
+    <div>
+      <h2 id="latest-title" data-scramble>From the field log</h2>
+      <p class="label">transmissions, process notes &amp; thoughts from the dark</p>
+    </div>
+    <div class="room-head__tools"><a class="btn btn--small" href="{{ '/log/' | relative_url }}">all transmissions →</a></div>
+  </header>
+  <ol class="loglist loglist--compact">
+    {%- for post in site.posts limit: 3 %}
+    {%- assign n = site.posts.size | minus: forloop.index0 %}
+    {% include log-entry.html post=post number=n %}
+    {%- else %}
+    <li class="loglist__empty label">no transmissions yet · the antenna is listening</li>
+    {%- endfor %}
+  </ol>
+</section>
 
-  /* ── Mobile menu ─────────────────────────────────────────── */
-  function toggleMenu(btn) {
-    const open = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!open));
-    document.getElementById('navLinks').classList.toggle('open', !open);
-  }
-  document.querySelectorAll('#navLinks a').forEach(a =>
-    a.addEventListener('click', () => {
-      document.getElementById('navLinks').classList.remove('open');
-      document.querySelector('.nav-hamburger').setAttribute('aria-expanded','false');
-    })
-  );
-
-  /* ── Carousel ─────────────────────────────────────────────
-     Strategy:
-     - Cards get an explicit pixel width set by setCardWidths()
-     - .carousel-outer has overflow:hidden and horizontal padding
-       for the arrow buttons (60px each side)
-     - On slide, we translateX the track by (cardWidth + gap) * index
-     - Arrow disabled state reflects boundary
-  */
-  const GAP = 28;
-  let pos = 0;
-
-  function availableWidth() {
-    const outer = document.getElementById('carouselOuter');
-    // subtract the 60px padding on each side (arrows live there)
-    return outer.clientWidth - 120;
-  }
-
-  function calcVisible() {
-    // how many cards fit in available space
-    const aw = availableWidth();
-    // try 3 first, fall back
-    if (aw >= 3 * 300 + 2 * GAP) return 3;
-    if (aw >= 2 * 300 + GAP)     return 2;
-    return 1;
-  }
-
-  function cardWidth() {
-    const vis = calcVisible();
-    return Math.floor((availableWidth() - GAP * (vis - 1)) / vis);
-  }
-
-  function setCardWidths() {
-    const w = cardWidth();
-    document.querySelectorAll('.project-card').forEach(c => {
-      c.style.width = w + 'px';
-    });
-  }
-
-  function totalCards() {
-    return document.querySelectorAll('.project-card').length;
-  }
-
-  function updateArrows() {
-    const max = totalCards() - calcVisible();
-    document.getElementById('prevBtn').disabled = pos <= 0;
-    document.getElementById('nextBtn').disabled = pos >= max;
-  }
-
-  function applyTransform() {
-    const step = cardWidth() + GAP;
-    document.getElementById('carouselTrack').style.transform =
-      `translateX(-${pos * step}px)`;
-  }
-
-  function slide(dir) {
-    const max = totalCards() - calcVisible();
-    pos = Math.max(0, Math.min(pos + dir, max));
-    applyTransform();
-    updateArrows();
-  }
-
-  function initCarousel() {
-    pos = 0;
-    setCardWidths();
-    applyTransform();
-    updateArrows();
-  }
-
-  window.addEventListener('resize', initCarousel);
-
-  /* ── Project data (loaded from projects.json — edit that file, not this script) ── */
-  let projects = [];
-
-  function renderProjects() {
-    const track = document.getElementById('carouselTrack');
-    track.innerHTML = projects.map((p, i) => {
-      const thumbHtml = p.thumb
-        ? `<img class="project-thumb" src="${p.thumb}" alt="Miniatura ${p.title}"
-             onerror="this.outerHTML='&lt;div class=&quot;project-thumb-ph&quot;&gt;${p.filename}&lt;/div&gt;';" />`
-        : `<div class="project-thumb-ph" role="img" aria-label="Miniatura ${p.title}">${p.filename}</div>`;
-      return `
-      <article class="project-card" onclick="openProject(${i})" role="listitem" tabindex="0"
-               onkeydown="if(event.key==='Enter')openProject(${i})" aria-label="${p.title}">
-        ${thumbHtml}
-        <p class="project-filename">${p.filename}</p>
-      </article>`;
-    }).join('');
-  }
-
-  fetch('projects.json')
-    .then(r => r.json())
-    .then(data => {
-      projects = data;
-      renderProjects();
-      initCarousel();
-    })
-    .catch(err => {
-      console.error('No se pudo cargar projects.json:', err);
-      document.getElementById('carouselTrack').innerHTML =
-        '<p style="font-family: var(--mono); color: var(--text-dim); padding: 20px;">No se pudieron cargar los proyectos.</p>';
-    });
-
-  function openProject(idx) {
-    const p = projects[idx];
-    document.getElementById('overlayTitle').textContent = p.title;
-    document.getElementById('overlayMeta').textContent  = p.meta;
-    document.getElementById('overlayDesc').textContent  = p.desc;
-    document.getElementById('overlayTags').innerHTML =
-      p.tags.map(t => `<span class="tag">${t}</span>`).join('');
-    document.getElementById('projectOverlay').classList.add('open');
-  }
-
-  function closeProject() {
-    document.getElementById('projectOverlay').classList.remove('open');
-  }
-
-  document.getElementById('projectOverlay').addEventListener('click', function(e) {
-    if (e.target === this) closeProject();
-  });
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeProject();
-  });
-
-  /* ── Contact ─────────────────────────────────────────────────
-     No backend — this opens the visitor's own email client with
-     a pre-filled message addressed to Antares. Free, no server. */
-  const CONTACT_EMAIL = '';
-
-  function handleSubmit() {
-    const name  = document.getElementById('c-name').value.trim();
-    const email = document.getElementById('c-email').value.trim();
-    const msg   = document.getElementById('c-msg').value.trim();
-    if (!name || !email || !msg) {
-      alert('Por favor rellena todos los campos antes de enviar.');
-      return;
-    }
-    const subject = encodeURIComponent(`Contacto desde el portfolio — ${name}`);
-    const body = encodeURIComponent(`${msg}\n\n— ${name} (${email})`);
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-  }
+<script type="application/json" id="term-data">
+{
+  "rooms": {{ site.data.rooms | jsonify }},
+  "posts": [{% for p in site.posts limit: 5 %}{"title": {{ p.title | jsonify }}, "url": {{ p.url | relative_url | jsonify }}, "date": {{ p.date | date: '%Y.%m.%d' | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}],
+  "onDisplay": {{ hall.size }},
+  "inVault": {{ vault.size }},
+  "base": {{ site.baseurl | jsonify }}
+}
 </script>
-</body>
-</html>

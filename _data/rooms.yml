@@ -1,0 +1,44 @@
+# The rooms of the cabinet. Each one is pinned to a real star of Scorpius
+# on the star-chart menu. x / y are % positions on that chart, so leave them be.
+- name: Cabinet
+  url: /
+  star: α Antares
+  note: the heart
+  x: 68.03
+  y: 31.79
+  side: left
+- name: Specimens
+  url: /specimens/
+  star: δ Dschubba
+  note: the hall of works
+  x: 90.99
+  y: 17.67
+  side: left
+- name: Curator
+  url: /curator/
+  star: β Acrab
+  note: who keeps this place
+  x: 87.01
+  y: 7.24
+  side: left
+- name: Field Log
+  url: /log/
+  star: ε Larawag
+  note: transmissions & notes
+  x: 51.61
+  y: 60.9
+  side: right
+- name: Transmit
+  url: /transmit/
+  star: λ Shaula
+  note: the sting · contact
+  x: 17.26
+  y: 71.31
+  side: right
+- name: Colophon
+  url: /colophon/
+  star: θ Sargas
+  note: sources & credits
+  x: 14.32
+  y: 93.14
+  side: right

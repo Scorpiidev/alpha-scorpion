@@ -1,0 +1,36 @@
+---
+title: Field Log
+room: log
+description: Transmissions, process notes and thoughts from the dark, by Antares.
+---
+<header class="page-head">
+  <p class="label" data-reveal>room iv · the field log</p>
+  <h1 class="page-head__title" data-scramble>Field Log</h1>
+  <p class="page-head__intro" data-reveal>
+    Transmissions from the cabinet: process notes, sketches, half-ideas and the strange things I find on the way.
+  </p>
+  <p class="label page-head__count" data-reveal>
+    {{ site.posts.size }} transmission{% if site.posts.size != 1 %}s{% endif %} received ·
+    <a href="{{ '/log/feed.xml' | relative_url }}">subscribe by rss</a>
+  </p>
+</header>
+
+<ol class="loglist">
+  {%- for post in site.posts %}
+  {%- assign n = site.posts.size | minus: forloop.index0 %}
+  {% include log-entry.html post=post number=n %}
+  {%- else %}
+  <li class="loglist__empty label">no transmissions yet · the antenna is listening</li>
+  {%- endfor %}
+</ol>
+
+<p class="loglist__end label" aria-hidden="true">— end of received signals —</p>
+
+<button class="oddity oddity--moth" type="button" data-oddity="moth" aria-label="A small moth, resting at the bottom of the page">
+  <svg viewBox="0 0 60 40" aria-hidden="true">
+    <path class="moth__wing" d="M30 18C24 6 10 2 4 6c-4 3 2 12 12 14-8 2-12 9-8 12 5 3 15-3 22-12z"/>
+    <path class="moth__wing" d="M30 18c6-12 20-16 26-12 4 3-2 12-12 14 8 2 12 9 8 12-5 3-15-3-22-12z"/>
+    <path class="moth__body" d="M30 12c2 0 2 4 2 8s-1 12-2 12-2-8-2-12 0-8 2-8z"/>
+    <path class="moth__feelers" d="M29 12c-2-4-5-6-8-6M31 12c2-4 5-6 8-6" fill="none"/>
+  </svg>
+</button>
