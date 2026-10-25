@@ -11,10 +11,8 @@
   /* ── the heart: cycles through the palette, hides an oddity ── */
   const heart = $('.orrery__heart');
   if (heart) {
-    let v = 0, taps = 0;
+    let taps = 0;
     heart.addEventListener('click', e => {
-      v = (v + 1) % 6;
-      heart.dataset.variant = v;
       taps++;
       if (taps === 3) A.discover('heart');
       if (taps === 9) {

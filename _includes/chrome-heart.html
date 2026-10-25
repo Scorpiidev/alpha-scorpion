@@ -5,7 +5,7 @@
 {%- assign hid = include.id | default: 'h' -%}
 <div class="chrome-heart" data-chrome-heart>
   <div class="chrome-heart__stack">
-    {%- for i in (1..14) %}
+    {%- for i in (1..10) %}
     <svg class="chrome-heart__layer" style="--i:{{ i }}" viewBox="0 0 600 600" aria-hidden="true"><use href="#heart-frame-shape"/></svg>
     {%- endfor %}
     <svg class="chrome-heart__face" viewBox="0 0 600 600" aria-hidden="true">

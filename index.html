@@ -76,7 +76,7 @@ scripts:
 
     <figure class="piece print" data-id="biljel" style="--x:2%;--y:3%;--w:20.5%;--r:-3deg">
       <span class="tape tape--tl" aria-hidden="true"></span><span class="tape tape--tr tape--carnation" aria-hidden="true"></span>
-      <a href="{{ w_biljel }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/biljel.jpg' | relative_url }}" alt="Biljel: a figure at prayer, haloed by a rose window" draggable="false" loading="lazy" decoding="async" data-decode></a>
+      <a href="{{ w_biljel }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/thumbs/biljel.webp' | relative_url }}" alt="Biljel: a figure at prayer, haloed by a rose window" draggable="false" loading="lazy" decoding="async" data-decode></a>
       <figcaption>Biljel · digital painting</figcaption>
     </figure>
 
@@ -88,7 +88,7 @@ scripts:
 
     <figure class="piece print print--dark" data-id="glass" style="--x:42.5%;--y:4%;--w:16.5%;--r:3deg">
       <span class="tape tape--tc tape--glitch" aria-hidden="true"></span>
-      <a href="{{ w_glass }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/glass-body-study.jpg' | relative_url }}" alt="Glass Body Study: a transparent figure folded around a column of light" draggable="false" loading="lazy" decoding="async" data-decode></a>
+      <a href="{{ w_glass }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/thumbs/glass-body-study.webp' | relative_url }}" alt="Glass Body Study: a transparent figure folded around a column of light" draggable="false" loading="lazy" decoding="async" data-decode></a>
       <figcaption>fig. b · transparency study</figcaption>
     </figure>
 
@@ -107,13 +107,13 @@ scripts:
 
     <figure class="piece print print--doc" data-id="comic" style="--x:84.5%;--y:34%;--w:14%;--r:4deg">
       <span class="clip" aria-hidden="true"></span>
-      <a href="{{ w_comic }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/ammutindra-page-05.jpg' | relative_url }}" alt="Ammutindra, page 05: a comic page of purple flowers falling across panels" draggable="false" loading="lazy" decoding="async" data-decode></a>
+      <a href="{{ w_comic }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/thumbs/ammutindra-page-05.webp' | relative_url }}" alt="Ammutindra, page 05: a comic page of purple flowers falling across panels" draggable="false" loading="lazy" decoding="async" data-decode></a>
       <figcaption>Ammutindra, p. 05</figcaption>
     </figure>
 
     <figure class="piece polaroid" data-id="miku" style="--x:23.5%;--y:27%;--w:13%;--r:-2deg">
       <span class="tape tape--tc tape--moss" aria-hidden="true"></span>
-      <a href="{{ w_miku }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/miku.jpg' | relative_url }}" alt="Miku: teal hair, a pink kimono and blossoms" draggable="false" loading="lazy" decoding="async" data-decode></a>
+      <a href="{{ w_miku }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/thumbs/miku.webp' | relative_url }}" alt="Miku: teal hair, a pink kimono and blossoms" draggable="false" loading="lazy" decoding="async" data-decode></a>
       <figcaption>Miku, in blossom</figcaption>
     </figure>
 
@@ -234,7 +234,8 @@ scripts:
     {%- for w in featured limit: 4 %}
     <li class="shelf__item" data-reveal style="--i:{{ forloop.index0 }}">
       <a href="{{ w.url | relative_url }}" data-cursor="inspect">
-        <span class="shelf__img"><img src="{{ '/assets/works/' | append: w.file | relative_url }}" alt="{{ w.alt | default: w.title | escape }}" loading="lazy" decoding="async" data-decode></span>
+        {%- capture th %}{% include thumb.html file=w.file %}{% endcapture %}
+        <span class="shelf__img"><img src="{{ th }}" alt="{{ w.alt | default: w.title | escape }}" loading="lazy" decoding="async" data-decode></span>
         <span class="shelf__meta label">{{ w.medium }}{% if w.year %} · {{ w.year }}{% endif %}</span>
         <span class="shelf__title">{{ w.title }}</span>
       </a>

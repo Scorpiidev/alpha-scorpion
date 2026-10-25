@@ -85,6 +85,9 @@ It gets its own page at `/specimens/moth-queen/`, a slot in the inspection chamb
 **The vault:** a `_works` file with an empty `file:` shows up as an index card in *The Vault*
 ("catalogued, not yet digitized"). When you have the image, upload it and fill in `file:`, and it moves into the hall.
 
+**Faster pages (optional):** also upload a small preview to `assets/works/thumbs/` with the same name but `.webp`
+(about 900 px, e.g. `moth-queen.webp`). The desk, shelf and hall use it automatically; without one they just load the full image.
+
 **Image tips:** export at most ~2200 px on the long side, JPG quality ~80. Keep file names lowercase with
 dashes, no spaces (`moth-queen.jpg`). Phone photos can carry GPS location in their metadata; export or
 "save for web" to strip it before uploading.

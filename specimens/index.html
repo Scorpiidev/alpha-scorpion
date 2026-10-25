@@ -16,7 +16,7 @@ scripts:
 {%- for f in drops -%}
   {%- assign ext = f.extname | downcase -%}
   {%- if ext == '.jpg' or ext == '.jpeg' or ext == '.png' or ext == '.gif' or ext == '.webp' or ext == '.avif' -%}
-  {%- unless used contains f.name -%}{{ f.path }}|{%- endunless -%}
+  {%- unless used contains f.name or f.path contains '/thumbs/' -%}{{ f.path }}|{%- endunless -%}
   {%- endif -%}
 {%- endfor -%}
 {%- endcapture -%}
@@ -47,13 +47,14 @@ scripts:
   {%- for w in hall %}
   {%- for c in catalogue %}{% if c.url == w.url %}{% assign no = forloop.index %}{% endif %}{% endfor %}
   {%- assign src = '/assets/works/' | append: w.file | relative_url %}
+  {%- capture th %}{% include thumb.html file=w.file %}{% endcapture %}
   {%- capture meta %}{{ w.medium }}{% if w.year %} · {{ w.year }}{% endif %}{% endcapture %}
   <li class="specimen" data-taxa="{% for t in w.tags %}{{ t | slugify }} {% endfor %}" style="--r:{{ forloop.index | modulo: 5 | minus: 2 | times: 0.6 }}deg">
     <a class="specimen__link" href="{{ w.url | relative_url }}" data-chamber data-full="{{ src }}"
        data-no="specimen nº {{ no | prepend: '00' | slice: -3, 3 }}" data-title="{{ w.title | escape }}" data-meta="{{ meta | strip | escape }}" data-cursor="inspect">
       <span class="specimen__mount">
         <span class="tape tape--tc{% cycle '', ' tape--carnation', ' tape--glitch', ' tape--moss' %}" aria-hidden="true"></span>
-        <img src="{{ src }}" alt="{{ w.alt | default: w.title | escape }}" loading="lazy" decoding="async" data-decode>
+        <img src="{{ th }}" alt="{{ w.alt | default: w.title | escape }}" loading="lazy" decoding="async" data-decode>
         <span class="specimen__corners" aria-hidden="true"></span>
       </span>
     </a>
