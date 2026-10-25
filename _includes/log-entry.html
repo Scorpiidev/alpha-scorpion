@@ -1,0 +1,21 @@
+{%- assign p = include.post -%}
+<li class="logentry" data-reveal>
+  <a href="{{ p.url | relative_url }}" data-cursor="read">
+    <span class="logentry__date">
+      <span class="label">nº {{ include.number | prepend: '00' | slice: -3, 3 }}</span>
+      <time datetime="{{ p.date | date_to_xmlschema }}">{{ p.date | date: '%Y.%m.%d' }}</time>
+    </span>
+    <span class="logentry__body">
+      <span class="logentry__title">{{ p.title }}</span>
+      <span class="logentry__excerpt">{{ p.excerpt | strip_html | truncatewords: 30 }}</span>
+      {%- if p.tags.size > 0 %}
+      <span class="tags">{% for t in p.tags %}<span>{{ t }}</span>{% endfor %}</span>
+      {%- endif %}
+    </span>
+    {%- if p.cover %}
+    {%- if p.cover contains '/' %}{% assign c = p.cover %}{% else %}{% assign c = '/assets/posts/' | append: p.cover %}{% endif %}
+    <span class="logentry__cover"><img src="{{ c | relative_url }}" alt="" loading="lazy" decoding="async"></span>
+    {%- endif %}
+    <span class="logentry__go" aria-hidden="true">open ›</span>
+  </a>
+</li>

@@ -1,0 +1,49 @@
+# Hidden oddities. Visitors collect them by poking around the site.
+# Progress is saved in the visitor's own browser.
+# Rewrite the notes however you like; keep the ids as they are
+# (they're wired to the hidden objects on each page).
+- id: heart
+  name: Cor Scorpii
+  hint: the heart of the cabinet
+  note: >-
+    Antares is the heart of the scorpion. A red supergiant so swollen that,
+    set where the Sun is, its surface would reach past the orbit of Mars.
+    It beats slowly. So does this place.
+- id: specimen
+  name: Radiolaria antaresii
+  hint: the machine on the desk
+  note: >-
+    Grown from noise by the synthesizer. None of these creatures exist,
+    and every one of them gets a catalogue number anyway.
+- id: uncharted
+  name: The uncharted star
+  hint: the star chart, off the lines
+  note: >-
+    Not in any catalogue. Possibly a smudge on the lens.
+    Possibly something looking back.
+- id: moth
+  name: The first bug
+  hint: the field log, near the bottom
+  note: >-
+    9 September 1947. Engineers at Harvard found a moth stuck in Relay 70 of
+    the Harvard Mark II and taped it into the logbook: "First actual case
+    of bug being found." The page is in the Smithsonian now. So is the moth.
+- id: obol
+  name: Pocket change, Pompeii
+  hint: the vault of the hall of specimens
+  note: >-
+    Coins that went into somebody's pocket in 79 CE and came out under
+    the ash. Pocket change that outlived the pocket.
+- id: orion
+  name: Orion, absent
+  hint: the curator's room
+  note: >-
+    The myth says the scorpion killed Orion, so the two were set on opposite
+    sides of the sky. When Scorpius rises, Orion sets. They are never up
+    at the same time.
+- id: sideb
+  name: Side B
+  hint: the transmitter
+  note: >-
+    Every tape has a side B: the thing you meant to say and didn't.
+    You can send that one too.

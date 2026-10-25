@@ -1,0 +1,92 @@
+---
+title: Transmit
+room: transmit
+description: Contact Antares for commissions, studio work and collaborations.
+scripts:
+  - /assets/js/transmit.js
+---
+{%- assign key = site.web3forms_access_key | strip -%}
+<header class="page-head">
+  <p class="label" data-reveal>room v · the transmitter · λ shaula, the sting</p>
+  <h1 class="page-head__title" data-scramble>Transmit</h1>
+  <p class="page-head__intro" data-reveal>
+    Commissions, studio work, collaborations, or a strange thought you need to put somewhere.
+    Every transmission reaches me directly, and your address stays between us.
+  </p>
+</header>
+
+<div class="transmit">
+  <aside class="frequencies" data-reveal>
+    <p class="label">other frequencies</p>
+    <ol class="frequencies__list">
+      {%- for s in site.data.socials %}
+      <li>
+        <a href="{{ s.url }}" rel="noopener me" target="_blank" data-cursor="tune in">
+          <span class="frequencies__ch">ch {{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <span class="frequencies__name">{{ s.name }}</span>
+          <span class="frequencies__handle">{{ s.handle }}</span>
+        </a>
+      </li>
+      {%- endfor %}
+    </ol>
+    <button class="oddity oddity--sideb" type="button" data-oddity="sideb" aria-label="A tiny cassette tape labelled side B">
+      <svg viewBox="0 0 64 40" aria-hidden="true"><rect x="2" y="2" width="60" height="36" rx="4"/><rect x="10" y="8" width="44" height="14" rx="2" class="cassette__label"/><circle cx="22" cy="28" r="4"/><circle cx="42" cy="28" r="4"/><text x="32" y="18" text-anchor="middle">B</text></svg>
+    </button>
+  </aside>
+
+  <form class="console" id="transmit-form" action="https://api.web3forms.com/submit" method="POST"
+        data-key="{{ key }}" data-reveal novalidate>
+    <div class="console__bar">
+      <span>transmitter · channel α</span>
+      <span class="console__led" data-console-led aria-hidden="true"></span>
+    </div>
+
+    <input type="hidden" name="access_key" value="{{ key }}">
+    <input type="hidden" name="subject" value="New transmission from the Antares cabinet">
+    <input type="hidden" name="from_name" value="Antares · cabinet of curiosities">
+    <input type="hidden" name="redirect" value="{{ '/transmit/received/' | absolute_url }}">
+    <input type="checkbox" name="botcheck" class="console__trap" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <div class="field">
+      <label for="tx-name">callsign <small>your name</small></label>
+      <input id="tx-name" name="name" type="text" autocomplete="name" required maxlength="120" placeholder="who is calling">
+    </div>
+    <div class="field">
+      <label for="tx-email">return frequency <small>your email, so I can answer</small></label>
+      <input id="tx-email" name="email" type="email" autocomplete="email" required maxlength="200" placeholder="you@somewhere.far">
+    </div>
+    <div class="field">
+      <label for="tx-kind">nature of the signal</label>
+      <select id="tx-kind" name="nature">
+        <option>Commission</option>
+        <option>Job or studio opportunity</option>
+        <option>Collaboration</option>
+        <option>Just saying hello</option>
+        <option>Something stranger</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="tx-msg">message</label>
+      <textarea id="tx-msg" name="message" rows="7" required maxlength="5000" placeholder="speak into the dark…"></textarea>
+    </div>
+
+    <div class="field field--captcha">
+      <span class="label">prove you are not a machine</span>
+      <div class="h-captcha" data-captcha="true" data-theme="dark"></div>
+    </div>
+
+    <div class="console__foot">
+      <button class="btn console__send" type="submit">transmit {% include star4.svg %}</button>
+      <canvas class="console__wave" width="360" height="48" aria-hidden="true"></canvas>
+    </div>
+    <p class="console__status{% if key == "" %} is-err{% endif %}" role="status" data-console-status>
+      {%- if key == "" -%}
+      &gt; transmitter offline: the access key hasn't been set yet.
+      {%- else -%}
+      &gt; channel open. awaiting signal<span class="blink">_</span>
+      {%- endif -%}
+    </p>
+  </form>
+</div>
+
+<script src="https://web3forms.com/client/script.js" async defer></script>

@@ -1,0 +1,1 @@
+<svg class="star4 {{ include.class }}" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path d="M50 0C53 36 64 47 100 50 64 53 53 64 50 100 47 64 36 53 0 50 36 47 47 36 50 0Z"/></svg>

@@ -1,0 +1,38 @@
+---
+layout: default
+---
+{%- assign words = content | strip_html | number_of_words -%}
+{%- assign minutes = words | divided_by: 200 | plus: 1 -%}
+{%- assign posts = site.posts -%}
+<article class="dispatch">
+  <header class="dispatch__head" data-reveal>
+    <a class="backlink" href="{{ '/log/' | relative_url }}">← field log</a>
+    <p class="label">
+      transmission · {{ page.date | date: '%Y.%m.%d' }} · signal length {{ minutes }} min
+    </p>
+    <h1 class="dispatch__title" data-scramble>{{ page.title }}</h1>
+    {%- if page.tags.size > 0 %}
+    <ul class="tags">{% for t in page.tags %}<li>{{ t }}</li>{% endfor %}</ul>
+    {%- endif %}
+  </header>
+
+  {%- if page.cover %}
+  {%- if page.cover contains '/' %}{% assign cover = page.cover %}{% else %}{% assign cover = '/assets/posts/' | append: page.cover %}{% endif %}
+  <figure class="dispatch__cover pinned">
+    <img src="{{ cover | relative_url }}" alt="{{ page.cover_alt | default: page.title | escape }}" decoding="async" data-decode>
+  </figure>
+  {%- endif %}
+
+  <div class="prose" data-reveal>
+    {% include fixlinks.html html=content %}
+  </div>
+
+  <nav class="dispatch__nav" aria-label="Other transmissions">
+    {%- if page.previous %}
+    <a class="dispatch__prev" href="{{ page.previous.url | relative_url }}"><small>← older signal</small><span>{{ page.previous.title }}</span></a>
+    {%- else %}<span></span>{% endif %}
+    {%- if page.next %}
+    <a class="dispatch__next" href="{{ page.next.url | relative_url }}"><small>newer signal →</small><span>{{ page.next.title }}</span></a>
+    {%- endif %}
+  </nav>
+</article>
