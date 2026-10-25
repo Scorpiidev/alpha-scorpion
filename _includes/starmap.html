@@ -7,7 +7,7 @@
       <a class="starlink starlink--{{ r.side }}" style="--x:{{ r.x }}%;--y:{{ r.y }}%" href="{{ r.url | relative_url }}"
          {% if here == r.url %}aria-current="page"{% endif %} data-cursor="go">
         <span class="starlink__dot" aria-hidden="true"></span>
-        <span class="starlink__text"><span class="starlink__name" data-scramble>{{ r.name }}</span><span class="starlink__note">{{ r.star }} · {{ r.note }}</span></span>
+        <span class="starlink__text">{% if here == r.url %}<span class="starlink__here">✶ you are here</span>{% endif %}<span class="starlink__name" data-scramble>{{ r.name }}</span><span class="starlink__note">{{ r.star }} · {{ r.note }}</span></span>
       </a>
       {%- endfor %}
       <button class="oddity oddity--uncharted" type="button" data-oddity="uncharted" aria-label="A faint star that is not on the chart"></button>

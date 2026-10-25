@@ -68,7 +68,7 @@
     if (data.botcheck) return; // a bot ticked the invisible box
     delete data.redirect;      // only used when the form is sent without JavaScript
     if (form.querySelector('.h-captcha') && !data['h-captcha-response']) {
-      say('prove you are not a machine first: tick the captcha.', 'err');
+      say('tick the little box first. it keeps the kind machines resting.', 'err');
       return;
     }
 

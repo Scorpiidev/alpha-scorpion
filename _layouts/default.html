@@ -5,7 +5,8 @@
 </head>
 <body class="room room--{{ page.room | default: 'misc' }}" data-base="{{ site.baseurl }}">
   <a class="skip" href="#main">skip to content</a>
-  <div class="atmos" aria-hidden="true"><i class="atmos__grid"></i><i class="atmos__stars"></i><i class="atmos__grain"></i></div>
+  {% include heart-defs.svg %}
+  <div class="atmos" aria-hidden="true"><i class="atmos__candle"></i><i class="atmos__grid"></i><i class="atmos__circuit"></i><i class="atmos__stars"></i><canvas class="atmos__sky"></canvas><i class="atmos__grain"></i><i class="atmos__dust"></i></div>
   {% include hud.html %}
   {% include starmap.html %}
   <main id="main" class="main">
@@ -14,10 +15,9 @@
   {% include footer.html %}
   {% include collection.html %}
   <div class="cursor" aria-hidden="true">
-    <div class="cursor__dot">{% include star4.svg %}</div>
+    <div class="cursor__dot">{% include cursor-star.svg %}</div>
     <div class="cursor__ring"><span class="cursor__label"></span></div>
   </div>
-  <div class="flash" aria-hidden="true"></div>
   <script src="{{ '/assets/js/site.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
   {%- assign scripts = page.scripts | default: layout.scripts %}
   {%- for s in scripts %}

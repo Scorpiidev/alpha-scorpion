@@ -39,7 +39,7 @@
   /* ── the desk ─────────────────────────────────────────────── */
   const desk = $('[data-desk]');
   if (desk) {
-    const KEY = 'antares.desk.v1';
+    const KEY = 'antares.desk.v2'; // bump when the default layout changes
     const pieces = $$('.piece', desk);
     const parse = (el, prop) => parseFloat(el.style.getPropertyValue(prop)) || 0;
     const defaults = {};
@@ -181,7 +181,7 @@
         if (!data.posts.length) return print('no transmissions yet.', 'dim');
         data.posts.forEach(p => print(`${esc(p.date)}  <a href="${esc(p.url)}">${esc(p.title)}</a>`));
       },
-      whoami: () => { print('Antares · Antares', 'hi'); print('animation · illustration · comics · Spain'); print('per tenebras, forma.', 'pink'); },
+      whoami: () => { print('Antares · α Scorpii', 'hi'); print('animation · illustration · comics · Spain'); print('per tenebras, forma.', 'pink'); },
       stars: () => {
         const a = A.altitude ? A.altitude(new Date()) : 0;
         print('α Scorpii · Antares · red supergiant · ≈ 550 ly', 'hi');

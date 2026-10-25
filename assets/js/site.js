@@ -35,15 +35,16 @@
 
   /* ── toasts ───────────────────────────────────────────────── */
   const toastBox = $('.toasts');
-  A.toast = ({ label = '', title = '', text = '', ms = 7000 }) => {
+  A.toast = ({ label = '', title = '', text = '', ms = 7000, tiny = false }) => {
     if (!toastBox) return;
     const t = document.createElement('div');
-    t.className = 'toast';
+    t.className = tiny ? 'toast toast--tiny' : 'toast';
     t.innerHTML = `<p class="label"></p><h4></h4><p></p>`;
     t.children[0].textContent = label;
     t.children[1].textContent = title;
     t.children[2].textContent = text;
     if (!text) t.children[2].remove();
+    if (!title) t.children[1].remove();
     const kill = () => { t.classList.add('is-out'); setTimeout(() => t.remove(), 400); };
     t.addEventListener('click', kill);
     toastBox.appendChild(t);
@@ -99,21 +100,23 @@
   try { ODD = JSON.parse($('#oddity-data').textContent); } catch (e) { ODD = []; }
   const found = new Set(store.get('antares.oddities', []).filter(id => ODD.some(o => o.id === id)));
   const odCount = $$('[data-odd-count]');
-  const redBtn = $('[data-redgiant]');
+  const redBtns = $$('[data-redgiant]');
   const renderOdd = () => {
     odCount.forEach(el => { el.textContent = found.size; });
     $$('.slot').forEach(s => s.classList.toggle('is-found', found.has(s.dataset.slot)));
     $$('[data-oddity]').forEach(b => b.classList.toggle('is-found', found.has(b.dataset.oddity)));
-    if (redBtn) {
-      redBtn.hidden = found.size < ODD.length;
-      redBtn.querySelector('span').textContent = root.classList.contains('red-giant') ? 'on' : 'off';
-    }
+    const on = root.classList.contains('red-giant');
+    redBtns.forEach(b => {
+      b.setAttribute('aria-pressed', String(on));
+      const st = b.querySelector('span:not([class])');
+      if (st) st.textContent = on ? 'on' : 'off';
+    });
   };
   A.discover = id => {
     const o = ODD.find(x => x.id === id);
     if (!o) return;
     if (found.has(id)) {
-      A.toast({ label: 'already in your drawer', title: o.name, text: o.note, ms: 5000 });
+      A.toast({ label: `already in your drawer · ${o.name}`, tiny: true, ms: 2600 });
       return;
     }
     found.add(id);
@@ -125,7 +128,7 @@
       setTimeout(() => A.toast({
         label: 'collection complete',
         title: 'Every oddity, catalogued',
-        text: 'You found all of them. A switch has appeared in your drawer: red giant mode.',
+        text: 'You found all of them. Now you see the cabinet the way its curator does.',
         ms: 11000
       }), 1400);
     }
@@ -139,11 +142,14 @@
     root.classList.remove('red-giant'); store.set('antares.redgiant', false);
     renderOdd();
   });
-  redBtn?.addEventListener('click', () => {
+  redBtns.forEach(b => b.addEventListener('click', () => {
     const on = root.classList.toggle('red-giant');
     store.set('antares.redgiant', on);
     renderOdd();
-  });
+    A.toast(on
+      ? { label: 'red giant mode · on', title: 'Antares, swollen', text: 'The cabinet near the end of its star: everything warms, swells and slows down. The heart beats like a dying giant.', ms: 6500 }
+      : { label: 'red giant mode · off', tiny: true, ms: 2200 });
+  }));
   renderOdd();
 
   /* ── HUD: clock and the altitude of Antares, seen from Spain ─ */
@@ -177,15 +183,29 @@
 
   /* ── text scramble on hover ───────────────────────────────── */
   const GLYPHS = '█▓▒░<>/\\|*+=αβγδεζλπσ∆◇◆✦';
-  // scramble(el) decodes the element's current text; scramble(el, text) decodes into new text
+  // scramble(el) decodes the element's current text; scramble(el, text) swaps in new text first.
+  // The real text never changes size: the glitch plays in an overlay on top of it,
+  // so nothing around it can jump or reflow.
   const scramble = (el, text) => {
-    if (reduce) { if (text != null) el.textContent = text; return; }
+    if (text != null) el.textContent = text;
+    if (reduce) return;
     if (text == null && el._scr) return;
-    const final = text != null ? text : el.textContent;
+    const final = el.textContent;
+    if (!final.trim()) return;
     const glyphs = el.dataset.glyphs || GLYPHS;
     cancelAnimationFrame(el._raf);
+    if (el._ghost) el._ghost.remove();
+    const cs = getComputedStyle(el);
+    if (cs.position === 'static') el.style.position = 'relative';
+    const ghost = document.createElement('span');
+    ghost.className = 'scramble-ghost';
+    ghost.setAttribute('aria-hidden', 'true');
+    Object.assign(ghost.style, { color: cs.color, textShadow: cs.textShadow, padding: cs.padding });
+    el._ghost = ghost;
+    el.appendChild(ghost);
+    el.classList.add('is-scrambling');
     let frame = 0;
-    const total = Math.min(48, Math.max(10, final.length * 1.6));
+    const total = Math.min(36, Math.max(10, final.length * 1.4));
     el._scr = true;
     const step = () => {
       let out = '';
@@ -193,16 +213,19 @@
         const c = final[i];
         out += (c === ' ' || c === '\n' || i < (frame / total) * final.length) ? c : glyphs[(Math.random() * glyphs.length) | 0];
       }
-      el.textContent = out;
+      ghost.textContent = out;
       if (++frame <= total) el._raf = requestAnimationFrame(step);
-      else { el.textContent = final; el._scr = false; }
+      else { ghost.remove(); el._ghost = null; el.classList.remove('is-scrambling'); el._scr = false; }
     };
     step();
   };
   A.scramble = scramble;
+  // hovering replays the glitch, but only a couple of times per element
   document.addEventListener('pointerover', e => {
     const el = e.target.closest('[data-scramble]');
-    if (el && !el.contains(e.relatedTarget)) scramble(el);
+    if (!el || el.contains(e.relatedTarget) || el._scr || (el._hovers || 0) >= 2) return;
+    el._hovers = (el._hovers || 0) + 1;
+    scramble(el);
   });
   // headings decode once when they first appear
   if ('IntersectionObserver' in window && !reduce) {
@@ -341,14 +364,169 @@
     buf = (buf + e.key.toLowerCase()).slice(-7);
     if (buf === 'antares') { buf = ''; A.supernova(); }
   });
+  /* ── supernova: a proper explosion, drawn on a canvas ────── */
+  let novaBusy = false;
   A.supernova = (x, y) => {
-    const flash = $('.flash');
-    if (flash) { flash.style.setProperty('--fx', (x ?? 50) + '%'); flash.style.setProperty('--fy', (y ?? 40) + '%'); }
-    body.classList.remove('supernova'); void body.offsetWidth;
-    body.classList.add('supernova');
-    setTimeout(() => body.classList.remove('supernova'), 2700);
     A.toast({ label: 'α scorpii · event', title: 'Supernova', text: 'Antares will explode one day. Not today, probably. The heart keeps beating.', ms: 6000 });
+    if (reduce || novaBusy) return;
+    novaBusy = true;
+    const c = document.createElement('canvas');
+    c.className = 'nova-canvas';
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const W = innerWidth, H = innerHeight;
+    c.width = W * dpr; c.height = H * dpr;
+    body.appendChild(c);
+    const g = c.getContext('2d');
+    g.scale(dpr, dpr);
+    const cx = (x ?? 50) / 100 * W, cy = (y ?? 42) / 100 * H;
+    const maxR = Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy));
+    const COLS = ['255,255,255', '255,228,174', '198,111,128', '168,153,255', '255,140,90', '185,227,107'];
+    const parts = Array.from({ length: 320 }, () => {
+      const a = Math.random() * Math.PI * 2, sp = 2 + Math.random() ** 1.8 * 22;
+      return { x: cx, y: cy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, decay: .006 + Math.random() * .014,
+               size: .6 + Math.random() * 2.6, col: COLS[(Math.random() * COLS.length) | 0] };
+    });
+    const nebula = Array.from({ length: 7 }, (_, k) => ({
+      a: Math.random() * Math.PI * 2, d: maxR * (.08 + Math.random() * .22), r: maxR * (.25 + Math.random() * .3), col: COLS[2 + (k % 3)]
+    }));
+    body.classList.remove('supernova'); void body.offsetWidth; body.classList.add('supernova');
+    const t0 = performance.now(), DUR = 3400;
+    const frame = now => {
+      const t = (now - t0) / DUR;
+      g.globalCompositeOperation = 'source-over';
+      g.clearRect(0, 0, W, H);
+      // white-out, then afterglow
+      const flash = t < .06 ? t / .06 : Math.max(0, 1 - (t - .06) / .22);
+      if (flash > 0) { g.fillStyle = `rgba(255,246,230,${flash * .85})`; g.fillRect(0, 0, W, H); }
+      g.globalCompositeOperation = 'lighter';
+      // nebula clouds blooming out of the blast
+      nebula.forEach(n => {
+        const k = Math.min(1, t * 2.2), fade = Math.max(0, 1 - t) * .5;
+        const nx = cx + Math.cos(n.a) * n.d * k, ny = cy + Math.sin(n.a) * n.d * k, nr = n.r * (.4 + k);
+        const rg = g.createRadialGradient(nx, ny, 0, nx, ny, nr);
+        rg.addColorStop(0, `rgba(${n.col},${fade * .55})`); rg.addColorStop(1, `rgba(${n.col},0)`);
+        g.fillStyle = rg; g.beginPath(); g.arc(nx, ny, nr, 0, Math.PI * 2); g.fill();
+      });
+      // core
+      const coreR = maxR * (.05 + .25 * Math.min(1, t * 4)) * Math.max(0, 1 - t * .9);
+      if (coreR > 1) {
+        const cg = g.createRadialGradient(cx, cy, 0, cx, cy, coreR);
+        cg.addColorStop(0, 'rgba(255,255,255,1)'); cg.addColorStop(.25, 'rgba(255,228,174,.9)');
+        cg.addColorStop(.6, 'rgba(198,111,128,.5)'); cg.addColorStop(1, 'rgba(68,9,46,0)');
+        g.fillStyle = cg; g.beginPath(); g.arc(cx, cy, coreR, 0, Math.PI * 2); g.fill();
+      }
+      // shockwaves
+      [0, .08, .2].forEach((delay, k) => {
+        const tt = (t - delay) / .7;
+        if (tt <= 0 || tt >= 1) return;
+        const r = maxR * (1 - Math.pow(1 - tt, 3)) * (1.05 - k * .12);
+        g.strokeStyle = `rgba(${k === 1 ? '168,153,255' : k === 2 ? '198,111,128' : '255,228,174'},${(1 - tt) * .8})`;
+        g.lineWidth = (1 - tt) * (26 - k * 7) + 1;
+        g.beginPath(); g.arc(cx, cy, r, 0, Math.PI * 2); g.stroke();
+      });
+      // debris with trails
+      parts.forEach(p => {
+        if (p.life <= 0) return;
+        const px = p.x, py = p.y;
+        p.x += p.vx; p.y += p.vy; p.vx *= .965; p.vy *= .965; p.life -= p.decay;
+        g.strokeStyle = `rgba(${p.col},${Math.max(0, p.life)})`;
+        g.lineWidth = p.size; g.lineCap = 'round';
+        g.beginPath(); g.moveTo(px, py); g.lineTo(p.x, p.y); g.stroke();
+      });
+      if (t < 1) requestAnimationFrame(frame);
+      else { c.remove(); body.classList.remove('supernova'); novaBusy = false; }
+    };
+    requestAnimationFrame(frame);
   };
+
+  /* ── the sky behind everything: twinkling stars, the odd meteor ─ */
+  const sky = $('.atmos__sky');
+  if (sky && sky.getContext) {
+    const g = sky.getContext('2d');
+    let W = 0, H = 0, stars = [], meteor = null, nextMeteor = 4000 + Math.random() * 6000, last = 0, running = true;
+    const TINTS = ['255,228,174', '255,255,255', '180,174,255', '198,111,128'];
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      W = innerWidth; H = innerHeight;
+      sky.width = W * dpr; sky.height = H * dpr;
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const n = Math.round(W * H / 5200);
+      stars = Array.from({ length: n }, () => ({
+        x: Math.random() * W, y: Math.random() * H, r: Math.random() ** 3 * 1.6 + .3,
+        tw: .4 + Math.random() * 2.6, ph: Math.random() * 6.3, tint: TINTS[(Math.random() * TINTS.length) | 0],
+        sparkle: Math.random() < .035
+      }));
+    };
+    const draw = now => {
+      if (!running) return;
+      const dt = Math.min(64, now - last); last = now;
+      const t = now / 1000;
+      g.clearRect(0, 0, W, H);
+      stars.forEach(s => {
+        const a = .25 + .75 * (.5 + .5 * Math.sin(t * s.tw + s.ph)) ** 2;
+        g.fillStyle = `rgba(${s.tint},${a * (s.r > 1 ? .95 : .6)})`;
+        if (s.sparkle && a > .8) { // a four-point glint on the brightest few
+          const L = s.r * 5 * a;
+          g.fillRect(s.x - L, s.y - .4, L * 2, .8); g.fillRect(s.x - .4, s.y - L, .8, L * 2);
+        }
+        g.beginPath(); g.arc(s.x, s.y, s.r, 0, Math.PI * 2); g.fill();
+      });
+      if (!reduce) {
+        nextMeteor -= dt;
+        if (!meteor && nextMeteor <= 0) {
+          const ang = Math.PI * (.12 + Math.random() * .16);
+          meteor = { x: Math.random() * W * .8, y: Math.random() * H * .35, vx: Math.cos(ang) * 11, vy: Math.sin(ang) * 11, life: 1 };
+          nextMeteor = 7000 + Math.random() * 12000;
+        }
+        if (meteor) {
+          const m = meteor, tail = 14;
+          const grd = g.createLinearGradient(m.x, m.y, m.x - m.vx * tail, m.y - m.vy * tail);
+          grd.addColorStop(0, `rgba(255,240,220,${m.life})`); grd.addColorStop(1, 'rgba(168,153,255,0)');
+          g.strokeStyle = grd; g.lineWidth = 1.6;
+          g.beginPath(); g.moveTo(m.x, m.y); g.lineTo(m.x - m.vx * tail, m.y - m.vy * tail); g.stroke();
+          m.x += m.vx * dt / 16; m.y += m.vy * dt / 16; m.life -= .012 * dt / 16;
+          if (m.life <= 0 || m.x > W + 200 || m.y > H + 200) meteor = null;
+        }
+        requestAnimationFrame(draw);
+      }
+    };
+    resize();
+    addEventListener('resize', () => { resize(); if (reduce) draw(performance.now()); });
+    document.addEventListener('visibilitychange', () => {
+      running = !document.hidden;
+      if (running && !reduce) { last = performance.now(); requestAnimationFrame(draw); }
+    });
+    requestAnimationFrame(draw);
+  }
+
+  /* ── chrome hearts tilt towards the pointer; the shine follows ─ */
+  $$('[data-chrome-heart]').forEach(h => {
+    const stack = $('.chrome-heart__stack', h);
+    const light = $('[data-chrome-light]', h);
+    const grad = $('[data-chrome-gradient]', h);
+    let tx = 0, ty = 0, cx = 0, cy = 0, lastMove = 0, visible = true;
+    const fine = matchMedia('(pointer: fine)').matches;
+    if (fine) addEventListener('pointermove', e => {
+      const r = h.getBoundingClientRect();
+      tx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (innerWidth / 2)));
+      ty = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / (innerHeight / 2)));
+      lastMove = performance.now();
+    }, { passive: true });
+    if ('IntersectionObserver' in window) new IntersectionObserver(es => { visible = es[0].isIntersecting; if (visible) requestAnimationFrame(loop); }).observe(h);
+    const loop = now => {
+      if (!visible) return;
+      let gx = tx, gy = ty;
+      if (now - lastMove > 2500) { gx = Math.sin(now / 1900) * .55; gy = Math.cos(now / 2600) * .35; } // idle sway
+      const k = reduce ? 1 : .07;
+      cx += (gx - cx) * k; cy += (gy - cy) * k;
+      stack.style.setProperty('--ry', (cx * 28).toFixed(2) + 'deg');
+      stack.style.setProperty('--rx', (-cy * 22).toFixed(2) + 'deg');
+      if (light) { light.setAttribute('x', (300 + cx * 320).toFixed(0)); light.setAttribute('y', (220 + cy * 260).toFixed(0)); }
+      if (grad) grad.setAttribute('gradientTransform', `rotate(${(cx * 18 - cy * 10).toFixed(1)} .5 .5)`);
+      if (!reduce) requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  });
 
   /* ── a note for the curious who open the console ──────────── */
   try {

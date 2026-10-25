@@ -1,6 +1,6 @@
 # ✶ Antares · cabinet of curiosities
 
-*Per Tenebras, Forma.* Portfolio, field log and museum of oddities of Antares (Antares).
+*Per Tenebras, Forma.* Portfolio, field log and museum of oddities of Antares.
 
 Live at **https://scorpiidev.github.io/alpha-scorpion/** once this branch is merged into the branch
 GitHub Pages publishes from (usually `main`, see *Settings → Pages*). GitHub builds the site by
@@ -95,12 +95,13 @@ dashes, no spaces (`moth-queen.jpg`). Phone photos can carry GPS location in the
 
 | What | Where |
 | --- | --- |
-| Social links | `_data/socials.yml` |
+| Social links (LinkedIn & Gumroad are hidden there because their links show your real name) | `_data/socials.yml` |
 | Hidden oddities (names, hints, notes) | `_data/oddities.yml` |
 | Home page intro text | `index.html` (section I) |
 | About text, tools, "open to" list | `curator/index.html` |
 | Contact page wording | `transmit/index.html` |
 | Image credits | `colophon/index.html` |
+| Terms of use | `terms/index.html` |
 | Colours & fonts | top of `assets/css/main.css` |
 
 The desk collage on the home page is in `index.html` (section II). Each piece has `--x`, `--y`
