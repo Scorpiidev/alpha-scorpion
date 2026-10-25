@@ -1237,7 +1237,7 @@ kbd {
 @keyframes scan { to { transform: translateY(calc(100vw * 13 / 16 + 140px)); } }
 .hud__nav a[aria-current] .scramble-ghost::before { content: "◆ "; font-size: 8px; vertical-align: 2px; color: transparent; }
 
-/* ── 19e · candlelight, dust & a moving sky ─────────────────── */
+/* ── 19e · candlelight & a moving sky ─────────────────── */
 .atmos__candle {
   background:
     radial-gradient(640px 460px at 10% 100%, rgba(255, 168, 92, .14), transparent 70%),
@@ -1254,10 +1254,6 @@ kbd {
           mask-image: radial-gradient(ellipse 60% 55% at 72% 28%, #000, transparent 75%);
 }
 .atmos__sky { position: absolute; inset: 0; width: 100%; height: 100%; }
-.atmos__dust {
-  background: url("../img/dust.png") 0 0 / 512px 512px; opacity: .45;
-}
-@keyframes dust { 0% { background-position: 0 0; } 33% { background-position: 170px 90px; } 66% { background-position: -120px 230px; } 100% { background-position: 60px -140px; } }
 
 
 /* ── 19g · small things ─────────────────────────────────────── */
