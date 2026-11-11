@@ -1,0 +1,70 @@
+---
+title: Contact
+room: contact
+description: Contact Antares for comic projects, commissions and studio work.
+scripts:
+  - /assets/js/contact.js
+---
+{%- assign key = site.web3forms_access_key | strip -%}
+<section class="contact">
+  <header class="contact__head">
+    <p class="label">contact · λ shaula, the sting</p>
+    <h1 class="page-title">Let's make pages</h1>
+    <p class="contact__intro">
+      Comic projects, commissions, studio work or collaborations. Tell me a little about the project
+      (page count, deadline, rough budget, a link to the script if you have one) and I'll get back to you by email.
+    </p>
+    <p class="status"><span class="status__dot" aria-hidden="true"></span>{{ site.availability }}</p>
+    {%- if site.data.socials.size > 0 %}
+    <ul class="contact__socials">
+      {%- for s in site.data.socials %}
+      <li><a href="{{ s.url }}" rel="noopener me" target="_blank"><span>{{ s.name }}</span> <small>{{ s.handle }}</small></a></li>
+      {%- endfor %}
+    </ul>
+    {%- endif %}
+  </header>
+
+  <form class="form" id="contact-form" action="https://api.web3forms.com/submit" method="POST" data-key="{{ key }}" novalidate>
+    <input type="hidden" name="access_key" value="{{ key }}">
+    <input type="hidden" name="subject" value="New message from the Antares portfolio">
+    <input type="hidden" name="from_name" value="Antares portfolio">
+    <input type="hidden" name="redirect" value="{{ '/contact/received/' | absolute_url }}">
+    <input type="checkbox" name="botcheck" class="form__trap" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <div class="field">
+      <label for="f-name">Name</label>
+      <input id="f-name" name="name" type="text" autocomplete="name" required maxlength="120">
+    </div>
+    <div class="field">
+      <label for="f-email">Email <small>so I can reply</small></label>
+      <input id="f-email" name="email" type="email" autocomplete="email" required maxlength="200">
+    </div>
+    <div class="field">
+      <label for="f-kind">What is it about?</label>
+      <select id="f-kind" name="topic">
+        <option>Comic project</option>
+        <option>Illustration commission</option>
+        <option>Character design</option>
+        <option>Job or studio opportunity</option>
+        <option>Something else</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="f-msg">Message</label>
+      <textarea id="f-msg" name="message" rows="7" required maxlength="5000" placeholder="Page count, deadline, budget, links…"></textarea>
+    </div>
+
+    <div class="field field--captcha">
+      <div class="h-captcha" data-captcha="true" data-theme="dark"></div>
+    </div>
+
+    <div class="form__foot">
+      <button class="btn form__send" type="submit">Send {% include star4.svg %}</button>
+      <p class="form__status{% if key == "" %} is-err{% endif %}" role="status" data-status>
+        {%- if key == "" -%}The form isn't connected yet.{%- endif -%}
+      </p>
+    </div>
+  </form>
+</section>
+
+<script src="https://web3forms.com/client/script.js" async defer></script>

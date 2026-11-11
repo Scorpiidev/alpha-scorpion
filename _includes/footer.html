@@ -1,34 +1,13 @@
 <footer class="foot">
-  <div class="foot__top">
-    <a class="foot__heart" href="{{ '/' | relative_url }}" aria-label="Back to the cabinet">{% include heart.svg %}</a>
+  <div class="foot__inner">
+    <a class="foot__heart" href="{{ '/' | relative_url }}" aria-label="Back to the top">{% include heart.svg %}</a>
     <p class="foot__motto">Per Tenebras, Forma <span>through darkness, form</span></p>
+    <ul class="foot__links">
+      {%- for s in site.data.socials %}
+      <li><a href="{{ s.url }}" rel="noopener me" target="_blank">{{ s.name }}</a></li>
+      {%- endfor %}
+      <li><a href="{{ '/contact/' | relative_url }}">Contact</a></li>
+    </ul>
+    <p class="foot__fine">© {{ site.time | date: '%Y' }} Antares · all artwork drawn by hand, no generative AI · please don't use it to train models</p>
   </div>
-  <div class="foot__cols">
-    <nav aria-label="Social frequencies">
-      <p class="label">frequencies</p>
-      <ul class="foot__list">
-        {%- for s in site.data.socials %}
-        <li><a href="{{ s.url }}" rel="noopener me" target="_blank" data-cursor="tune in">{{ s.name }}</a></li>
-        {%- endfor %}
-      </ul>
-    </nav>
-    <nav aria-label="Rooms of the cabinet">
-      <p class="label">rooms</p>
-      <ul class="foot__list">
-        {%- for r in site.data.rooms %}
-        <li><a href="{{ r.url | relative_url }}">{{ r.name }}</a></li>
-        {%- endfor %}
-        <li><a href="{{ '/log/feed.xml' | relative_url }}">RSS feed</a></li>
-      </ul>
-    </nav>
-    <div>
-      <p class="label">signal</p>
-      <p class="foot__cta">Commissions, studio work, collaborations, strange thoughts.</p>
-      <a class="btn" href="{{ '/transmit/' | relative_url }}">transmit {% include star4.svg %}</a>
-    </div>
-  </div>
-  <p class="foot__fine">
-    <span>© {{ site.time | date: '%Y' }} Antares</span>
-    <span>all artwork © the artist · archive imagery is public domain, see the <a href="{{ '/colophon/' | relative_url }}">colophon</a> · <a href="{{ '/terms/' | relative_url }}">terms</a></span>
-  </p>
 </footer>

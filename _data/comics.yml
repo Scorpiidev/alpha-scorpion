@@ -1,0 +1,27 @@
+# Comics shown in the reader at the top of the home page.
+# pdf / cover live in assets/comics/. Add a new comic by adding a block here.
+- slug: universo-goya
+  title: "Universo Goya"
+  badge: "Contest runner-up · 2026"
+  pages: 4
+  language: Spanish
+  pdf: universo-goya.pdf
+  cover: universo-goya-cover.jpg
+  credits: "Pencils, inks & colour"
+  blurb: >-
+    Eli can't see the point of her school project on Goya. Then her hearing-aid
+    batteries die and she has to cross a city that has suddenly gone silent,
+    and finds out how much she has in common with the deaf painter.
+
+- slug: ammutindra
+  title: "Ammutindra"
+  badge: "Mutantes Paseantes contest"
+  pages: 8
+  language: Spanish
+  pdf: ammutindra.pdf
+  cover: ammutindra-cover.jpg
+  credits: "Pencils, inks & colour"
+  blurb: >-
+    Cosmic horror. A research team accidentally kidnaps a juvenile divine entity,
+    and her eldritch father comes down to take her back. Sumerian, Indian and
+    Egyptian influences run through the designs.

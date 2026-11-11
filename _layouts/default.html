@@ -3,25 +3,17 @@
 <head>
 {% include head.html %}
 </head>
-<body class="room room--{{ page.room | default: 'misc' }}" data-base="{{ site.baseurl }}">
+<body class="page page--{{ page.room | default: 'misc' }}">
   <a class="skip" href="#main">skip to content</a>
-  {% include heart-defs.svg %}
-  <div class="atmos" aria-hidden="true"><i class="atmos__candle"></i><i class="atmos__grid"></i><i class="atmos__circuit"></i><i class="atmos__stars"></i><canvas class="atmos__sky"></canvas><i class="atmos__grain"></i></div>
-  {% include hud.html %}
-  {% include starmap.html %}
+  <div class="sky" aria-hidden="true"></div>
+  {% include header.html %}
   <main id="main" class="main">
 {{ content }}
   </main>
   {% include footer.html %}
-  {% include collection.html %}
-  <div class="cursor" aria-hidden="true">
-    <div class="cursor__dot">{% include cursor-star.svg %}</div>
-    <div class="cursor__ring"><span class="cursor__label"></span></div>
-  </div>
   <script src="{{ '/assets/js/site.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
-  {%- assign scripts = page.scripts | default: layout.scripts %}
-  {%- for s in scripts %}
-  <script src="{{ s | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+  {%- for s in page.scripts %}
+  <script src="{{ s | relative_url }}?v={{ site.time | date: '%s' }}" {% if s contains 'reader' %}type="module"{% else %}defer{% endif %}></script>
   {%- endfor %}
 </body>
 </html>

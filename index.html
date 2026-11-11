@@ -1,275 +1,154 @@
 ---
 layout: default
-room: cabinet
+room: home
 scripts:
-  - /assets/js/synth.js
-  - /assets/js/cabinet.js
+  - /assets/js/reader.js
 ---
-{%- assign hall = site.works | where_exp: 'w', 'w.file' | sort: 'date' | reverse -%}
-{%- assign vault = site.works | where_exp: 'w', 'w.file == nil' -%}
-{%- assign featured = hall | where_exp: 'w', 'w.featured' -%}
-{%- if featured.size < 4 %}{% assign featured = hall %}{% endif -%}
-{%- capture w_biljel %}{{ site.works | where: 'slug', 'biljel' | map: 'url' | first | relative_url }}{% endcapture -%}
-{%- capture w_glass %}{{ site.works | where: 'slug', 'glass-body-study' | map: 'url' | first | relative_url }}{% endcapture -%}
-{%- capture w_comic %}{{ site.works | where: 'slug', 'ammutindra-page-05' | map: 'url' | first | relative_url }}{% endcapture -%}
-{%- capture w_miku %}{{ site.works | where: 'slug', 'miku' | map: 'url' | first | relative_url }}{% endcapture -%}
+{%- assign works = site.works | sort: 'order' -%}
 
-<!-- ═══ I · THE THRESHOLD ═══════════════════════════════════════ -->
-<section class="threshold" aria-labelledby="threshold-title">
-  <div class="threshold__text">
-    <p class="label" data-reveal>catalogue nº 001 · α scorpii · a cabinet of curiosities</p>
-    <h1 class="threshold__title" id="threshold-title">
-      <span class="sr-only">Antares</span>
-      {% include wordmark.svg class="threshold__wordmark" %}
-    </h1>
-    <p class="motto" data-reveal>Per Tenebras, Forma <span>through darkness, form</span></p>
-    <p class="threshold__intro" data-reveal>
-      I'm <strong>Antares</strong>: animator, illustrator and comic artist in training,
-      and a collector of strange things. This is my portfolio, and also
-      a small museum of oddities. Drag things around. Open drawers. Touch everything.
-    </p>
-    <div class="threshold__actions" data-reveal>
-      <a class="btn" href="{{ '/specimens/' | relative_url }}">enter the hall of specimens {% include star4.svg %}</a>
-      <a class="btn btn--ghost" href="{{ '/curator/' | relative_url }}">meet the curator</a>
-    </div>
+<section class="hero" aria-labelledby="hero-title">
+  <p class="label">comic artist · illustrator · spain</p>
+  <h1 class="hero__title" id="hero-title">
+    <span class="sr-only">Antares</span>
+    {% include wordmark.svg class="hero__wordmark" %}
+  </h1>
+  <p class="hero__lead">
+    I draw comics: pencils, inks and colour, the whole page. Ten years of indie sequential art,
+    and runner-up in this year's <em>Universo Goya</em> comic contest.
+  </p>
+  <p class="status"><span class="status__dot" aria-hidden="true"></span>{{ site.availability }}</p>
+  <div class="hero__actions">
+    <a class="btn" href="#comics">Read the comics</a>
+    <a class="btn btn--ghost" href="{{ '/contact/' | relative_url }}">Start a project</a>
   </div>
-
-  <div class="orrery">
-    <div class="orrery__lens"><img src="{{ '/assets/img/pd/hubble-xdf.jpg' | relative_url }}" alt="" decoding="async"></div>
-    <svg class="orrery__rings" viewBox="0 0 400 400" aria-hidden="true">
-      <circle class="ring ring--a" cx="200" cy="200" r="196"/>
-      <circle class="ring ring--b" cx="200" cy="200" r="178"/>
-      <circle class="ring ring--c" cx="200" cy="200" r="150"/>
-      <g class="ring--ticks">
-        <line x1="200" y1="0" x2="200" y2="14"/><line x1="200" y1="386" x2="200" y2="400"/>
-        <line x1="0" y1="200" x2="14" y2="200"/><line x1="386" y1="200" x2="400" y2="200"/>
-      </g>
-    </svg>
-    <button class="orrery__heart" type="button" data-oddity-manual="heart" data-cursor="touch" aria-label="The heart of the scorpion. It responds to touch.">
-      {% include chrome-heart.html id="hero" %}
-    </button>
-    <p class="callout callout--a" aria-hidden="true">fig. 1 · cor scorpii</p>
-    <p class="callout callout--b" aria-hidden="true">red supergiant · M1.5 Iab</p>
-    <p class="callout callout--c" aria-hidden="true">≈ 550 ly · pulsating variable</p>
-  </div>
-
-  <a class="threshold__down" href="#desk" data-cursor="descend"><span>the desk</span> ↓</a>
 </section>
 
-<!-- ═══ II · THE DESK ═══════════════════════════════════════════ -->
-<section class="desk-room" id="desk" aria-labelledby="desk-title">
-  <header class="room-head" data-reveal>
-    <span class="room-head__no">II</span>
+<!-- ═══ COMICS ═══════════════════════════════════════════════ -->
+<section class="section" id="comics" aria-labelledby="comics-title">
+  <header class="section__head">
+    <span class="section__no" aria-hidden="true">I</span>
     <div>
-      <h2 id="desk-title" data-scramble>The Desk</h2>
-      <p class="label">drag anything · click a piece to open it · the desk remembers how you leave it</p>
-    </div>
-    <div class="room-head__tools">
-      <button class="btn btn--small btn--ghost" type="button" data-desk-shuffle>shuffle</button>
-      <button class="btn btn--small btn--ghost" type="button" data-desk-tidy>tidy up</button>
+      <h2 id="comics-title">Comics</h2>
+      <p class="label">read them right here, page by page</p>
     </div>
   </header>
 
-  <div class="desk" data-desk>
-    <div class="desk__ruler desk__ruler--x" aria-hidden="true"></div>
-    <div class="desk__ruler desk__ruler--y" aria-hidden="true"></div>
-
-    <figure class="piece print" data-id="biljel" style="--x:2%;--y:3%;--w:20.5%;--r:-3deg">
-      <span class="tape tape--tl" aria-hidden="true"></span><span class="tape tape--tr tape--carnation" aria-hidden="true"></span>
-      <a href="{{ w_biljel }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/thumbs/biljel.webp' | relative_url }}" alt="Biljel: a figure at prayer, haloed by a rose window" draggable="false" loading="lazy" decoding="async" data-decode></a>
-      <figcaption>Biljel · digital painting</figcaption>
-    </figure>
-
-    <figure class="piece porthole" data-id="xdf" style="--x:24%;--y:2%;--w:16%;--r:0deg">
-      <img src="{{ '/assets/img/pd/hubble-xdf.jpg' | relative_url }}" alt="The Hubble eXtreme Deep Field: thousands of distant galaxies" draggable="false" loading="lazy">
-      <span class="porthole__cross" aria-hidden="true"></span>
-      <figcaption class="note note--sw">XDF · a speck of sky holding ~5,500 galaxies</figcaption>
-    </figure>
-
-    <figure class="piece print print--dark" data-id="glass" style="--x:42.5%;--y:4%;--w:16.5%;--r:3deg">
-      <span class="tape tape--tc tape--glitch" aria-hidden="true"></span>
-      <a href="{{ w_glass }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/thumbs/glass-body-study.webp' | relative_url }}" alt="Glass Body Study: a transparent figure folded around a column of light" draggable="false" loading="lazy" decoding="async" data-decode></a>
-      <figcaption>fig. b · transparency study</figcaption>
-    </figure>
-
-    <div class="piece piece--term" data-id="term" style="--x:61%;--y:2.5%;--w:31.5%;--r:-1deg">
-      <div class="term">
-        <div class="term__bar" data-handle><span>tty/α · transmission terminal</span><span aria-hidden="true">[_][×]</span></div>
-        <div class="term__screen">
-          <div class="term__out" aria-live="polite"></div>
-          <form class="term__line" autocomplete="off">
-            <label for="term-in" class="sr-only">Terminal command</label>
-            <span aria-hidden="true">&gt;</span><input id="term-in" class="term__in" spellcheck="false" autocapitalize="off" placeholder="type help" enterkeyhint="send">
-          </form>
+  <div class="comics">
+    {%- for c in site.data.comics %}
+    {%- capture pdf %}{{ '/assets/comics/' | append: c.pdf | relative_url }}{% endcapture %}
+    <article class="comic">
+      <button class="comic__cover" type="button" data-reader-open data-pdf="{{ pdf }}" data-title="{{ c.title | escape }}"
+              aria-label="Read {{ c.title | escape }}">
+        <img src="{{ '/assets/comics/' | append: c.cover | relative_url }}" alt="First page of {{ c.title | escape }}" loading="lazy" decoding="async">
+        <span class="comic__read" aria-hidden="true">read {% include star4.svg %}</span>
+      </button>
+      <div class="comic__text">
+        <p class="comic__badge">{{ c.badge }}</p>
+        <h3 class="comic__title">{{ c.title }}</h3>
+        <p class="label">{{ c.pages }} pages · {{ c.language }} · {{ c.credits }}</p>
+        <p class="comic__blurb">{{ c.blurb }}</p>
+        <div class="comic__actions">
+          <button class="btn btn--small" type="button" data-reader-open data-pdf="{{ pdf }}" data-title="{{ c.title | escape }}">Open reader</button>
+          <a class="btn btn--small btn--ghost" href="{{ pdf }}" download>Download PDF</a>
         </div>
       </div>
-    </div>
-
-    <figure class="piece print print--doc" data-id="comic" style="--x:84.5%;--y:34%;--w:14%;--r:4deg">
-      <span class="clip" aria-hidden="true"></span>
-      <a href="{{ w_comic }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/thumbs/ammutindra-page-05.webp' | relative_url }}" alt="Ammutindra, page 05: a comic page of purple flowers falling across panels" draggable="false" loading="lazy" decoding="async" data-decode></a>
-      <figcaption>Ammutindra, p. 05</figcaption>
-    </figure>
-
-    <figure class="piece polaroid" data-id="miku" style="--x:23.5%;--y:27%;--w:13%;--r:-2deg">
-      <span class="tape tape--tc tape--moss" aria-hidden="true"></span>
-      <a href="{{ w_miku }}" draggable="false" data-cursor="open"><img src="{{ '/assets/works/thumbs/miku.webp' | relative_url }}" alt="Miku: teal hair, a pink kimono and blossoms" draggable="false" loading="lazy" decoding="async" data-decode></a>
-      <figcaption>Miku, in blossom</figcaption>
-    </figure>
-
-    <figure class="piece ascii" data-id="skull" style="--x:37.5%;--y:40.5%;--w:16%;--r:-4deg">
-      <pre class="ascii__art" data-scramble data-glyphs=".,:-=+%#@" aria-label="An ASCII-art skull" role="img">                  ....
-             :::,,,,,,::--=.
-          ::,..........,,,:--=
-        .:,..............,,,:-=.
-       -:,...............,,,,::=+
-      .:,................,,,,,:-=+
-      -:................,,,,,:::-+
-      -,.....####.......###,,:::-+
-      -:,..@@@*@@@#...@@**@@@::-=+
-      =-:,,@@@@@@@@.,@@@@@@@@:-=++
-        .-:,@@@@@@,,,,@@@@@@:-=.
-         -:,,,,,,,,,,,,,:::::-=
-        +-:,,,,,,,,@@,:::::::-=+
-        +=-:::::::#@@#:::::--=++
-         .==-::::::::::::--=++.
-            =--::::::::---=+
-            .=#@#@#@#@#@#@++
-            ++=---------==++
-             .+++++++++++++</pre>
-      <figcaption class="note note--s">memento mori, in 7-bit</figcaption>
-    </figure>
-
-    <div class="piece piece--synth" data-id="synth" style="--x:55%;--y:36.5%;--w:17.5%;--r:1deg">
-      <div class="synth">
-        <div class="synth__bar" data-handle><span>specimen synthesizer mk-ii</span><i class="synth__led" aria-hidden="true"></i></div>
-        <div class="synth__window"><canvas width="420" height="420" data-synth aria-label="A procedurally grown specimen" role="img"></canvas></div>
-        <p class="synth__name" data-synth-name>Radiolaria antaresii</p>
-        <p class="label" data-synth-no>nº ----</p>
-        <button class="btn btn--small" type="button" data-synth-grow>grow a specimen</button>
-      </div>
-    </div>
-
-
-    <figure class="piece porthole porthole--sigil" data-id="curator" style="--x:3%;--y:47%;--w:14%;--r:0deg">
-      <a href="{{ '/curator/' | relative_url }}" draggable="false" data-cursor="meet" aria-label="Meet the curator"><span class="porthole__sigil">{% include heart.svg %}</span></a>
-      <figcaption class="note note--ne">the curator →</figcaption>
-    </figure>
-
-    <figure class="piece cutout cutout--strip" data-id="rocket" style="--x:94%;--y:4%;--w:4.5%;--r:0deg">
-      <img src="{{ '/assets/img/pd/rocket-dither.png' | relative_url }}" alt="Dithered photo of a rocket on the launch pad at night" draggable="false" loading="lazy">
-      <figcaption class="note note--s">DSCOVR · 2015</figcaption>
-    </figure>
-
-    <figure class="piece specimen-jar" data-id="coins" style="--x:55%;--y:71.5%;--w:17.5%;--r:-3deg">
-      <img src="{{ '/assets/img/pd/pompeii-coins.jpg' | relative_url }}" alt="Rows of ancient Greek coins found at Pompeii" draggable="false" loading="lazy">
-      <figcaption class="note note--s">greek coins · found at Pompeii</figcaption>
-    </figure>
-
-    <figure class="piece starcard" data-id="scorpius" style="--x:74%;--y:37%;--w:11%;--r:3deg">
-      {% include scorpius-card.svg %}
-      <figcaption class="starcard__name">Scorpivs</figcaption>
-      <span class="note note--s note--narrow">fig. α · the scorpion, low over Spain in summer</span>
-    </figure>
-    <figure class="piece porthole porthole--petri" data-id="cell" style="--x:20.5%;--y:63%;--w:9.5%;--r:0deg">
-      <img src="{{ '/assets/img/pd/cell-saline.jpg' | relative_url }}" alt="A single cell floating in saline, seen through a digital hologram" draggable="false" loading="lazy">
-      <figcaption class="note note--s">one cell, floating in saline · 0.107 µm/px</figcaption>
-    </figure>
-
-    <figure class="piece print print--small" data-id="clock" style="--x:75.5%;--y:66%;--w:12%;--r:6deg">
-      <img src="{{ '/assets/img/pd/clock-unstable.jpg' | relative_url }}" alt="A wall clock blurred by motion" draggable="false" loading="lazy">
-      <figcaption>chronometer, unstable</figcaption>
-    </figure>
-
-    <figure class="piece cutout cutout--torn" data-id="polyhedron" style="--x:42%;--y:62%;--w:10%;--r:0deg">
-      <img src="{{ '/assets/img/pd/polyhedron.png' | relative_url }}" alt="Engraved star polyhedron inside a circle" draggable="false" loading="lazy">
-    </figure>
-
-    <figure class="piece cutout cutout--torn" data-id="stringstar" style="--x:93%;--y:27%;--w:6%;--r:5deg">
-      <img src="{{ '/assets/img/pd/string-star.png' | relative_url }}" alt="An eight-pointed star woven from fine curved lines" draggable="false" loading="lazy">
-    </figure>
-
-    <div class="piece piece--swatches" data-id="swatches" style="--x:3%;--y:83%;--w:27%;--r:-1deg">
-      <ul class="swatches" aria-label="The Antares palette">
-        <li style="--c:#ad5a7c"><b>Faded Carnation</b><small>#ad5a7c</small></li>
-        <li style="--c:#ffe4ae"><b>Seraphic Buttercream</b><small>#ffe4ae</small></li>
-        <li style="--c:#a899ff"><b>Spectral Glitch</b><small>#a899ff</small></li>
-        <li style="--c:#44092e"><b>Sanguine Relic</b><small>#44092e</small></li>
-      </ul>
-    </div>
-
-    <figure class="piece cutout cutout--torn" data-id="woodcut" style="--x:31%;--y:75%;--w:9%;--r:-6deg">
-      <img src="{{ '/assets/img/pd/woodcut-f.png' | relative_url }}" alt="Old woodcut initial F: a crowned figure with a sword and a small creature" draggable="false" loading="lazy">
-    </figure>
-
-    <div class="piece piece--barcode" data-id="barcode" style="--x:33.5%;--y:88%;--w:15%;--r:2deg" aria-hidden="true">
-      <span class="barcode"></span>
-      <span class="barcode__text">ANT·α·SCO 16h29m24s −26°25′55″</span>
-    </div>
-
-    <div class="piece piece--tag" data-id="tag" style="--x:78%;--y:85%;--w:13%;--r:-4deg" aria-hidden="true">
-      <span class="museum-tag"><b>Per Tenebras, Forma</b><small>exhibit α · do not feed</small></span>
-    </div>
-
-    <span class="piece sticker sticker--butter" data-id="s1" style="--x:21.3%;--y:1.5%;--w:2.4%;--r:12deg" aria-hidden="true">{% include star4.svg %}</span>
-    <span class="piece sticker sticker--glitch" data-id="s2" style="--x:53.5%;--y:33%;--w:1.8%;--r:0deg" aria-hidden="true">{% include star4.svg %}</span>
-    <span class="piece sticker sticker--carnation" data-id="s3" style="--x:97%;--y:29%;--w:2.2%;--r:-10deg" aria-hidden="true">{% include star4.svg %}</span>
-    <span class="piece sticker sticker--phosphor" data-id="s4" style="--x:31.5%;--y:93%;--w:1.6%;--r:20deg" aria-hidden="true">{% include star4.svg %}</span>
-    <span class="piece sticker sticker--heart sticker--v2" data-id="s5" style="--x:35.5%;--y:24%;--w:3.4%;--r:-8deg" aria-hidden="true">{% include heart.svg %}</span>
-    <span class="piece sticker sticker--heart sticker--v3" data-id="s6" style="--x:82%;--y:66%;--w:3%;--r:10deg" aria-hidden="true">{% include heart.svg %}</span>
+    </article>
+    {%- endfor %}
   </div>
 </section>
 
-<!-- ═══ III · RECENT ACQUISITIONS ══════════════════════════════ -->
-<section class="shelf" aria-labelledby="shelf-title">
-  <header class="room-head" data-reveal>
-    <span class="room-head__no">III</span>
+<!-- ═══ GALLERY ══════════════════════════════════════════════ -->
+<section class="section" id="gallery" aria-labelledby="gallery-title">
+  <header class="section__head">
+    <span class="section__no" aria-hidden="true">II</span>
     <div>
-      <h2 id="shelf-title" data-scramble>Recent acquisitions</h2>
-      <p class="label">{{ hall.size }} on display · {{ vault.size }} in the vault</p>
+      <h2 id="gallery-title">Gallery</h2>
+      <p class="label">illustration, character design &amp; sketchbook</p>
     </div>
-    <div class="room-head__tools"><a class="btn btn--small" href="{{ '/specimens/' | relative_url }}">the full hall →</a></div>
   </header>
-  <ol class="shelf__row">
-    {%- for w in featured limit: 4 %}
-    <li class="shelf__item" data-reveal style="--i:{{ forloop.index0 }}">
-      <a href="{{ w.url | relative_url }}" data-cursor="inspect">
-        {%- capture th %}{% include thumb.html file=w.file %}{% endcapture %}
-        <span class="shelf__img"><img src="{{ th }}" alt="{{ w.alt | default: w.title | escape }}" loading="lazy" decoding="async" data-decode></span>
-        <span class="shelf__meta label">{{ w.medium }}{% if w.year %} · {{ w.year }}{% endif %}</span>
-        <span class="shelf__title">{{ w.title }}</span>
+
+  <div class="filters" role="group" aria-label="Filter the gallery">
+    <button type="button" class="filter" data-filter="*" aria-pressed="true">all</button>
+    <button type="button" class="filter" data-filter="illustration" aria-pressed="false">illustration</button>
+    <button type="button" class="filter" data-filter="characters" aria-pressed="false">characters</button>
+    <button type="button" class="filter" data-filter="sketches" aria-pressed="false">sketches &amp; ink</button>
+  </div>
+
+  <ul class="grid" id="grid">
+    {%- for w in works %}
+    {%- capture full %}{{ '/assets/works/' | append: w.file | relative_url }}{% endcapture %}
+    <li class="tile" data-cat="{{ w.category }}">
+      <a class="tile__link" href="{{ full }}" data-lightbox data-title="{{ w.title | escape }}" data-meta="{{ w.medium | escape }}">
+        <img src="{% include thumb.html file=w.file %}" alt="{{ w.alt | default: w.title | escape }}" loading="lazy" decoding="async">
+        <span class="tile__cap"><span class="tile__title">{{ w.title }}</span><span class="tile__meta">{{ w.medium }}</span></span>
       </a>
     </li>
     {%- endfor %}
-  </ol>
+  </ul>
 </section>
 
-<!-- ═══ IV · FIELD LOG ═════════════════════════════════════════ -->
-<section class="latest" aria-labelledby="latest-title">
-  <header class="room-head" data-reveal>
-    <span class="room-head__no">IV</span>
+<!-- ═══ ABOUT ════════════════════════════════════════════════ -->
+<section class="section about" id="about" aria-labelledby="about-title">
+  <header class="section__head">
+    <span class="section__no" aria-hidden="true">III</span>
     <div>
-      <h2 id="latest-title" data-scramble>From the field log</h2>
-      <p class="label">transmissions, process notes &amp; thoughts from the dark</p>
+      <h2 id="about-title">About</h2>
+      <p class="label">who draws all this</p>
     </div>
-    <div class="room-head__tools"><a class="btn btn--small" href="{{ '/log/' | relative_url }}">all transmissions →</a></div>
   </header>
-  <ol class="loglist loglist--compact">
-    {%- for post in site.posts limit: 3 %}
-    {%- assign n = site.posts.size | minus: forloop.index0 %}
-    {% include log-entry.html post=post number=n %}
-    {%- else %}
-    <li class="loglist__empty label">no transmissions yet · the antenna is listening</li>
-    {%- endfor %}
-  </ol>
+
+  <div class="about__body">
+    <div class="about__sigil" aria-hidden="true">{% include heart.svg class="about__heart" %}</div>
+    <div class="prose">
+      <p>
+        I'm <strong>Antares</strong>, a multidisciplinary artist based in Spain, currently studying a higher
+        vocational degree in <strong>3D Animation, Games and Interactive Environments</strong>. I love creating
+        stories and giving them life, and I love taking someone else's idea and turning it into something you can see.
+      </p>
+      <p>
+        I've been making indie comics on my own for about ten years, which means I'm used to carrying a page from
+        thumbnail to pencils, inks and colour. My philosophy revolves around never-ending curiosity and bettering
+        yourself: there is always another technique to learn and another strange concept to chase.
+      </p>
+      <dl class="facts">
+        <div><dt>comics</dt><dd>10 years of indie sequential art</dd></div>
+        <div><dt>recognition</dt><dd>Runner-up, Universo Goya comic contest 2026</dd></div>
+        <div><dt>does</dt><dd>pencils · inks · colour · character design</dd></div>
+        <div><dt>tools</dt><dd>Krita · Photoshop · Toon Boom Harmony · Moho · Maya · ZBrush</dd></div>
+        <div><dt>languages</dt><dd>English · Spanish</dd></div>
+      </dl>
+      <a class="btn" href="{{ '/contact/' | relative_url }}">Got a script that needs pages? {% include star4.svg %}</a>
+    </div>
+  </div>
 </section>
 
-<script type="application/json" id="term-data">
-{
-  "rooms": {{ site.data.rooms | jsonify }},
-  "posts": [{% for p in site.posts limit: 5 %}{"title": {{ p.title | jsonify }}, "url": {{ p.url | relative_url | jsonify }}, "date": {{ p.date | date: '%Y.%m.%d' | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}],
-  "onDisplay": {{ hall.size }},
-  "inVault": {{ vault.size }},
-  "base": {{ site.baseurl | jsonify }}
-}
-</script>
+<!-- ═══ OVERLAYS ═════════════════════════════════════════════ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightbox-title" hidden>
+  <figure class="lightbox__stage">
+    <img class="lightbox__img" alt="">
+    <figcaption><span class="lightbox__title" id="lightbox-title"></span> <span class="lightbox__meta"></span></figcaption>
+  </figure>
+  <button class="ov-btn ov-btn--prev" type="button" data-lb-prev aria-label="Previous image">‹</button>
+  <button class="ov-btn ov-btn--next" type="button" data-lb-next aria-label="Next image">›</button>
+  <button class="ov-close" type="button" data-lb-close aria-label="Close">×</button>
+</div>
+
+<div class="reader" id="reader" role="dialog" aria-modal="true" aria-labelledby="reader-title" hidden>
+  <header class="reader__bar">
+    <h2 class="reader__title" id="reader-title"></h2>
+    <p class="reader__count" aria-live="polite"><span data-r-page>–</span> / <span data-r-total>–</span></p>
+    <div class="reader__tools">
+      <button class="reader__tool" type="button" data-r-zoom aria-pressed="false" title="Fit width (Z)">zoom</button>
+      <button class="reader__tool" type="button" data-r-full title="Fullscreen (F)">full screen</button>
+      <a class="reader__tool" data-r-download href="#" download>pdf ↓</a>
+      <button class="reader__tool reader__tool--close" type="button" data-r-close aria-label="Close the reader (Esc)">×</button>
+    </div>
+  </header>
+  <div class="reader__stage" data-r-stage tabindex="0">
+    <canvas class="reader__canvas" data-r-canvas></canvas>
+    <p class="reader__msg" data-r-msg>opening…</p>
+  </div>
+  <button class="ov-btn ov-btn--prev" type="button" data-r-prev aria-label="Previous page">‹</button>
+  <button class="ov-btn ov-btn--next" type="button" data-r-next aria-label="Next page">›</button>
+  <p class="reader__hint label">← → to turn pages · Z zoom · F full screen · Esc close</p>
+</div>
