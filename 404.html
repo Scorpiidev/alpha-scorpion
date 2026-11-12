@@ -3,6 +3,24 @@ title: Page not found
 permalink: /404.html
 sitemap: false
 ---
+<script>
+  // Old addresses from earlier versions of the site go to where that content lives now.
+  (function () {
+    var base = '{{ site.baseurl }}';
+    var path = location.pathname.indexOf(base) === 0 ? location.pathname.slice(base.length) : location.pathname;
+    var moved = [
+      [/^\/specimens(\/|$)/, '/#gallery'],
+      [/^\/curator(\/|$)/, '/#about'],
+      [/^\/transmit\/received(\/|$)/, '/contact/received/'],
+      [/^\/transmit(\/|$)/, '/contact/'],
+      [/^\/(log|colophon|terms|blog)(\/|\.html|$)/, '/'],
+      [/^\/index\.html$/, '/']
+    ];
+    for (var i = 0; i < moved.length; i++) {
+      if (moved[i][0].test(path)) { location.replace(base + moved[i][1]); return; }
+    }
+  })();
+</script>
 <section class="notice">
   <h1>Nothing here</h1>
   <p>This page doesn't exist (any more). All the work is on the home page.</p>
