@@ -1,13 +1,11 @@
-# Comics shown in the reader at the top of the home page.
-# pdf / cover live in assets/comics/. Add a new comic by adding a block here.
+# Comics on the home page, in this order.
+# The page images live in assets/comics/<slug>/ (01.webp, 02.webp, ... and cover.webp).
+# Make them from a PDF with:  python tools/comic_pages.py my-comic.pdf my-comic
 - slug: universo-goya
   title: "Universo Goya"
-  badge: "Contest runner-up · 2026"
   pages: 4
   language: Spanish
-  pdf: universo-goya.pdf
-  cover: universo-goya-cover.jpg
-  credits: "Pencils, inks & colour"
+  note: "Contest runner-up, 2026"
   blurb: >-
     Eli can't see the point of her school project on Goya. Then her hearing-aid
     batteries die and she has to cross a city that has suddenly gone silent,
@@ -15,12 +13,9 @@
 
 - slug: ammutindra
   title: "Ammutindra"
-  badge: "Mutantes Paseantes contest"
   pages: 8
   language: Spanish
-  pdf: ammutindra.pdf
-  cover: ammutindra-cover.jpg
-  credits: "Pencils, inks & colour"
+  note: "Mutantes Paseantes contest"
   blurb: >-
     Cosmic horror. A research team accidentally kidnaps a juvenile divine entity,
     and her eldritch father comes down to take her back. Sumerian, Indian and

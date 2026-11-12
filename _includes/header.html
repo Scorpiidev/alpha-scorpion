@@ -1,13 +1,12 @@
 {%- assign here = page.url -%}
-<header class="top">
+<header class="top wrap">
   <a class="top__home" href="{{ '/' | relative_url }}" aria-label="Antares, home">
-    {% include heart.svg class="top__heart" %}
     {% include wordmark.svg class="top__wordmark" %}
   </a>
   <nav class="top__nav" aria-label="Main">
     <a href="{{ '/#comics' | relative_url }}">Comics</a>
     <a href="{{ '/#gallery' | relative_url }}">Gallery</a>
     <a href="{{ '/#about' | relative_url }}">About</a>
-    <a class="top__cta" href="{{ '/contact/' | relative_url }}" {% if here contains '/contact/' %}aria-current="page"{% endif %}>Contact</a>
+    <a href="{{ '/contact/' | relative_url }}" {% if here contains '/contact/' %}aria-current="page"{% endif %}>Contact</a>
   </nav>
 </header>

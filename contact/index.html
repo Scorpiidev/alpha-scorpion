@@ -1,28 +1,24 @@
 ---
 title: Contact
-room: contact
 description: Contact Antares for comic projects, commissions and studio work.
 scripts:
   - /assets/js/contact.js
 ---
 {%- assign key = site.web3forms_access_key | strip -%}
-<section class="contact">
-  <header class="contact__head">
-    <p class="label">contact · λ shaula, the sting</p>
-    <h1 class="page-title">Let's make pages</h1>
-    <p class="contact__intro">
-      Comic projects, commissions, studio work or collaborations. Tell me a little about the project
-      (page count, deadline, rough budget, a link to the script if you have one) and I'll get back to you by email.
-    </p>
-    <p class="status"><span class="status__dot" aria-hidden="true"></span>{{ site.availability }}</p>
-    {%- if site.data.socials.size > 0 %}
-    <ul class="contact__socials">
-      {%- for s in site.data.socials %}
-      <li><a href="{{ s.url }}" rel="noopener me" target="_blank"><span>{{ s.name }}</span> <small>{{ s.handle }}</small></a></li>
-      {%- endfor %}
-    </ul>
-    {%- endif %}
-  </header>
+<section class="page">
+  <h1>Contact</h1>
+  <p class="page__intro">
+    Comic projects, commissions, studio work or collaborations. Tell me a little about the project
+    (page count, deadline, rough budget, a link to the script if you have one) and I'll get back to you by email.
+  </p>
+  <p class="page__status">{{ site.availability }}.</p>
+  {%- if site.data.socials.size > 0 %}
+  <ul class="page__socials">
+    {%- for s in site.data.socials %}
+    <li><a class="link" href="{{ s.url }}" rel="noopener me" target="_blank">{{ s.name }}</a></li>
+    {%- endfor %}
+  </ul>
+  {%- endif %}
 
   <form class="form" id="contact-form" action="https://api.web3forms.com/submit" method="POST" data-key="{{ key }}" novalidate>
     <input type="hidden" name="access_key" value="{{ key }}">
@@ -59,7 +55,7 @@ scripts:
     </div>
 
     <div class="form__foot">
-      <button class="btn form__send" type="submit">Send {% include star4.svg %}</button>
+      <button class="btn form__send" type="submit">Send</button>
       <p class="form__status{% if key == "" %} is-err{% endif %}" role="status" data-status>
         {%- if key == "" -%}The form isn't connected yet.{%- endif -%}
       </p>

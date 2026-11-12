@@ -1,13 +1,11 @@
-<footer class="foot">
-  <div class="foot__inner">
-    <a class="foot__heart" href="{{ '/' | relative_url }}" aria-label="Back to the top">{% include heart.svg %}</a>
-    <p class="foot__motto">Per Tenebras, Forma <span>through darkness, form</span></p>
+<footer class="site-foot wrap">
+  <div class="foot">
+    <p>© {{ site.time | date: '%Y' }} Antares</p>
     <ul class="foot__links">
       {%- for s in site.data.socials %}
       <li><a href="{{ s.url }}" rel="noopener me" target="_blank">{{ s.name }}</a></li>
       {%- endfor %}
-      <li><a href="{{ '/contact/' | relative_url }}">Contact</a></li>
     </ul>
-    <p class="foot__fine">© {{ site.time | date: '%Y' }} Antares · all artwork drawn by hand, no generative AI · please don't use it to train models</p>
+    <p class="foot__note">All artwork is drawn by hand, no generative AI. Please don't use it to train models.</p>
   </div>
 </footer>

@@ -1,136 +1,58 @@
-# ✶ Antares · cabinet of curiosities
+# Antares · comics & illustration
 
-*Per Tenebras, Forma.* Portfolio, field log and museum of oddities of Antares.
+Portfolio site, live at **https://scorpiidev.github.io/alpha-scorpion/**.
+GitHub Pages rebuilds it by itself about a minute after every commit to `main`. Nothing to install, nothing to pay.
 
-Live at **https://scorpiidev.github.io/alpha-scorpion/** once this branch is merged into the branch
-GitHub Pages publishes from (usually `main`, see *Settings → Pages*). GitHub builds the site by
-itself every time you commit: no installs, no servers, no cost.
+Most changes can be made straight on github.com: **Add file → Upload files** or the pencil icon on a file, then **Commit changes**.
 
-Everything below can be done from the GitHub website: **Add file → Create new file** or
-**Add file → Upload files**, then **Commit changes**. Wait about a minute and refresh the site.
+## Add a comic
 
----
+The reader shows comics as page images, so it opens instantly and there is no PDF to download.
 
-## 0 · One-time setup: the contact form
+1. On your computer, once: `pip install pymupdf pillow` (both free).
+2. Run `python tools/comic_pages.py path/to/my-comic.pdf my-comic`.
+   It writes `assets/comics/my-comic/01.webp, 02.webp, …` plus `cover.webp`, and splits
+   pages exported 2-up into single pages. Keep the PDF on your computer, not in the repo.
+3. Add a block to `_data/comics.yml` with the same `slug` and the page count the script printed.
 
-The form on `/transmit/` sends messages straight to your inbox through
-[Web3Forms](https://web3forms.com) (free, 250 messages a month). Your email address never
-appears anywhere in this repository or on the site.
+Want a different cover? Replace `cover.webp` with your own image (about 1000 px wide).
 
-1. Go to <https://web3forms.com>, type your email and click **Create Access Key**. They email you the key.
-2. Open `_config.yml`, find `web3forms_access_key: ""` and paste the key between the quotes. Commit.
-3. Turn on the captcha: log in to the Web3Forms dashboard, open your form's settings and choose
-   **hCaptcha** as the spam protection. The site already shows the captcha (it's free on their plan);
-   this step makes Web3Forms *require* it.
+## Add artwork to the gallery
 
-Until step 2 is done the form shows "transmitter offline" instead of sending.
-
----
-
-## 1 · Write a blog post (the Field Log)
-
-1. Go to the `_posts` folder → **Add file → Create new file**.
-2. Name it `YEAR-MONTH-DAY-short-name.md`, for example `2026-11-02-ink-tests.md`.
-3. Paste this at the top, then write underneath:
-
-```markdown
----
-title: "Ink tests"
-tags: [process, comics]      # optional
-cover: ink-tests-cover.jpg   # optional, see images below
----
-
-Write here. **Bold**, *italic*, [links](https://example.com), lists, quotes with >.
-```
-
-**Images in a post:** upload them to `assets/posts/` first (**Add file → Upload files**), then:
-
-```markdown
-![what is in the picture](/assets/posts/my-image.jpg)
-
-{% include figure.html file="my-image.jpg" caption="fig. 1 · a pinned figure with a caption" %}
-```
-
-Links to your own pages start with `/`, e.g. `[my hall](/specimens/)`. The site fixes them up for you.
-Writing in Spanish? Add `lang: es` under the title. There's a ready template in `_drafts/TEMPLATE-new-post.md`
-(files in `_drafts` are never published).
-
----
-
-## 2 · Add artwork (the Hall of Specimens)
-
-**The lazy way (10 seconds):** upload an image into `assets/works/`. It appears in the hall straight away
-as an *uncatalogued* specimen, titled after its file name.
-
-**The proper way:** upload the image to `assets/works/`, then create a label for it in `_works/`,
-e.g. `_works/moth-queen.md`:
+1. Upload the image to `assets/works/` (lowercase, dashes, no spaces: `moth-queen.jpg`; at most ~2200 px on the long side).
+2. Optional but faster: upload a ~760 px `.webp` copy with the same name to `assets/works/thumbs/`.
+3. Create `_works/24-moth-queen.md`:
 
 ```markdown
 ---
 title: "Moth Queen"
-date: 2026-11-02            # used for ordering and the catalogue number
-year: "2026"                # what the placard shows (optional, free text)
 medium: digital painting
-tools: [Krita]              # optional
-tags: [illustration, character]
-file: moth-queen.jpg        # the image you uploaded to assets/works/
-featured: true              # optional: show it on the home page shelf
+category: illustration        # illustration, characters or sketches
+file: moth-queen.jpg
+ratio: 0.75                   # optional: width ÷ height, stops the grid jumping while it loads
+alt: "What is in the picture, for people who can't see it"
+order: 24                     # position in the gallery
 ---
-
-The description. As long or short as you like.
 ```
 
-It gets its own page at `/specimens/moth-queen/`, a slot in the inspection chamber and a catalogue number.
+Phone photos can carry GPS location in their metadata; "export for web" strips it.
 
-**The vault:** a `_works` file with an empty `file:` shows up as an index card in *The Vault*
-("catalogued, not yet digitized"). When you have the image, upload it and fill in `file:`, and it moves into the hall.
-
-**Faster pages (optional):** also upload a small preview to `assets/works/thumbs/` with the same name but `.webp`
-(about 900 px, e.g. `moth-queen.webp`). The desk, shelf and hall use it automatically; without one they just load the full image.
-
-**Image tips:** export at most ~2200 px on the long side, JPG quality ~80. Keep file names lowercase with
-dashes, no spaces (`moth-queen.jpg`). Phone photos can carry GPS location in their metadata; export or
-"save for web" to strip it before uploading.
-
----
-
-## 3 · Change other things
+## Change other things
 
 | What | Where |
 | --- | --- |
-| Social links (LinkedIn & Gumroad are hidden there because their links show your real name) | `_data/socials.yml` |
-| Hidden oddities (names, hints, notes) | `_data/oddities.yml` |
-| Home page intro text | `index.html` (section I) |
-| About text, tools, "open to" list | `curator/index.html` |
-| Contact page wording | `transmit/index.html` |
-| Image credits | `colophon/index.html` |
-| Terms of use | `terms/index.html` |
-| Colours & fonts | top of `assets/css/main.css` |
+| Intro, about text, tools | `index.html` |
+| "Open for projects…" line | `availability` in `_config.yml` |
+| Social links | `_data/socials.yml` |
+| Contact page wording | `contact/index.html` |
+| Colours & font | top of `assets/css/main.css` |
 
-The desk collage on the home page is in `index.html` (section II). Each piece has `--x`, `--y`
-(position in % of the desk), `--w` (width) and `--r` (rotation).
+## Contact form
 
----
+Messages go through [Web3Forms](https://web3forms.com) (free, 250 a month); your email address never appears on the site.
+The key is `web3forms_access_key` in `_config.yml`. To require the captcha, pick **hCaptcha** as spam protection
+in the Web3Forms dashboard.
 
-## 4 · Map of the cabinet
+## Preview on your computer (optional)
 
-```
-_config.yml          site settings + contact form key
-_posts/              field log entries (blog)
-_works/              specimen labels (gallery)
-_data/               socials, rooms of the star chart, oddities
-_layouts/ _includes/ page templates
-assets/works/        artwork images      ← drop images here
-assets/posts/        blog images         ← and here
-assets/img/          logo, palette, public-domain archive images
-assets/css/main.css  all the styling
-assets/js/           cursor, desk, terminal, synthesizer, lightbox, form
-```
-
-## 5 · Preview on your own computer (optional)
-
-Needs Ruby. `bundle install`, then `bundle exec jekyll serve` and open <http://localhost:4000/alpha-scorpion/>.
-
-## Secrets for visitors
-
-Seven oddities are hidden across the rooms. Type `antares` anywhere. Talk to the terminal on the desk.
+Needs Ruby: `bundle install`, then `bundle exec jekyll serve`, and open <http://localhost:4000/alpha-scorpion/>.

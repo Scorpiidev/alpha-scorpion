@@ -1,154 +1,99 @@
 ---
 layout: default
-room: home
-scripts:
-  - /assets/js/reader.js
 ---
 {%- assign works = site.works | sort: 'order' -%}
 
-<section class="hero" aria-labelledby="hero-title">
-  <p class="label">comic artist · illustrator · spain</p>
-  <h1 class="hero__title" id="hero-title">
-    <span class="sr-only">Antares</span>
-    {% include wordmark.svg class="hero__wordmark" %}
-  </h1>
-  <p class="hero__lead">
-    I draw comics: pencils, inks and colour, the whole page. Ten years of indie sequential art,
-    and runner-up in this year's <em>Universo Goya</em> comic contest.
+<section class="intro" aria-labelledby="intro-title">
+  <h1 id="intro-title">Antares, comic artist and illustrator based in Spain.</h1>
+  <p class="intro__lead">
+    I draw the whole page: pencils, inks and colour. Ten years of indie comics, and runner-up in this
+    year's <em>Universo Goya</em> comic contest.
   </p>
-  <p class="status"><span class="status__dot" aria-hidden="true"></span>{{ site.availability }}</p>
-  <div class="hero__actions">
-    <a class="btn" href="#comics">Read the comics</a>
-    <a class="btn btn--ghost" href="{{ '/contact/' | relative_url }}">Start a project</a>
-  </div>
+  <p class="intro__status">{{ site.availability }}. <a class="link" href="{{ '/contact/' | relative_url }}">Get in touch</a></p>
 </section>
 
-<!-- ═══ COMICS ═══════════════════════════════════════════════ -->
 <section class="section" id="comics" aria-labelledby="comics-title">
-  <header class="section__head">
-    <span class="section__no" aria-hidden="true">I</span>
-    <div>
-      <h2 id="comics-title">Comics</h2>
-      <p class="label">read them right here, page by page</p>
-    </div>
-  </header>
-
+  <div class="section__head">
+    <h2 id="comics-title">Comics</h2>
+  </div>
   <div class="comics">
     {%- for c in site.data.comics %}
-    {%- capture pdf %}{{ '/assets/comics/' | append: c.pdf | relative_url }}{% endcapture %}
+    {%- capture dir %}{{ '/assets/comics/' | append: c.slug | append: '/' | relative_url }}{% endcapture %}
     <article class="comic">
-      <button class="comic__cover" type="button" data-reader-open data-pdf="{{ pdf }}" data-title="{{ c.title | escape }}"
-              aria-label="Read {{ c.title | escape }}">
-        <img src="{{ '/assets/comics/' | append: c.cover | relative_url }}" alt="First page of {{ c.title | escape }}" loading="lazy" decoding="async">
-        <span class="comic__read" aria-hidden="true">read {% include star4.svg %}</span>
+      <button class="comic__cover" type="button" data-reader-open data-dir="{{ dir }}" data-pages="{{ c.pages }}"
+              data-title="{{ c.title | escape }}" aria-label="Read {{ c.title | escape }}">
+        <img src="{{ dir }}cover.webp" alt="" loading="lazy" decoding="async">
       </button>
-      <div class="comic__text">
-        <p class="comic__badge">{{ c.badge }}</p>
-        <h3 class="comic__title">{{ c.title }}</h3>
-        <p class="label">{{ c.pages }} pages · {{ c.language }} · {{ c.credits }}</p>
-        <p class="comic__blurb">{{ c.blurb }}</p>
-        <div class="comic__actions">
-          <button class="btn btn--small" type="button" data-reader-open data-pdf="{{ pdf }}" data-title="{{ c.title | escape }}">Open reader</button>
-          <a class="btn btn--small btn--ghost" href="{{ pdf }}" download>Download PDF</a>
-        </div>
-      </div>
+      <h3 class="comic__title">{{ c.title }}</h3>
+      <p class="comic__meta">{{ c.pages }} pages · {{ c.language }}{% if c.note %} · {{ c.note }}{% endif %}</p>
+      <p class="comic__blurb">{{ c.blurb }}</p>
+      <button class="link" type="button" data-reader-open data-dir="{{ dir }}" data-pages="{{ c.pages }}"
+              data-title="{{ c.title | escape }}">Read</button>
     </article>
     {%- endfor %}
   </div>
 </section>
 
-<!-- ═══ GALLERY ══════════════════════════════════════════════ -->
 <section class="section" id="gallery" aria-labelledby="gallery-title">
-  <header class="section__head">
-    <span class="section__no" aria-hidden="true">II</span>
-    <div>
-      <h2 id="gallery-title">Gallery</h2>
-      <p class="label">illustration, character design &amp; sketchbook</p>
+  <div class="section__head">
+    <h2 id="gallery-title">Gallery</h2>
+    <div class="filters" role="group" aria-label="Filter the gallery">
+      <button type="button" class="filter" data-filter="*" aria-pressed="true">All</button>
+      <button type="button" class="filter" data-filter="illustration" aria-pressed="false">Illustration</button>
+      <button type="button" class="filter" data-filter="characters" aria-pressed="false">Characters</button>
+      <button type="button" class="filter" data-filter="sketches" aria-pressed="false">Sketches</button>
     </div>
-  </header>
-
-  <div class="filters" role="group" aria-label="Filter the gallery">
-    <button type="button" class="filter" data-filter="*" aria-pressed="true">all</button>
-    <button type="button" class="filter" data-filter="illustration" aria-pressed="false">illustration</button>
-    <button type="button" class="filter" data-filter="characters" aria-pressed="false">characters</button>
-    <button type="button" class="filter" data-filter="sketches" aria-pressed="false">sketches &amp; ink</button>
   </div>
-
   <ul class="grid" id="grid">
     {%- for w in works %}
-    {%- capture full %}{{ '/assets/works/' | append: w.file | relative_url }}{% endcapture %}
-    <li class="tile" data-cat="{{ w.category }}">
-      <a class="tile__link" href="{{ full }}" data-lightbox data-title="{{ w.title | escape }}" data-meta="{{ w.medium | escape }}">
+    <li class="tile" data-cat="{{ w.category }}"{% if w.ratio %} style="--ar: {{ w.ratio }}"{% else %} data-measure{% endif %}>
+      <a href="{{ '/assets/works/' | append: w.file | relative_url }}" data-lightbox data-title="{{ w.title | escape }}" data-meta="{{ w.medium | escape }}">
         <img src="{% include thumb.html file=w.file %}" alt="{{ w.alt | default: w.title | escape }}" loading="lazy" decoding="async">
-        <span class="tile__cap"><span class="tile__title">{{ w.title }}</span><span class="tile__meta">{{ w.medium }}</span></span>
       </a>
     </li>
     {%- endfor %}
   </ul>
 </section>
 
-<!-- ═══ ABOUT ════════════════════════════════════════════════ -->
-<section class="section about" id="about" aria-labelledby="about-title">
-  <header class="section__head">
-    <span class="section__no" aria-hidden="true">III</span>
-    <div>
-      <h2 id="about-title">About</h2>
-      <p class="label">who draws all this</p>
-    </div>
-  </header>
-
-  <div class="about__body">
-    <div class="about__sigil" aria-hidden="true">{% include heart.svg class="about__heart" %}</div>
-    <div class="prose">
-      <p>
-        I'm <strong>Antares</strong>, a multidisciplinary artist based in Spain, currently studying a higher
-        vocational degree in <strong>3D Animation, Games and Interactive Environments</strong>. I love creating
-        stories and giving them life, and I love taking someone else's idea and turning it into something you can see.
-      </p>
-      <p>
-        I've been making indie comics on my own for about ten years, which means I'm used to carrying a page from
-        thumbnail to pencils, inks and colour. My philosophy revolves around never-ending curiosity and bettering
-        yourself: there is always another technique to learn and another strange concept to chase.
-      </p>
-      <dl class="facts">
-        <div><dt>comics</dt><dd>10 years of indie sequential art</dd></div>
-        <div><dt>recognition</dt><dd>Runner-up, Universo Goya comic contest 2026</dd></div>
-        <div><dt>does</dt><dd>pencils · inks · colour · character design</dd></div>
-        <div><dt>tools</dt><dd>Krita · Photoshop · Toon Boom Harmony · Moho · Maya · ZBrush</dd></div>
-        <div><dt>languages</dt><dd>English · Spanish</dd></div>
-      </dl>
-      <a class="btn" href="{{ '/contact/' | relative_url }}">Got a script that needs pages? {% include star4.svg %}</a>
-    </div>
+<section class="section" id="about" aria-labelledby="about-title">
+  <div class="section__head">
+    <h2 id="about-title">About</h2>
+  </div>
+  <div class="about">
+    <p>
+      I'm Antares, a multidisciplinary artist from Spain, currently studying a higher vocational degree in
+      3D Animation, Games and Interactive Environments.
+    </p>
+    <p>
+      I've been making indie comics on my own for about ten years, so I'm used to carrying a page from thumbnail
+      to pencils, inks and colour. I love creating stories, and I love taking someone else's idea and turning it
+      into something you can see. There's always another technique to learn and another strange concept to chase.
+    </p>
+    <dl class="facts">
+      <dt>Tools</dt><dd>Krita, Photoshop, Toon Boom Harmony, Moho, Maya, ZBrush</dd>
+      <dt>Languages</dt><dd>English, Spanish</dd>
+    </dl>
   </div>
 </section>
 
-<!-- ═══ OVERLAYS ═════════════════════════════════════════════ -->
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightbox-title" hidden>
+<dialog class="overlay lightbox" id="lightbox" aria-labelledby="lightbox-title">
+  <div class="lightbox__top"><button class="ov-btn" type="button" data-lb-close>Close</button></div>
   <figure class="lightbox__stage">
     <img class="lightbox__img" alt="">
     <figcaption><span class="lightbox__title" id="lightbox-title"></span> <span class="lightbox__meta"></span></figcaption>
   </figure>
-  <button class="ov-btn ov-btn--prev" type="button" data-lb-prev aria-label="Previous image">‹</button>
-  <button class="ov-btn ov-btn--next" type="button" data-lb-next aria-label="Next image">›</button>
-  <button class="ov-close" type="button" data-lb-close aria-label="Close">×</button>
-</div>
+  <button class="lightbox__nav lightbox__nav--prev" type="button" data-lb-prev aria-label="Previous image">‹</button>
+  <button class="lightbox__nav lightbox__nav--next" type="button" data-lb-next aria-label="Next image">›</button>
+</dialog>
 
-<div class="reader" id="reader" role="dialog" aria-modal="true" aria-labelledby="reader-title" hidden>
+<dialog class="overlay reader" id="reader" aria-labelledby="reader-title">
   <header class="reader__bar">
     <h2 class="reader__title" id="reader-title"></h2>
-    <p class="reader__count" aria-live="polite"><span data-r-page>–</span> / <span data-r-total>–</span></p>
+    <p class="reader__count"><span data-r-page>1</span> / <span data-r-total></span></p>
     <div class="reader__tools">
-      <button class="reader__tool" type="button" data-r-zoom aria-pressed="false" title="Fit width (Z)">zoom</button>
-      <button class="reader__tool" type="button" data-r-full title="Fullscreen (F)">full screen</button>
-      <a class="reader__tool" data-r-download href="#" download>pdf ↓</a>
-      <button class="reader__tool reader__tool--close" type="button" data-r-close aria-label="Close the reader (Esc)">×</button>
+      <button class="ov-btn" type="button" data-r-zoom aria-pressed="false" title="Z">Fit width</button>
+      <button class="ov-btn" type="button" data-r-close>Close</button>
     </div>
   </header>
-  <div class="reader__stage" data-r-stage tabindex="0">
-    <canvas class="reader__canvas" data-r-canvas></canvas>
-    <p class="reader__msg" data-r-msg>opening…</p>
-  </div>
-  <button class="ov-btn ov-btn--prev" type="button" data-r-prev aria-label="Previous page">‹</button>
-  <button class="ov-btn ov-btn--next" type="button" data-r-next aria-label="Next page">›</button>
-  <p class="reader__hint label">← → to turn pages · Z zoom · F full screen · Esc close</p>
-</div>
+  <div class="reader__pages" data-r-pages tabindex="-1"></div>
+</dialog>

@@ -3,17 +3,17 @@
 <head>
 {% include head.html %}
 </head>
-<body class="page page--{{ page.room | default: 'misc' }}">
-  <a class="skip" href="#main">skip to content</a>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
   <div class="sky" aria-hidden="true"></div>
   {% include header.html %}
-  <main id="main" class="main">
+  <main id="main" class="main wrap">
 {{ content }}
   </main>
   {% include footer.html %}
   <script src="{{ '/assets/js/site.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
   {%- for s in page.scripts %}
-  <script src="{{ s | relative_url }}?v={{ site.time | date: '%s' }}" {% if s contains 'reader' %}type="module"{% else %}defer{% endif %}></script>
+  <script src="{{ s | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
   {%- endfor %}
 </body>
 </html>
